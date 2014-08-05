@@ -8,7 +8,7 @@ import pl.evelanblog.paxcosmica.PaxCosmica;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Pax Cosmica v0.1 (alpha)";
+		config.title = "Pax Cosmica";
 		config.width = 1280;
 		config.height = 768;
 		config.vSyncEnabled = true;

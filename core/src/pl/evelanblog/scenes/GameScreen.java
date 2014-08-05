@@ -1,10 +1,7 @@
 package pl.evelanblog.scenes;
 
-import pl.evelanblog.asteroid.Asteroid;
-import pl.evelanblog.booster.Booster;
 import pl.evelanblog.enemy.fighter.Enemy;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Bullet;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.control.Joystick;
@@ -45,53 +42,27 @@ public class GameScreen implements Screen {
 		game.batch.draw(Assets.stars, world.stars.getX(), world.stars.getY());
 		game.batch.draw(Assets.stars2, world.stars2.getX(), world.stars2.getY());
 
-		if (world.player.isAlive()) {
-			world.player.getEngine().draw(game.batch, delta);
-			game.batch.draw(Assets.spaceship, world.player.getX(), world.player.getY());
-		}
+		if (world.player.isAlive())
+			world.player.draw(game.batch, delta);
 
 		for (DynamicObject obj : World.objectArray)
 		{
-			if (obj instanceof Asteroid) // asteroida
-			{
-				Asteroid asteroid = (Asteroid) obj;
-				switch (asteroid.getNumberBitmap())
-				{
-				case 0:
-					game.batch.draw(Assets.asteroid_1, asteroid.x, asteroid.y, asteroid.height, asteroid.width);
-					break;
-				case 1:
-					game.batch.draw(Assets.asteroid_2, asteroid.x, asteroid.y, asteroid.height, asteroid.width);
-					break;
-				case 2:
-					game.batch.draw(Assets.asteroid_3, asteroid.x, asteroid.y, asteroid.height, asteroid.width);
-					break;
-				}
-			} else if (obj instanceof Booster)
-			{
-				Booster booster = (Booster) obj;
-				game.batch.draw(Assets.booster, booster.x, booster.y);
-			} else if (obj instanceof Bullet)
-			{
-				Bullet bullet = (Bullet) obj;
-				game.batch.draw(Assets.bullet, bullet.x, bullet.y);
-			} else if (obj instanceof Enemy)
-			{
-				Enemy enemy = (Enemy) obj;
-				enemy.getEngine().draw(game.batch, delta);
-				game.batch.draw(Assets.enemy, enemy.x, enemy.y);
-			}
-
+			// TODO: spróbowaæ przekazaæ deltê inaczej do funkcji draw w Enemy,
+			// ¿eby móc daæ po prostu obj.draw(game.batch)
+			if (obj instanceof Enemy)
+				((Enemy) obj).draw(game.batch, delta);
+			else
+				obj.draw(game.batch);
 		}
 
-		world.hit.draw(game.batch, delta);
-		world.explosion.draw(game.batch, delta);
+		Assets.hitEffect.draw(game.batch, delta);
+		Assets.explosionEffect.draw(game.batch, delta);
 
 		for (int i = 0; i < world.player.getHealth(); i++)
-			game.batch.draw(Assets.hullBar, 35*i , Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
-		
-		for(int i = 0; i < world.player.getShield(); i++)
-			game.batch.draw(Assets.hullBar, 35*i + 300 , Gdx.graphics.getHeight() - Assets.shieldBar.getHeight());
+			game.batch.draw(Assets.hullBar, 35 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
+
+		for (int i = 0; i < world.player.getShield(); i++)
+			game.batch.draw(Assets.hullBar, 35 * i + 300, Gdx.graphics.getHeight() - Assets.shieldBar.getHeight());
 
 		// controls HUD
 		game.batch.setColor(1.0f, 1.0f, 1.0f, 0.3f);
@@ -101,7 +72,7 @@ public class GameScreen implements Screen {
 		game.font.draw(game.batch, "Score: " + World.score, 10, Gdx.graphics.getHeight() - 30);
 		game.font.draw(game.batch, "Objects: " + World.objectArray.size(), 10, Gdx.graphics.getHeight() - 50);
 		game.font.draw(game.batch, "HP: " + world.player.getHealth(), 20, Gdx.graphics.getHeight() - 70);
-		
+
 		game.batch.end();
 
 	}

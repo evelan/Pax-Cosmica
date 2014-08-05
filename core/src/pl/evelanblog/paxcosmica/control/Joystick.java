@@ -10,19 +10,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Joystick extends Rectangle implements InputProcessor {
 
-	private static Vector2 defKnobPos = new Vector2(64, 64); // domyœlna pozycja
-																// ga³ki
-	private static Vector2 defButtonAPos = new Vector2(1200, 64); // domyœlna
-																	// pozycja
-																	// przycisku
-																	// A
-	private static Vector2 defButtonBPos = new Vector2(1000, 64); // domyœlna
-																	// pozycja
-																	// przycisku
-																	// B
+	private static Vector2 defKnobPos = new Vector2(64, 64);
+	private static Vector2 defButtonAPos = new Vector2(1200, 64);
+	private static Vector2 defButtonBPos = new Vector2(1000, 64); 
+	private static Vector2 pauseButton = new Vector2(1100, 700);
 
 	public static Rectangle buttonA;
 	public static Rectangle buttonB;
+	
+	private Rectangle mousePointer = new Rectangle(0, 0, 1, 1);
 	private static float velX = 0, velY = 0;
 	private static boolean hit = false;
 	private static boolean knobPressed = false;
@@ -33,7 +29,9 @@ public class Joystick extends Rectangle implements InputProcessor {
 		setHeight(Assets.knob.getHeight());
 		setWidth(Assets.knob.getWidth());
 		setPosition(defKnobPos.x, defKnobPos.y);
+		
 
+		
 		buttonA = new Rectangle(defButtonAPos.x - Assets.button.getWidth(), defButtonAPos.y, Assets.button.getWidth(), Assets.button.getHeight());
 		buttonB = new Rectangle(defButtonBPos.x - Assets.button.getWidth(), defButtonBPos.y, Assets.button.getWidth(), Assets.button.getHeight());
 	}
@@ -71,7 +69,9 @@ public class Joystick extends Rectangle implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-
+		mousePointer.setPosition(screenX, screenY);
+		
+	
 		if (!hit) {
 			if (screenX > buttonA.x &&
 					screenX < buttonA.x + buttonA.width &&
@@ -136,7 +136,6 @@ public class Joystick extends Rectangle implements InputProcessor {
 
 			setPosition(screenX - (getWidth() / 2), screenY - (getHeight() / 2));
 			velX = (((screenX - (getWidth() / 2)) - defKnobPos.x)) / 64;
-			Gdx.app.log("POS: ", velX + "");
 			velY = ((screenY - (getHeight() / 2)) - defKnobPos.y) / 64;
 		}
 		return true;

@@ -12,6 +12,11 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		config.hideStatusBar = true;
+		config.useAccelerometer = false;
+		config.useCompass = false;
+		config.useImmersiveMode = true;
+		config.useWakelock = true;
 		initialize(new PaxCosmica(), config);
 	}
 }

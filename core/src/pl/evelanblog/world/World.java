@@ -8,6 +8,7 @@ import pl.evelanblog.booster.Booster;
 import pl.evelanblog.enemy.fighter.Enemy;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Bullet;
+import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
@@ -18,6 +19,7 @@ import pl.evelanblog.scenes.WinScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class World {
 
@@ -25,8 +27,7 @@ public class World {
 	public Player player;
 	public Rectangle stars;
 	public Rectangle stars2;
-	public ParticleEffect explosion;
-	public ParticleEffect hit;
+	private Collider colider;
 
 	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
 
@@ -34,19 +35,18 @@ public class World {
 
 	public static int score = 0;
 
+	long startTime = TimeUtils.millis(), currentTime;
+	long stageTime = 1 * (1000 * 60);
+
 	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
 
 	public World(final PaxCosmica game) {
 		this.game = game;
 		player = new Player();
+		
+		colider = new Collider(player);
 
 		objectArray = new ArrayList<DynamicObject>();
-
-		explosion = new ParticleEffect();
-		explosion.load(Gdx.files.internal("data/explosion.p"), Gdx.files.internal(""));
-
-		hit = new ParticleEffect();
-		hit.load(Gdx.files.internal("data/hit.p"), Gdx.files.internal(""));
 
 		stars = new Rectangle(0, 50, Assets.stars.getWidth(), Assets.stars.getHeight());
 		stars2 = new Rectangle(0, -50, Assets.stars2.getWidth(), Assets.stars2.getHeight());
@@ -55,6 +55,9 @@ public class World {
 	}
 
 	public void update(float delta) {
+		if (TimeUtils.timeSinceMillis(startTime) > stageTime) // end of stage
+			stageFinished = true;
+
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
@@ -64,14 +67,17 @@ public class World {
 		updateObjects(delta); // update all objects
 
 		if (player.isAlive()) {
-			checkPlayerCollision(objectArray);
-			checkBulletCollision(objectArray);
+			colider.checkPlayerCollision(objectArray);
+			colider.checkBulletCollision(objectArray);
 		} else if (!player.isAlive())
 		{
 			if (Gdx.input.isTouched())
 				game.setScreen(new LostScreen(game));
-		} else if (stageFinished)
+		}
+
+		if (stageFinished)
 		{
+			Gdx.app.log("Stage:", "finished");
 			game.setScreen(new WinScreen(game));
 		}
 	}
@@ -80,7 +86,6 @@ public class World {
 		player.update(delta); // update position
 
 		ListIterator<DynamicObject> itr = objectArray.listIterator();
-
 		while (itr.hasNext()) {
 			DynamicObject obj = itr.next();
 			if (obj instanceof Enemy)
@@ -163,104 +168,5 @@ public class World {
 		stars2.setX(stars2.getX() - (delta * 70));
 		if (stars2.getX() + stars2.getWidth() < 0)
 			stars2.setX(Gdx.graphics.getWidth());
-	}
-
-	private void checkPlayerCollision(ArrayList<DynamicObject> array) {
-
-		for (DynamicObject obj : array)
-		{
-			if (obj.overlaps(player))
-			{
-				if (obj instanceof Enemy || obj instanceof Asteroid) {
-					Assets.playSound(Assets.explosion);
-					explosion.setPosition(player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 2));
-					explosion.start();
-					player.kill();
-				} else if (obj instanceof Booster) {
-					Assets.playSound(Assets.hit);
-					hit.setPosition(obj.getX(), obj.getY() + (obj.getHeight() / 2));
-					hit.start();
-					obj.kill();
-					player.hurt(50);
-
-					if (!player.isAlive()) {
-						Assets.playSound(Assets.explosion);
-						explosion.setPosition(player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 2));
-						explosion.start();
-					}
-				} else if (obj instanceof Bullet) {
-					Bullet bullet = (Bullet) obj;
-					if (!bullet.getDirection())
-					{
-						Assets.playSound(Assets.hit);
-						hit.setPosition(obj.getX(), obj.getY() + (obj.getHeight() / 2));
-						hit.start();
-						obj.kill();
-						player.hurt(50);
-
-						if (!player.isAlive()) {
-							Assets.playSound(Assets.explosion);
-							explosion.setPosition(player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 2));
-							explosion.start();
-						}
-					}
-
-				}
-			}
-
-		}
-	}
-
-	private void checkBulletCollision(ArrayList<DynamicObject> array) {
-		for (DynamicObject dynamicObject : array)
-		{
-			if (dynamicObject instanceof Bullet)
-			{
-				for (DynamicObject asteroid : array)
-				{
-					if (asteroid instanceof Asteroid)
-					{
-						// kolizja asteroidiy i pocisku
-						if (asteroid.overlaps(dynamicObject)) {
-							Assets.playSound(Assets.hit);
-							hit.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY() + (dynamicObject.getHeight() / 2));
-							hit.start();
-							dynamicObject.kill();
-							asteroid.hurt(50);
-
-							if (!asteroid.isAlive()) {
-								Assets.playSound(Assets.explosion);
-								explosion.setPosition(asteroid.getX() + (asteroid.getWidth() / 2), asteroid.getY() + (asteroid.getHeight() / 2));
-								explosion.start();
-								score += 10;
-							}
-						}
-					}
-				}
-
-				for (DynamicObject enemy : array)
-				{
-					if (enemy instanceof Enemy)
-					{
-						Bullet bullet = (Bullet) dynamicObject;
-						// kolizja wroga i pocisku
-						if (enemy.overlaps(dynamicObject) && bullet.getDirection()) {
-							Assets.playSound(Assets.hit);
-							hit.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY() + (dynamicObject.getHeight() / 2));
-							hit.start();
-							dynamicObject.kill();
-							enemy.hurt(50);
-
-							if (!enemy.isAlive()) {
-								Assets.playSound(Assets.explosion);
-								explosion.setPosition(enemy.getX() + (enemy.getWidth() / 2), enemy.getY() + (enemy.getHeight() / 2));
-								explosion.start();
-								score += 10;
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 }

@@ -16,7 +16,7 @@ public class Asteroid extends DynamicObject {
 	Random generator = new Random();
 
 	public Asteroid() {
-		super(Gdx.graphics.getWidth(),(MathUtils.random(0, Gdx.graphics.getHeight() - 64)), 10f, 100f, 500f, 64, 64);
+		super(Gdx.graphics.getWidth(),(MathUtils.random(0, Gdx.graphics.getHeight() - 64)), 10f, 100f, 500f, "asteroid_1.png");
 		
 		particle = new ParticleEffect();
 		particle.load(Gdx.files.internal("data/asteroid.p"), Gdx.files.internal(""));
