@@ -16,7 +16,7 @@ public class Booster extends DynamicObject {
     }
 
 	public Booster() {
-		super(Gdx.graphics.getWidth(), MathUtils.random(0, Gdx.graphics.getHeight() - Assets.booster.getWidth()), 120f, 1, 1, "booster.png");
+		super(Gdx.graphics.getWidth(), MathUtils.random(0, Gdx.graphics.getHeight() - Assets.booster.getWidth()), 120f, 1, 0, 1, "booster.png");
 	}
 
 	public void update(float deltaTime) {

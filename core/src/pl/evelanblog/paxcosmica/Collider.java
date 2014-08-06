@@ -15,19 +15,6 @@ public class Collider {
 		this.player = player;
 	}
 
-	//TODO: sprawdziæ czy da sie rpzekazywaæ dowolny typ objektu i potem go rozpoznaæ 
-	public void testCheckCollision(ArrayList<DynamicObject> array, Class<?> coliderObject)
-	{
-		coliderObject.getClass();
-		for(DynamicObject obj : array)
-		{
-			if(coliderObject.isInstance(player))
-			{
-				
-			}
-		}
-	}
-	
 	public void checkPlayerCollision(ArrayList<DynamicObject> array) {
 
 		for (DynamicObject obj : array)
@@ -40,17 +27,8 @@ public class Collider {
 					Assets.explosionEffect.start();
 					player.kill();
 				} else if (obj instanceof Booster) {
-					Assets.playSound(Assets.hitSfx);
-					Assets.hitEffect.setPosition(obj.getX(), obj.getY() + (obj.getHeight() / 2));
-					Assets.hitEffect.start();
 					obj.kill();
-					player.hurt(50);
-
-					if (!player.isAlive()) {
-						Assets.playSound(Assets.explosionSfx);
-						Assets.explosionEffect.setPosition(player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 2));
-						Assets.explosionEffect.start();
-					}
+					Assets.playSound(Assets.powerupSfx);
 				} else if (obj instanceof Bullet) {
 					Bullet bullet = (Bullet) obj;
 					if (!bullet.getDirection())
@@ -58,8 +36,8 @@ public class Collider {
 						Assets.playSound(Assets.hitSfx);
 						Assets.hitEffect.setPosition(obj.getX(), obj.getY() + (obj.getHeight() / 2));
 						Assets.hitEffect.start();
+						player.hurt(bullet.getImpactDamage());
 						obj.kill();
-						player.hurt(50);
 
 						if (!player.isAlive()) {
 							Assets.playSound(Assets.explosionSfx);
@@ -86,10 +64,11 @@ public class Collider {
 						// kolizja asteroidiy i pocisku
 						if (asteroid.getBoundingRectangle().overlaps(dynamicObject.getBoundingRectangle())) {
 							Assets.playSound(Assets.hitSfx);
-							Assets.hitEffect.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY() + (dynamicObject.getHeight() / 2));
+							Assets.hitEffect.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY()
+									+ (dynamicObject.getHeight() / 2));
 							Assets.hitEffect.start();
+							asteroid.hurt(dynamicObject.impactDamage);
 							dynamicObject.kill();
-							asteroid.hurt(50);
 
 							if (!asteroid.isAlive()) {
 								Assets.playSound(Assets.explosionSfx);
@@ -109,10 +88,11 @@ public class Collider {
 						// kolizja wroga i pocisku
 						if (enemy.getBoundingRectangle().overlaps(dynamicObject.getBoundingRectangle()) && bullet.getDirection()) {
 							Assets.playSound(Assets.hitSfx);
-							Assets.hitEffect.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY() + (dynamicObject.getHeight() / 2));
+							Assets.hitEffect.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY()
+									+ (dynamicObject.getHeight() / 2));
 							Assets.hitEffect.start();
+							enemy.hurt(dynamicObject.impactDamage);
 							dynamicObject.kill();
-							enemy.hurt(50);
 
 							if (!enemy.isAlive()) {
 								Assets.playSound(Assets.explosionSfx);

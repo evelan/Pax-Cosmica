@@ -12,12 +12,11 @@ import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
-import pl.evelanblog.paxcosmica.control.Joystick;
+import pl.evelanblog.paxcosmica.control.Controller;
 import pl.evelanblog.scenes.LostScreen;
 import pl.evelanblog.scenes.WinScreen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -25,8 +24,6 @@ public class World {
 
 	private final PaxCosmica game;
 	public Player player;
-	public Rectangle stars;
-	public Rectangle stars2;
 	private Collider colider;
 
 	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
@@ -34,6 +31,7 @@ public class World {
 	public boolean stageFinished = false;
 
 	public static int score = 0;
+	public static int scrap = 0;
 
 	long startTime = TimeUtils.millis(), currentTime;
 	long stageTime = 1 * (1000 * 60);
@@ -43,26 +41,24 @@ public class World {
 	public World(final PaxCosmica game) {
 		this.game = game;
 		player = new Player();
-		
+
 		colider = new Collider(player);
 
 		objectArray = new ArrayList<DynamicObject>();
 
-		stars = new Rectangle(0, 50, Assets.stars.getWidth(), Assets.stars.getHeight());
-		stars2 = new Rectangle(0, -50, Assets.stars2.getWidth(), Assets.stars2.getHeight());
 
-		Assets.playMusic(Assets.track2);
+		// Assets.playMusic(Assets.track2);
 	}
 
 	public void update(float delta) {
-		if (TimeUtils.timeSinceMillis(startTime) > stageTime) // end of stage
+
+		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
 			stageFinished = true;
 
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
 
-		updateBackground(delta); // scrolling background
 		spawnObjects(delta); // spawning objetcs like asteroids
 		updateObjects(delta); // update all objects
 
@@ -124,7 +120,7 @@ public class World {
 
 	private void spawnObjects(float delta) {
 
-		if (Joystick.getHit() && sleepTime[0] > Player.getShootSpeed()) {
+		if (Controller.getHit() && sleepTime[0] > Player.getShootSpeed()) {
 			objectArray.add(player.shoot());
 			sleepTime[0] = 0;
 		}
@@ -158,15 +154,5 @@ public class World {
 			objectArray.add(new Booster());
 			sleepTime[4] = 0;
 		}
-	}
-
-	private void updateBackground(float delta) {
-		stars.setX(stars.getX() - (delta * 20));
-		if (stars.getX() + stars.getWidth() < 0)
-			stars.setX(Gdx.graphics.getWidth());
-
-		stars2.setX(stars2.getX() - (delta * 70));
-		if (stars2.getX() + stars2.getWidth() < 0)
-			stars2.setX(Gdx.graphics.getWidth());
 	}
 }

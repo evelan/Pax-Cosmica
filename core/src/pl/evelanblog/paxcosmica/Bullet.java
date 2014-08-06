@@ -6,7 +6,7 @@ public class Bullet extends DynamicObject {
 	private boolean direction; //true - strza³y gracza, false - strza³y wroga
 
 	public Bullet(float x, float y, float speed, boolean direction, float damage) {
-		super(x, y, speed, 1, damage, "bullet.png");
+		super(x, y, speed, 1, 0, damage, "bullet.png");
 		this.direction = direction;
 	}
 
