@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.booster.Booster;
 import pl.evelanblog.enemy.fighter.Enemy;
+import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.Bullet;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.DynamicObject;
@@ -23,21 +24,21 @@ public class World {
 	private final PaxCosmica game;
 	private Collider colider;
 	public Player player;
+	public Background background;
 
 	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
 
 	private boolean stageFinished = false;
 	private long startTime = TimeUtils.millis();
-	private long stageTime = 3000; //1 * (1000 * 60);
+	private long stageTime = 0* (1000 * 60);
 
 	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
 
 	public World(final PaxCosmica game) {
 		this.game = game;
 		player = new Player();
-
+		background = new Background();
 		colider = new Collider(player);
-
 		objectArray = new ArrayList<DynamicObject>();
 	}
 
@@ -46,10 +47,12 @@ public class World {
 		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
 			stageFinished = true;
 
+		
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
-
+		
+		background.update(delta);
 		spawnObjects(delta); // spawning objetcs like asteroids
 		updateObjects(delta); // update all objects
 

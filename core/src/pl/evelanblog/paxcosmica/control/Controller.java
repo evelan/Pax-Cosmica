@@ -16,7 +16,6 @@ public class Controller implements InputProcessor {
 	public static Sprite buttonA;
 	public static Sprite buttonB;
 	public static Sprite pauseButton;
-	public static Sprite backgroundKnob;
 
 	private Rectangle mousePointer = new Rectangle(0, 0, 1, 1);
 
@@ -31,18 +30,14 @@ public class Controller implements InputProcessor {
 		knob = new Sprite(Assets.knob);
 		knob.setSize(Assets.knob.getWidth(), Assets.knob.getHeight());
 		knob.setPosition(defKnobPos.x, defKnobPos.y);
-		
-		backgroundKnob = new Sprite(Assets.backgroundKnob);
-		backgroundKnob.setSize(Assets.backgroundKnob.getWidth(), Assets.backgroundKnob.getHeight());
-		backgroundKnob.setPosition(32, 32);
 
 		buttonA = new Sprite(Assets.buttonA);
 		buttonA.setSize(Assets.buttonA.getWidth(), Assets.buttonA.getHeight());
-		buttonA.setPosition(1150, 64);
+		buttonA.setPosition(1100, 160);
 
 		buttonB = new Sprite(Assets.buttonB);
 		buttonB.setSize(Assets.buttonB.getWidth(), Assets.buttonB.getHeight());
-		buttonB.setPosition(1000, 64);
+		buttonB.setPosition(920, 32);
 
 		pauseButton = new Sprite(Assets.pauseButton);
 		pauseButton.setSize(Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight());

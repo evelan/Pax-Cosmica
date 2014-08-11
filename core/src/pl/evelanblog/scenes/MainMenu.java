@@ -27,6 +27,7 @@ public class MainMenu implements Screen, InputProcessor {
 		this.game = game;
 		background = new Sprite(Assets.mainmenu);
 		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
+		background.setOriginCenter();
 
 		planet = new Sprite(Assets.planet);
 		planet.setBounds(0, 0, Assets.planet.getWidth(), Assets.planet.getHeight());
@@ -57,7 +58,6 @@ public class MainMenu implements Screen, InputProcessor {
 			count -= 0.03f;
 
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
-
 		planet.setRotation(count);
 
 		game.camera.update();

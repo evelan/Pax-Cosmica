@@ -12,4 +12,10 @@ public class Button extends Sprite {
 		setBounds(x, y, getTexture().getWidth(), getTexture().getHeight());
 	}
 
+	public Button(String file)
+	{
+		super(new Texture(Gdx.files.internal(file)));
+		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
+	}
+
 }

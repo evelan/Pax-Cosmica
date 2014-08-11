@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Background {
 
-	public static Sprite galaxy;
-	public static Sprite stars1;
-	public static Sprite stars2;
-	public static Sprite stars3;
-	public static Sprite stars4;
-	private static float speed;
+	public Sprite galaxy;
+	public Sprite stars1;
+	public Sprite stars2;
+	public Sprite stars3;
+	public Sprite stars4;
+	private float speed;
 
 	public Background()
 	{
@@ -28,9 +28,8 @@ public class Background {
 		galaxy.setBounds(0, 0, Assets.galaxy.getWidth(), Assets.galaxy.getHeight());
 	}
 
-	public static void draw(SpriteBatch batch, float delta)
+	public void draw(SpriteBatch batch, float delta)
 	{
-		updateBackground(delta);
 		galaxy.draw(batch);
 		stars1.draw(batch);
 		stars2.draw(batch);
@@ -38,7 +37,7 @@ public class Background {
 		stars4.draw(batch);
 	}
 
-	public static void updateBackground(float delta) {
+	public void update(float delta) {
 		speed = 1;
 		stars1.setX(stars1.getX() - (delta * 20 * speed));
 		stars2.setX(stars2.getX() - (delta * 20 * speed));

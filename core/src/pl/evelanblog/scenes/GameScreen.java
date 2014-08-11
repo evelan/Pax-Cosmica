@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.enemy.fighter.Enemy;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
@@ -22,14 +21,12 @@ public class GameScreen implements Screen {
 
 	private final PaxCosmica game;
 	private final World world;
-	private Background background;
 	private BitmapFont font;
 	public static ArrayList<FloatingText> textArray = new ArrayList<FloatingText>();
 
 	// TODO: Power Manager engine, shield, hull, gun
 
 	public GameScreen(final PaxCosmica game) {
-		background = new Background();
 		world = new World(game);
 		this.game = game;
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
@@ -47,8 +44,7 @@ public class GameScreen implements Screen {
 
 		game.batch.begin();
 
-		if (!Controller.getPause())
-			Background.draw(game.batch, delta);
+		world.background.draw(game.batch, delta);
 
 		for (DynamicObject obj : World.objectArray)
 		{
@@ -78,7 +74,6 @@ public class GameScreen implements Screen {
 			game.batch.draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
 
 		// controls HUD
-		Controller.backgroundKnob.draw(game.batch);
 		Controller.knob.draw(game.batch, 0.3f);
 		Controller.buttonA.draw(game.batch, 0.3f);
 		Controller.buttonB.draw(game.batch, 0.3f);
