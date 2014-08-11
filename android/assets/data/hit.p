@@ -2,16 +2,16 @@ flame
 - Delay -
 active: false
 - Duration - 
-lowMin: 30.0
-lowMax: 30.0
+lowMin: 40.0
+lowMax: 40.0
 - Count - 
 min: 0
-max: 200
+max: 60
 - Emission - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 400.0
-highMax: 400.0
+lowMin: 200.0
+lowMax: 200.0
+highMin: 600.0
+highMax: 600.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -62,15 +62,15 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 28.0
-highMax: 28.0
+highMin: 24.0
+highMax: 24.0
 relative: false
 scalingCount: 2
-scaling0: 0.49019608
-scaling1: 0.1764706
+scaling0: 0.3529412
+scaling1: 0.039215688
 timelineCount: 2
 timeline0: 0.0
-timeline1: 0.9041096
+timeline1: 0.91780823
 - Velocity - 
 active: true
 lowMin: 0.0
@@ -150,8 +150,8 @@ max: 200
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 300.0
-highMax: 300.0
+highMin: 200.0
+highMax: 200.0
 relative: false
 scalingCount: 1
 scaling0: 1.0

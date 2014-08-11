@@ -2,6 +2,7 @@ package pl.evelanblog.paxcosmica;
 
 import pl.evelanblog.paxcosmica.control.Controller;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -12,7 +13,7 @@ public class Player extends DynamicObject {
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(100, 300, 220f, 10f, 2f, 100f, "spaceship.png");
+		super(100, 300, 180f, 10f, 2f, 100f, "spaceship.png");
 		shieldSprite = new Sprite(Assets.bubbleShield);
 		shieldSprite.setOriginCenter();
 	}
@@ -22,7 +23,7 @@ public class Player extends DynamicObject {
 		{
 			setX(getX() + (Controller.getVelX() * deltaTime * speed));
 			setY(getY() + (Controller.getVelY() * deltaTime * speed));
-			Assets.playerEngineEffect.setPosition(getX() + 20, getY() + (getHeight() / 2));
+			Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		} else
 		{
 			setX(0);

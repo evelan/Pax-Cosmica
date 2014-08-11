@@ -6,7 +6,6 @@ import java.util.ListIterator;
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.booster.Booster;
 import pl.evelanblog.enemy.fighter.Enemy;
-import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Bullet;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.DynamicObject;
@@ -17,24 +16,19 @@ import pl.evelanblog.scenes.LostScreen;
 import pl.evelanblog.scenes.WinScreen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class World {
 
 	private final PaxCosmica game;
-	public Player player;
 	private Collider colider;
+	public Player player;
 
 	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
 
-	public boolean stageFinished = false;
-
-	public static int score = 0;
-	public static int scrap = 0;
-
-	long startTime = TimeUtils.millis(), currentTime;
-	long stageTime = 1 * (1000 * 60);
+	private boolean stageFinished = false;
+	private long startTime = TimeUtils.millis();
+	private long stageTime = 3000; //1 * (1000 * 60);
 
 	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
 
@@ -45,9 +39,6 @@ public class World {
 		colider = new Collider(player);
 
 		objectArray = new ArrayList<DynamicObject>();
-
-
-		// Assets.playMusic(Assets.track2);
 	}
 
 	public void update(float delta) {
@@ -72,10 +63,7 @@ public class World {
 		}
 
 		if (stageFinished)
-		{
-			Gdx.app.log("Stage:", "finished");
 			game.setScreen(new WinScreen(game));
-		}
 	}
 
 	private void updateObjects(float delta) {

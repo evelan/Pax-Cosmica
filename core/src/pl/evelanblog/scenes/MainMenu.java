@@ -18,9 +18,9 @@ import com.badlogic.gdx.math.Rectangle;
 public class MainMenu implements Screen, InputProcessor {
 
 	final PaxCosmica game;
-	Button play, options, credits, exit;
-	Sprite planet, background, paxCosmica;
-	Rectangle mousePointer;
+	private Button play, options, credits, exit;
+	private Sprite planet, background, paxCosmica;
+	private Rectangle mousePointer;
 	private float count = 360.0f;
 
 	public MainMenu(final PaxCosmica game) {
@@ -34,7 +34,13 @@ public class MainMenu implements Screen, InputProcessor {
 		planet.setScale(0.90f);
 
 		paxCosmica = new Sprite(Assets.paxCosmica);
-		paxCosmica.setBounds(50,150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
+		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
+
+		play = new Button(1000, 500, "buttons/playButton.png");
+		options = new Button(1000, 400, "buttons/optionsButton.png");
+		credits = new Button(1000, 300, "buttons/creditsButton.png");
+		exit = new Button(1000, 200, "buttons/exitButton.png");
+
 		Gdx.input.setInputProcessor(this);
 		Assets.track1.play();
 	}
@@ -77,8 +83,11 @@ public class MainMenu implements Screen, InputProcessor {
 			Assets.track1.stop();
 			dispose();
 		}
-		else if (options.getBoundingRectangle().overlaps(mousePointer))
-			Gdx.app.exit();
+		else if (options.getBoundingRectangle().overlaps(mousePointer)) {
+			game.setScreen(new GalaxyMap(game));
+			Assets.track1.stop();
+			dispose();
+		}
 		else if (credits.getBoundingRectangle().overlaps(mousePointer))
 			Gdx.app.exit();
 		else if (exit.getBoundingRectangle().overlaps(mousePointer))
@@ -102,10 +111,6 @@ public class MainMenu implements Screen, InputProcessor {
 		mousePointer = new Rectangle();
 		mousePointer.setSize(2);
 
-		play = new Button(1000, 500, "buttons/playButton.png");
-		options = new Button(1000, 400, "buttons/optionsButton.png");
-		credits = new Button(1000, 300, "buttons/creditsButton.png");
-		exit = new Button(1000, 200, "buttons/exitButton.png");
 	}
 
 	@Override

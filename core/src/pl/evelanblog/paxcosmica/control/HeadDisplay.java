@@ -24,7 +24,6 @@ public class HeadDisplay {
 	{
 		for (int i = 0; i < player.getShield(); i++)
 			batch.draw(Assets.hullBar, 10 * 20, 600);
-		
-	}
 
+	}
 }

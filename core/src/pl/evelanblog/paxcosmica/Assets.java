@@ -20,6 +20,10 @@ public class Assets {
 	public static Texture hullBar;
 	public static Texture shieldBar;
 	public static Texture bubbleShield;
+	
+	public static Texture backgroundKnob;
+	
+	public static Texture galaxyPlanet;
 
 	public static Texture planet;
 	public static Texture mainmenu;
@@ -70,6 +74,9 @@ public class Assets {
 		shieldBar = loadTexture("shield.png");
 		spaceship = loadTexture("spaceship.png");
 		bubbleShield = loadTexture("bubble_shield.png");
+		
+		backgroundKnob = loadTexture("background_knob.png");
+		galaxyPlanet = loadTexture("galaxy_planet.png");
 
 		planet = loadTexture("planet_1.png");
 		mainmenu = loadTexture("mainmenu.png");

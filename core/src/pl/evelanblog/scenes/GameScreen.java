@@ -1,12 +1,16 @@
 package pl.evelanblog.scenes;
 
+import java.util.ArrayList;
+
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.enemy.fighter.Enemy;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.paxcosmica.control.Controller;
+import pl.evelanblog.paxcosmica.control.FloatingText;
 import pl.evelanblog.world.World;
 
 import com.badlogic.gdx.Gdx;
@@ -18,10 +22,11 @@ public class GameScreen implements Screen {
 
 	private final PaxCosmica game;
 	private final World world;
-	Background background;
-
+	private Background background;
 	private BitmapFont font;
-	private CharSequence str = "Hello World!";
+	public static ArrayList<FloatingText> textArray = new ArrayList<FloatingText>();
+
+	// TODO: Power Manager engine, shield, hull, gun
 
 	public GameScreen(final PaxCosmica game) {
 		background = new Background();
@@ -42,9 +47,8 @@ public class GameScreen implements Screen {
 
 		game.batch.begin();
 
-		game.batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-		Background.draw(game.batch, delta);
+		if (!Controller.getPause())
+			Background.draw(game.batch, delta);
 
 		for (DynamicObject obj : World.objectArray)
 		{
@@ -64,6 +68,9 @@ public class GameScreen implements Screen {
 		Assets.hitEffect.draw(game.batch, delta);
 		Assets.explosionEffect.draw(game.batch, delta);
 
+		for (FloatingText text : textArray)
+			text.draw(game.batch);
+
 		for (int i = 0; i < world.player.getHealth(); i++)
 			game.batch.draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
 
@@ -71,12 +78,13 @@ public class GameScreen implements Screen {
 			game.batch.draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
 
 		// controls HUD
+		Controller.backgroundKnob.draw(game.batch);
 		Controller.knob.draw(game.batch, 0.3f);
 		Controller.buttonA.draw(game.batch, 0.3f);
 		Controller.buttonB.draw(game.batch, 0.3f);
 		Controller.pauseButton.draw(game.batch, 0.3f);
-		font.draw(game.batch, "Score: " + World.score, 0, 680);
-		font.draw(game.batch, "Scrap: " + World.scrap, 0, 660);
+		font.draw(game.batch, "Score: " + Stats.score, 5, 680);
+		font.draw(game.batch, "Scrap: " + Stats.scrap, 5, 660);
 
 		game.batch.end();
 

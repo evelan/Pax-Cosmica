@@ -2,35 +2,35 @@ flame
 - Delay -
 active: false
 - Duration - 
-lowMin: 150.0
-lowMax: 150.0
+lowMin: 190.0
+lowMax: 190.0
 - Count - 
 min: 0
 max: 200
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 400.0
-highMax: 400.0
+highMin: 600.0
+highMax: 600.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - Life - 
-lowMin: 0.0
-lowMax: 0.0
+lowMin: 100.0
+lowMax: 100.0
 highMin: 500.0
 highMax: 1000.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
-scaling1: 1.0
-scaling2: 0.3
+scaling1: 0.78431374
+scaling2: 0.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.66
-timeline2: 1.0
+timeline1: 0.60273975
+timeline2: 0.8356164
 - Life Offset - 
 active: false
 - X Offset - 
@@ -62,15 +62,19 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 32.0
-highMax: 32.0
+highMin: 48.0
+highMax: 48.0
 relative: false
-scalingCount: 2
-scaling0: 0.7058824
-scaling1: 0.50980395
-timelineCount: 2
+scalingCount: 4
+scaling0: 0.23529412
+scaling1: 0.9607843
+scaling2: 0.5294118
+scaling3: 0.0
+timelineCount: 4
 timeline0: 0.0
-timeline1: 0.89726025
+timeline1: 0.10273973
+timeline2: 0.26027396
+timeline3: 0.84931505
 - Velocity - 
 active: true
 lowMin: 0.0
@@ -150,13 +154,15 @@ max: 200
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 350.0
-highMax: 350.0
+highMin: 400.0
+highMax: 400.0
 relative: false
-scalingCount: 1
+scalingCount: 2
 scaling0: 1.0
-timelineCount: 1
+scaling1: 1.0
+timelineCount: 2
 timeline0: 0.0
+timeline1: 1.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
@@ -165,11 +171,11 @@ highMax: 1000.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
-scaling1: 1.0
+scaling1: 0.78431374
 scaling2: 0.3
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.66
+timeline1: 0.43150684
 timeline2: 1.0
 - Life Offset - 
 active: false
@@ -202,17 +208,19 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 32.0
-highMax: 32.0
+highMin: 28.0
+highMax: 28.0
 relative: false
-scalingCount: 3
-scaling0: 1.0
-scaling1: 0.47058824
-scaling2: 0.15686275
-timelineCount: 3
+scalingCount: 4
+scaling0: 0.4117647
+scaling1: 0.21568628
+scaling2: 0.078431375
+scaling3: 0.0
+timelineCount: 4
 timeline0: 0.0
-timeline1: 0.39726028
-timeline2: 0.79452056
+timeline1: 0.34931508
+timeline2: 0.7328767
+timeline3: 0.91780823
 - Velocity - 
 active: true
 lowMin: 0.0

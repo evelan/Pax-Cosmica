@@ -11,6 +11,7 @@ public class Background {
 	public static Sprite stars2;
 	public static Sprite stars3;
 	public static Sprite stars4;
+	private static float speed;
 
 	public Background()
 	{
@@ -38,15 +39,16 @@ public class Background {
 	}
 
 	public static void updateBackground(float delta) {
-		stars1.setX(stars1.getX() - (delta * 20));
-		stars2.setX(stars2.getX() - (delta * 20));
+		speed = 1;
+		stars1.setX(stars1.getX() - (delta * 20 * speed));
+		stars2.setX(stars2.getX() - (delta * 20 * speed));
 		if (stars1.getX() + stars1.getWidth() < 0)
 			stars1.setX(Gdx.graphics.getWidth());
 		if (stars2.getX() + stars2.getWidth() < 0)
 			stars2.setX(Gdx.graphics.getWidth());
 
-		stars3.setX(stars3.getX() - (delta * 30));
-		stars4.setX(stars4.getX() - (delta * 30));
+		stars3.setX(stars3.getX() - (delta * 30 * speed));
+		stars4.setX(stars4.getX() - (delta * 30 * speed));
 		if (stars3.getX() + stars3.getWidth() < 0)
 			stars3.setX(Gdx.graphics.getWidth());
 		if (stars4.getX() + stars4.getWidth() < 0)

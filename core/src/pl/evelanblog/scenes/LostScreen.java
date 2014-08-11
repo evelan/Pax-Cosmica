@@ -1,7 +1,7 @@
 package pl.evelanblog.scenes;
 
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.world.World;
+import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -24,7 +24,7 @@ public class LostScreen implements Screen {
 
 		game.batch.begin();
 		game.font.draw(game.batch, "DEAD!", 600, 700);
-		game.font.draw(game.batch, "Score: " + World.score, 600, 400);
+		game.font.draw(game.batch, "Score: " + Stats.score, 600, 400);
 		game.font.draw(game.batch, "Click anywhere to continue", 600, 200);
 		game.batch.end();
 
