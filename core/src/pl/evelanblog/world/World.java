@@ -23,14 +23,14 @@ public class World {
 
 	private final PaxCosmica game;
 	private Collider colider;
-	public Player player;
+	public static Player player;
 	public Background background;
 
 	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
 
 	private boolean stageFinished = false;
 	private long startTime = TimeUtils.millis();
-	private long stageTime = 0* (1000 * 60);
+	private long stageTime = 0 * (1000 * 60);
 
 	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
 

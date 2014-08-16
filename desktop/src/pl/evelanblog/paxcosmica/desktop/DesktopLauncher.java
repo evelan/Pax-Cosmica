@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Pax Cosmica";
 		config.width = 1280;
-		config.height = 768;
+		config.height = 720;
 		config.vSyncEnabled = true;
 		config.resizable = false;
 		config.fullscreen = false;

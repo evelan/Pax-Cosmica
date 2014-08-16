@@ -11,6 +11,12 @@ public class Player extends DynamicObject {
 	private static Sprite shieldSprite;
 	private static String texture = "spaceship.png";
 
+	public static float powerLvl = 6;
+	public static float shieldLvl = 1;
+	public static float hullLvl = 1;
+	public static float weaponLvl = 1;
+	public static float engineLvl = 1;
+
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
 		super(100, 300, 180f, 10f, 2f, 100f, texture);

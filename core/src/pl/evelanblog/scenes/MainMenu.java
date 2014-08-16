@@ -9,7 +9,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,34 +21,17 @@ public class MainMenu implements Screen, InputProcessor {
 	private Sprite planet, background, paxCosmica;
 	private Rectangle mousePointer;
 	private float count = 360.0f;
+	float dimValue;
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
-		background = new Sprite(Assets.mainmenu);
-		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
-		background.setOriginCenter();
 
-		planet = new Sprite(Assets.planet);
-		planet.setBounds(0, 0, Assets.planet.getWidth(), Assets.planet.getHeight());
-		planet.setOriginCenter();
-		planet.setScale(0.90f);
-
-		paxCosmica = new Sprite(Assets.paxCosmica);
-		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
-
-		play = new Button(1000, 500, "buttons/playButton.png");
-		options = new Button(1000, 400, "buttons/optionsButton.png");
-		credits = new Button(1000, 300, "buttons/creditsButton.png");
-		exit = new Button(1000, 200, "buttons/exitButton.png");
-
-		Gdx.input.setInputProcessor(this);
-		Assets.track1.play();
 	}
 
 	@Override
 	public void render(float delta)
 	{
-		Gdx.gl.glClearColor(0, 0, 0.3f, 1f);
+		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if (count < 0.0f)
@@ -70,7 +52,18 @@ public class MainMenu implements Screen, InputProcessor {
 		options.draw(game.batch);
 		credits.draw(game.batch);
 		exit.draw(game.batch);
+
+		dimScreen(delta);
+
 		game.batch.end();
+	}
+
+	private void dimScreen(float delta) {
+		if (dimValue > 0)
+			dimValue -= delta;
+
+		if (dimValue > 0)
+			game.dim.draw(game.batch, dimValue);
 	}
 
 	@Override
@@ -79,17 +72,17 @@ public class MainMenu implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX, screenY);
 		Assets.playSound(Assets.clickSfx);
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
-			game.setScreen(new GameScreen(game));
+			game.setScreen(PaxCosmica.gsm.gameScreen);
 			Assets.track1.stop();
 			dispose();
 		}
 		else if (options.getBoundingRectangle().overlaps(mousePointer)) {
-			game.setScreen(new GalaxyMap(game));
 			Assets.track1.stop();
 			dispose();
 		}
-		else if (credits.getBoundingRectangle().overlaps(mousePointer))
-			Gdx.app.exit();
+		else if (credits.getBoundingRectangle().overlaps(mousePointer)) {
+			game.setScreen(new CreditsScreen(game));
+		}
 		else if (exit.getBoundingRectangle().overlaps(mousePointer))
 			Gdx.app.exit();
 
@@ -110,12 +103,31 @@ public class MainMenu implements Screen, InputProcessor {
 		game.font = new BitmapFont();
 		mousePointer = new Rectangle();
 		mousePointer.setSize(2);
+		dimValue = 1f;
+		
+		background = new Sprite(Assets.mainmenu);
+		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
+		background.setOriginCenter();
 
+		planet = new Sprite(Assets.planet);
+		planet.setBounds(0, 0, Assets.planet.getWidth(), Assets.planet.getHeight());
+		planet.setOriginCenter();
+		planet.setScale(0.90f);
+
+		paxCosmica = new Sprite(Assets.paxCosmica);
+		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
+
+		play = new Button(1000, 500, "buttons/playButton.png");
+		options = new Button(1000, 400, "buttons/optionsButton.png");
+		credits = new Button(1000, 300, "buttons/creditsButton.png");
+		exit = new Button(1000, 200, "buttons/exitButton.png");
+		
+		Gdx.input.setInputProcessor(this);
+		Assets.track1.play();
 	}
 
 	@Override
 	public void hide() {
-
 	}
 
 	@Override

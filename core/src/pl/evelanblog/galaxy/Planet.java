@@ -1,7 +1,6 @@
 package pl.evelanblog.galaxy;
 
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

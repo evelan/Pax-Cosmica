@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 public class Assets {
@@ -26,6 +25,10 @@ public class Assets {
 	public static Texture planet;
 	public static Texture mainmenu;
 	public static Texture paxCosmica;
+	public static Texture down;
+	
+	public static Texture upgradeBar;
+	public static Texture upgradeBtn;
 
 	public static Texture pauseButton, unpauseButton;
 
@@ -36,10 +39,13 @@ public class Assets {
 	public static Texture optionsButton;
 	public static Texture creditsButton;
 	public static Texture exitButton;
+	public static Texture discardButton;
+	public static Texture applyButton;
 
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
 	public static ParticleEffect playerEngineEffect;
+	public static Texture dim;
 
 	public static Texture loadTexture(String file) {
 		return new Texture(Gdx.files.internal(file));
@@ -72,8 +78,14 @@ public class Assets {
 		shieldBar = loadTexture("shield.png");
 		spaceship = loadTexture("spaceship.png");
 		bubbleShield = loadTexture("bubble_shield.png");
+		dim = loadTexture("dim.png");
 		
 		galaxyPlanet = loadTexture("galaxy_planet.png");
+		upgradeBar = loadTexture("power_bar.png");
+		down = loadTexture("down.png");
+		upgradeBtn = loadTexture("upgrade_button.png");
+		discardButton = loadTexture("discard_button.png");
+		applyButton = loadTexture("apply_button.png");
 
 		planet = loadTexture("planet_1.png");
 		mainmenu = loadTexture("mainmenu.png");

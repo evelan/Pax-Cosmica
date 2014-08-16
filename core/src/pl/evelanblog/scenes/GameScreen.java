@@ -27,11 +27,8 @@ public class GameScreen implements Screen {
 	// TODO: Power Manager engine, shield, hull, gun
 
 	public GameScreen(final PaxCosmica game) {
-		world = new World(game);
 		this.game = game;
-		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
-		Assets.track2.play();
-		Gdx.input.setInputProcessor(new Controller());
+		world = new World(game);
 	}
 
 	@Override
@@ -97,6 +94,9 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		Assets.track2.play();
+		Gdx.input.setInputProcessor(new Controller());
 	}
 
 	@Override

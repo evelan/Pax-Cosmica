@@ -1,22 +1,27 @@
 package pl.evelanblog.paxcosmica;
 
-import pl.evelanblog.scenes.MainMenu;
+import pl.evelanblog.scenes.GameStateManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PaxCosmica extends Game {
-	
+
 	public SpriteBatch batch;
 	public BitmapFont font;
 	public OrthographicCamera camera;
+	public Sprite dim;
+	public static GameStateManager gsm;
+	
 
 	@Override
 	public void create() {
 		Assets.load();
-
-		setScreen(new MainMenu(this));
+		dim = new Sprite(Assets.dim, 0, 0, 1280, 768);
+		gsm = new GameStateManager(this);
+		setScreen(GameStateManager.mainMenu);
 	}
 }
