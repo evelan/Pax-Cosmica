@@ -18,7 +18,9 @@ public class Planet extends Sprite {
 	private boolean clockwise;
 	private boolean hover = false;
 	private boolean store = false;
+	private boolean portal = false;
 	private String name;
+	private boolean discovered = false;
 	private BitmapFont font;
 
 	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String name)
@@ -36,6 +38,21 @@ public class Planet extends Sprite {
 		this.name = name;
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 
+	}
+
+	public float getX()
+	{
+		return x;
+	}
+
+	public float getY()
+	{
+		return y;
+	}
+
+	public void setAsPorta()
+	{
+		portal = true;
 	}
 
 	public void update()
@@ -58,7 +75,7 @@ public class Planet extends Sprite {
 	{
 		draw(batch);
 		setScale(size);
-		font.draw(batch, name, getX(), getY());
+		font.draw(batch, portal ? "P:" + name : name, getX(), getY());
 		if (hover)
 		{
 			setScale(size + 0.2f);
@@ -66,11 +83,16 @@ public class Planet extends Sprite {
 		}
 	}
 
+	public boolean isDiscovered()
+	{
+		return discovered;
+	}
+	
 	public boolean isStore()
 	{
 		return store;
 	}
-	
+
 	public boolean isHover()
 	{
 		return hover;

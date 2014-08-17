@@ -84,8 +84,6 @@ public class Assets {
 		upgradeBar = loadTexture("power_bar.png");
 		down = loadTexture("down.png");
 		upgradeBtn = loadTexture("upgrade_button.png");
-		discardButton = loadTexture("discard_button.png");
-		applyButton = loadTexture("apply_button.png");
 
 		planet = loadTexture("planet_1.png");
 		mainmenu = loadTexture("mainmenu.png");
@@ -98,6 +96,8 @@ public class Assets {
 		optionsButton = loadTexture("buttons/optionsButton.png");
 		creditsButton = loadTexture("buttons/creditsButton.png");
 		exitButton = loadTexture("buttons/exitButton.png");
+		discardButton = loadTexture("buttons/discardButton.png");
+		applyButton = loadTexture("buttons/applyButton.png");
 
 		hitSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/hit.wav"));
 		shootSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/shoot.wav"));

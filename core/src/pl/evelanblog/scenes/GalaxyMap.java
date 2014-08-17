@@ -26,25 +26,65 @@ public class GalaxyMap implements Screen, InputProcessor {
 	// TODO: fuel
 
 	private final PaxCosmica game;
-	private Sprite background;
-	private int planetAmount;
-	private int xPosition;
-	private Planet[] planets;
-	private Rectangle mousePointer;
-	private Button attack, move, store, upgrade, exit;
-	private BitmapFont font;
-	private Player player;
+	private static Sprite background;
+	private static int planetAmount;
+	private static int xPosition;
+	private static Planet[] planets;
+	private static Rectangle mousePointer;
+	private static Button attack, move, store, upgrade, exit;
+	private static BitmapFont font;
+	private static Player player;
 	private boolean playerMove;
 	Vector2 destiny = new Vector2();
 	float speed = 200;
+	float dimValue;
+	static boolean portal = false;
+	static int playerPlanetDock = 0;
 
 	public GalaxyMap(final PaxCosmica game) {
 		this.game = game;
 	}
 
+	public static void create()
+	{
+		xPosition = 50;
+		planetAmount = MathUtils.random(3, 8);
+		planets = new Planet[planetAmount];
+
+		for (int i = 0; i < planetAmount; i++) {
+
+			planets[i] = new Planet(xPosition,
+					MathUtils.random(50, 600),
+					MathUtils.random(0.8f, 1.4f),
+					MathUtils.random(0.01f, 1f),
+					MathUtils.randomBoolean(),
+					MathUtils.randomBoolean(0.1f),
+					"Planet " + i);
+			xPosition += Gdx.graphics.getWidth() / planetAmount + 1;
+		}
+
+		planets[planetAmount - 1].setAsPorta();
+
+		attack = new Button("buttons/attackButton.png");
+		move = new Button("buttons/moveButton.png");
+		store = new Button("buttons/storeButton.png");
+		upgrade = new Button(1060, 20, "buttons/upgradesButton.png");
+		exit = new Button(860, 20, "buttons/exitButton.png");
+
+		player = new Player(planets[0].getX(), planets[0].getY());
+
+		background = new Sprite(Assets.mainmenu);
+		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
+
+		mousePointer = new Rectangle();
+		mousePointer.setSize(1);
+
+		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+	}
+
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.3f, 1f);
+		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		for (int i = 0; i < planetAmount; i++)
@@ -71,41 +111,61 @@ public class GalaxyMap implements Screen, InputProcessor {
 			}
 		}
 
-		if (playerMove)
-		{
+		if (playerMove) {
+			Stats.fuel -= delta;
 			if (player.getX() > destiny.x)
 			{
 				if (player.getX() != destiny.x)
-					player.setSpaceshipPosition(player.getX() - speed * delta, player.getY());
+					player.setSpaceshipPosition(player.getX() - speed * delta,
+							player.getY());
 			} else {
 				if (player.getX() != destiny.x)
-					player.setSpaceshipPosition(player.getX() + speed * delta, player.getY());
+					player.setSpaceshipPosition(player.getX() + speed * delta,
+							player.getY());
 			}
 
-			if (player.getY() > destiny.y)
-			{
+			if (player.getY() > destiny.y) {
 				if (player.getY() != destiny.y)
-					player.setSpaceshipPosition(player.getX(), player.getY() - speed * delta);
-			} else
-			{
+					player.setSpaceshipPosition(player.getX(), player.getY() - speed *
+							delta);
+			} else {
 				if (player.getY() != destiny.y)
-					player.setSpaceshipPosition(player.getX(), player.getY() + speed * delta);
+					player.setSpaceshipPosition(player.getX(), player.getY() + speed *
+							delta);
 			}
 
-			if (player.getY() == destiny.y && player.getX() == destiny.x)
-				playerMove = false;
+			if (Math.floor((player.getY())) == Math.floor(destiny.y) &&
+					Math.floor(player.getX()) == Math.floor(destiny.x))
+				playerMove =
+						false;
+
+			if (Math.floor((player.getY())) ==
+					Math.floor(planets[planetAmount - 1].getY()) &&
+					Math.floor(player.getX()) ==
+					Math.floor(planets[planetAmount - 1].getX()))
+				portal = true;
+			else
+				portal = false;
 		}
 
 		player.draw(game.batch, delta);
 
 		upgrade.draw(game.batch);
 		exit.draw(game.batch);
-		
-		font.draw(game.batch, "Score: " + Stats.score, 100, 760);
-		font.draw(game.batch, "Scrap: " + Stats.scrap, 250, 760);
-		font.draw(game.batch, "Fuel: " + Stats.fuel, 400, 760);
 
+		font.draw(game.batch, "Score: " + Stats.score, 100, 710);
+		font.draw(game.batch, "Scrap: " + Stats.scrap, 300, 710);
+		font.draw(game.batch, "Fuel: " + Stats.fuel, 500, 710);
+		dimScreen(delta);
 		game.batch.end();
+	}
+
+	private void dimScreen(float delta) {
+		if (dimValue > 0)
+			dimValue -= delta;
+
+		if (dimValue > 0)
+			game.dim.draw(game.batch, dimValue);
 	}
 
 	@Override
@@ -115,37 +175,8 @@ public class GalaxyMap implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		xPosition = 50;
-		planetAmount = MathUtils.random(3, 8);
-		planets = new Planet[planetAmount];
-
-		for (int i = 0; i < planetAmount; i++) {
-
-			planets[i] = new Planet(xPosition,
-					MathUtils.random(700),
-					MathUtils.random(0.8f, 1.4f),
-					MathUtils.random(0.01f, 1f),
-					MathUtils.randomBoolean(),
-					MathUtils.randomBoolean(0.1f),
-					"Planet " + i);
-			xPosition += Gdx.graphics.getWidth() / planetAmount;
-		}
-
-		player = new Player(planets[0].getX(), planets[0].getY());
-		
-		background = new Sprite(Assets.mainmenu);
-		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
-
-		mousePointer = new Rectangle();
-		mousePointer.setSize(2);
-
-		attack = new Button("buttons/attackButton.png");
-		move = new Button("buttons/moveButton.png");
-		store = new Button("buttons/storeButton.png");
-		upgrade = new Button(1060, 20, "upgrade_button.png");
-		exit = new Button(860, 20, "buttons/exitButton.png");
-
-		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		if (portal)
+			create();
 
 		Gdx.input.setInputProcessor(this);
 	}
@@ -193,24 +224,40 @@ public class GalaxyMap implements Screen, InputProcessor {
 				planets[i].setHover();
 		}
 
-		if (mousePointer.overlaps(attack.getBoundingRectangle()))
+		if (mousePointer.overlaps(attack.getBoundingRectangle()) && !portal)
 		{
-			// player.setSpaceshipPosition(attack.getX(), attack.getY());
+			for(int i = 0; i < planetAmount; i++)
+				planets[i].reset();
 			playerMove = true;
 			destiny.set(mousePointer.x, mousePointer.y);
+			
+			game.setScreen(GameStateManager.gameScreen);
+			player.setSpaceshipPosition(attack.getX(), attack.getY());
 
-			for (int i = 0; i < planetAmount; i++)
+		} else if (mousePointer.overlaps(move.getBoundingRectangle())) {
+			for(int i = 0; i < planetAmount; i++)
 				planets[i].reset();
-		} else if(mousePointer.overlaps(upgrade.getBoundingRectangle()))
+			
+			playerMove = true;
+			destiny.set(mousePointer.x, mousePointer.y);
+		} else if (mousePointer.overlaps(store.getBoundingRectangle()))
+		{
+			displayStore();
+		} else if (mousePointer.overlaps(upgrade.getBoundingRectangle()))
 		{
 			game.setScreen(GameStateManager.upgradeScreen);
 			dispose();
-		} else if(mousePointer.overlaps(exit.getBoundingRectangle()))
+		} else if (mousePointer.overlaps(exit.getBoundingRectangle()))
 		{
 			game.setScreen(GameStateManager.mainMenu);
 			dispose();
 		}
+
 		return true;
+	}
+
+	private void displayStore() {
+		
 	}
 
 	@Override

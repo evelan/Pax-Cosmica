@@ -55,8 +55,8 @@ public class GameScreen implements Screen {
 				obj.draw(game.batch);
 		}
 
-		if (world.player.isAlive())
-			world.player.draw(game.batch, delta);
+		if (World.player.isAlive())
+			World.player.draw(game.batch, delta);
 
 		Assets.hitEffect.draw(game.batch, delta);
 		Assets.explosionEffect.draw(game.batch, delta);
@@ -64,10 +64,10 @@ public class GameScreen implements Screen {
 		for (FloatingText text : textArray)
 			text.draw(game.batch);
 
-		for (int i = 0; i < world.player.getHealth(); i++)
+		for (int i = 0; i < World.player.getHealth(); i++)
 			game.batch.draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
 
-		for (int i = 0; i < world.player.getShield(); i++)
+		for (int i = 0; i < World.player.getShield(); i++)
 			game.batch.draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
 
 		// controls HUD
@@ -75,8 +75,8 @@ public class GameScreen implements Screen {
 		Controller.buttonA.draw(game.batch, 0.3f);
 		Controller.buttonB.draw(game.batch, 0.3f);
 		Controller.pauseButton.draw(game.batch, 0.3f);
-		font.draw(game.batch, "Score: " + Stats.score, 5, 680);
-		font.draw(game.batch, "Scrap: " + Stats.scrap, 5, 660);
+		font.draw(game.batch, "Score: " + Stats.score, 5, Gdx.graphics.getHeight() - 100);
+		font.draw(game.batch, "Scrap: " + Stats.scrap, 5, Gdx.graphics.getHeight() - 80);
 
 		game.batch.end();
 
@@ -88,13 +88,13 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		game.camera.viewportHeight = height;
-		game.camera.viewportWidth = width;
 	}
 
 	@Override
 	public void show() {
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		world.prepare(0);
+
 		Assets.track2.play();
 		Gdx.input.setInputProcessor(new Controller());
 	}

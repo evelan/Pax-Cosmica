@@ -41,7 +41,7 @@ public class Controller implements InputProcessor {
 
 		pauseButton = new Sprite(Assets.pauseButton);
 		pauseButton.setSize(Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight());
-		pauseButton.setPosition(1200, 720);
+		pauseButton.setPosition(1200, Gdx.graphics.getHeight() - 40);
 	}
 
 	public static float getVelX()

@@ -25,7 +25,6 @@ public class MainMenu implements Screen, InputProcessor {
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
-
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class MainMenu implements Screen, InputProcessor {
 		if (count < 0.0f)
 			count = 360.0f;
 		else
-			count -= 0.03f;
+			count -= 0.01f;
 
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
@@ -72,7 +71,8 @@ public class MainMenu implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX, screenY);
 		Assets.playSound(Assets.clickSfx);
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
-			game.setScreen(PaxCosmica.gsm.gameScreen);
+			GalaxyMap.create();
+			game.setScreen(GameStateManager.gameScreen);
 			Assets.track1.stop();
 			dispose();
 		}

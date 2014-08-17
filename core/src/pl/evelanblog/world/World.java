@@ -28,9 +28,9 @@ public class World {
 
 	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
 
-	private boolean stageFinished = false;
-	private long startTime = TimeUtils.millis();
-	private long stageTime = 0 * (1000 * 60);
+	private boolean stageFinished;
+	private long startTime;
+	private long stageTime;
 
 	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
 
@@ -42,16 +42,26 @@ public class World {
 		objectArray = new ArrayList<DynamicObject>();
 	}
 
+	public void prepare(int time)
+	{
+		startTime = TimeUtils.millis();
+		if (time == 0)
+			stageTime = 2000;
+		else
+			stageTime = time * (1000 * 60);
+		
+		stageFinished = false;
+	}
+
 	public void update(float delta) {
 
 		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
 			stageFinished = true;
 
-		
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
-		
+
 		background.update(delta);
 		spawnObjects(delta); // spawning objetcs like asteroids
 		updateObjects(delta); // update all objects

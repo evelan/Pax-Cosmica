@@ -24,6 +24,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	private float hover = -1;
 	private int cost = 5;
 	private int scrap;
+	float dimValue;
 
 	public UpgradeScreen(final PaxCosmica game)
 	{
@@ -71,8 +72,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 
-		apply = new Button(1060, 20, "apply_button.png");
-		discard = new Button(860, 20, "discard_button.png");
+		apply = new Button(1060, 20, "buttons/applyButton.png");
+		discard = new Button(860, 20, "buttons/discardButton.png");
 		upgrade = new Button("upgrade_button.png");
 
 		power = 100;
