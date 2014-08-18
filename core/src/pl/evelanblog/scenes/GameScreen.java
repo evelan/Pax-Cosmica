@@ -24,8 +24,6 @@ public class GameScreen implements Screen {
 	private BitmapFont font;
 	public static ArrayList<FloatingText> textArray = new ArrayList<FloatingText>();
 
-	// TODO: Power Manager engine, shield, hull, gun
-
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 		world = new World(game);
@@ -75,6 +73,12 @@ public class GameScreen implements Screen {
 		Controller.buttonA.draw(game.batch, 0.3f);
 		Controller.buttonB.draw(game.batch, 0.3f);
 		Controller.pauseButton.draw(game.batch, 0.3f);
+		Controller.powerButton.draw(game.batch, 0.3f);
+
+		if (Controller.getMenuGame()) {
+			Controller.continueButton.draw(game.batch);
+			Controller.exitButton.draw(game.batch);
+		} 
 		font.draw(game.batch, "Score: " + Stats.score, 5, Gdx.graphics.getHeight() - 100);
 		font.draw(game.batch, "Scrap: " + Stats.scrap, 5, Gdx.graphics.getHeight() - 80);
 
@@ -96,7 +100,7 @@ public class GameScreen implements Screen {
 		world.prepare(0);
 
 		Assets.track2.play();
-		Gdx.input.setInputProcessor(new Controller());
+		Gdx.input.setInputProcessor(new Controller(game));
 	}
 
 	@Override

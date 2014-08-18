@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -104,12 +105,13 @@ public class MainMenu implements Screen, InputProcessor {
 		mousePointer = new Rectangle();
 		mousePointer.setSize(2);
 		dimValue = 1f;
-		
+
 		background = new Sprite(Assets.mainmenu);
 		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
 		background.setOriginCenter();
 
 		planet = new Sprite(Assets.planet);
+		planet.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		planet.setBounds(0, 0, Assets.planet.getWidth(), Assets.planet.getHeight());
 		planet.setOriginCenter();
 		planet.setScale(0.90f);
@@ -121,7 +123,7 @@ public class MainMenu implements Screen, InputProcessor {
 		options = new Button(1000, 400, "buttons/optionsButton.png");
 		credits = new Button(1000, 300, "buttons/creditsButton.png");
 		exit = new Button(1000, 200, "buttons/exitButton.png");
-		
+
 		Gdx.input.setInputProcessor(this);
 		Assets.track1.play();
 	}

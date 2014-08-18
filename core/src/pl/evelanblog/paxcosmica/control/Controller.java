@@ -1,6 +1,9 @@
 package pl.evelanblog.paxcosmica.control;
 
 import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.scenes.GameStateManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -11,11 +14,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Controller implements InputProcessor {
 
+	private PaxCosmica game;
 	private static Vector2 defKnobPos = new Vector2(96, 96);
 	public static Sprite knob;
-	public static Sprite buttonA;
-	public static Sprite buttonB;
-	public static Sprite pauseButton;
+	public static Button buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton;
 
 	private Rectangle mousePointer = new Rectangle(0, 0, 1, 1);
 
@@ -23,25 +25,35 @@ public class Controller implements InputProcessor {
 	private static boolean hit = false;
 	private static boolean knobPressed = false;
 	private static boolean pauseGame = false;
+	private static boolean menuGame = false;
+	private static boolean upgradeScreen = false;
 	private static int hitPointer = -1;
 	private static int knobPointer = -1;
 
-	public Controller() {
+	public Controller(final PaxCosmica game) {
+
+		this.game = game;
 		knob = new Sprite(Assets.knob);
 		knob.setSize(Assets.knob.getWidth(), Assets.knob.getHeight());
 		knob.setPosition(defKnobPos.x, defKnobPos.y);
 
-		buttonA = new Sprite(Assets.buttonA);
-		buttonA.setSize(Assets.buttonA.getWidth(), Assets.buttonA.getHeight());
+		buttonA = new Button(Assets.buttonA);
 		buttonA.setPosition(1100, 160);
 
-		buttonB = new Sprite(Assets.buttonB);
-		buttonB.setSize(Assets.buttonB.getWidth(), Assets.buttonB.getHeight());
+		buttonB = new Button(Assets.buttonB);
 		buttonB.setPosition(920, 32);
 
-		pauseButton = new Sprite(Assets.pauseButton);
-		pauseButton.setSize(Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight());
-		pauseButton.setPosition(1200, Gdx.graphics.getHeight() - 40);
+		powerButton = new Button("buttons/powerButton.png");
+		powerButton.setPosition(540, 20);
+
+		pauseButton = new Button(Assets.pauseButton);
+		pauseButton.setPosition(1200, Gdx.graphics.getHeight() - 50);
+
+		continueButton = new Button("buttons/continueButton.png");
+		continueButton.setPosition(540, 312);
+
+		exitButton = new Button(Assets.exitButton);
+		exitButton.setPosition(540, 380);
 	}
 
 	public static float getVelX()
@@ -62,6 +74,16 @@ public class Controller implements InputProcessor {
 	public static boolean getPause()
 	{
 		return pauseGame;
+	}
+
+	public static boolean getUpgradeScreen()
+	{
+		return upgradeScreen;
+	}
+
+	public static boolean getMenuGame()
+	{
+		return menuGame;
 	}
 
 	@Override
@@ -92,7 +114,24 @@ public class Controller implements InputProcessor {
 		if (mousePointer.overlaps(pauseButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
+			menuGame = menuGame ? false : true;
 			pauseGame = pauseGame ? false : true;
+
+		} else if (mousePointer.overlaps(powerButton.getBoundingRectangle()))
+		{
+			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
+			pauseGame = pauseGame ? false : true;
+			upgradeScreen = upgradeScreen ? false : true;
+
+		} else if (mousePointer.overlaps(continueButton.getBoundingRectangle()))
+		{
+			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
+			pauseGame = pauseGame ? false : true;
+			menuGame = menuGame ? false : true;
+		} else if (mousePointer.overlaps(exitButton.getBoundingRectangle()))
+		{
+			pauseGame = pauseGame ? false : true;
+			game.setScreen(GameStateManager.mainMenu);
 		}
 
 		if (!knobPressed) {
@@ -128,7 +167,6 @@ public class Controller implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// ustawienie punktu 0,0 w lewym dolnym rogu
 		screenY = Gdx.graphics.getHeight() - screenY;
 
 		if (knobPressed && knobPointer == pointer) {
@@ -161,7 +199,6 @@ public class Controller implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

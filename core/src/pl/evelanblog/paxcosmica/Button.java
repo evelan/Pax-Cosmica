@@ -18,4 +18,10 @@ public class Button extends Sprite {
 		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
 	}
 
+	public Button(Texture texture)
+	{
+		super(texture);
+		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
+	}
+
 }

@@ -23,8 +23,6 @@ public class GalaxyMap implements Screen, InputProcessor {
 	// it's not much but i might help you.
 	// TODO: Crystal you can avoid
 
-	// TODO: fuel
-
 	private final PaxCosmica game;
 	private static Sprite background;
 	private static int planetAmount;
@@ -35,11 +33,10 @@ public class GalaxyMap implements Screen, InputProcessor {
 	private static BitmapFont font;
 	private static Player player;
 	private boolean playerMove;
-	Vector2 destiny = new Vector2();
-	float speed = 200;
-	float dimValue;
-	static boolean portal = false;
-	static int playerPlanetDock = 0;
+	private Vector2 destiny = new Vector2();
+	private float speed = 200;
+	private float dimValue;
+	private static boolean portal = false;
 
 	public GalaxyMap(final PaxCosmica game) {
 		this.game = game;

@@ -3,6 +3,7 @@ package pl.evelanblog.galaxy;
 import pl.evelanblog.paxcosmica.Assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,6 +28,8 @@ public class Planet extends Sprite {
 	{
 		super(Assets.galaxyPlanet);
 		setBounds(x, y, Assets.galaxyPlanet.getWidth(), Assets.galaxyPlanet.getHeight());
+
+		getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		setScale(size);
 		setOriginCenter();
 		this.x = x;
@@ -87,7 +90,7 @@ public class Planet extends Sprite {
 	{
 		return discovered;
 	}
-	
+
 	public boolean isStore()
 	{
 		return store;

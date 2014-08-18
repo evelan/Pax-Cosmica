@@ -5,6 +5,7 @@ import java.util.Random;
 import pl.evelanblog.paxcosmica.DynamicObject;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -22,6 +23,8 @@ public class Asteroid extends DynamicObject {
 		particle = new ParticleEffect();
 		particle.load(Gdx.files.internal("data/asteroid.p"), Gdx.files.internal(""));
 		int texture = generator.nextInt(2);
+
+		getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		if (texture == 0)
 			setTexture("asteroid_1.png");

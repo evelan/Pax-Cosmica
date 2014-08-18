@@ -31,6 +31,7 @@ public class World {
 	private boolean stageFinished;
 	private long startTime;
 	private long stageTime;
+	private long pauseTime;
 
 	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
 
@@ -44,9 +45,10 @@ public class World {
 
 	public void prepare(int time)
 	{
+		pauseTime = 0;
 		startTime = TimeUtils.millis();
 		if (time == 0)
-			stageTime = 2000;
+			stageTime = 30000;
 		else
 			stageTime = time * (1000 * 60);
 		
@@ -55,7 +57,7 @@ public class World {
 
 	public void update(float delta) {
 
-		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
+		if (TimeUtils.timeSinceMillis(startTime) + pauseTime > stageTime)
 			stageFinished = true;
 
 		// adding delta time to array

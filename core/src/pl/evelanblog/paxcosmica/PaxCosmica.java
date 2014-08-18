@@ -1,5 +1,6 @@
 package pl.evelanblog.paxcosmica;
 
+import pl.evelanblog.paxcosmica.control.MousePointer;
 import pl.evelanblog.scenes.GameStateManager;
 
 import com.badlogic.gdx.Game;
@@ -14,8 +15,7 @@ public class PaxCosmica extends Game {
 	public BitmapFont font;
 	public OrthographicCamera camera;
 	public Sprite dim;
-	public static GameStateManager gsm;
-	
+	public GameStateManager gsm;
 
 	@Override
 	public void create() {
