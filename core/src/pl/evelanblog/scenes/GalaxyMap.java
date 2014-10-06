@@ -3,6 +3,7 @@ package pl.evelanblog.scenes;
 import pl.evelanblog.galaxy.Planet;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.paxcosmica.Stats;

@@ -2,6 +2,7 @@ package pl.evelanblog.scenes;
 
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.paxcosmica.Stats;
@@ -15,10 +16,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 
 public class UpgradeScreen implements Screen, InputProcessor {
+	
 	private final PaxCosmica game;
 	private BitmapFont font;
 	private Button apply, discard, upgrade;
 	private Rectangle mousePointer;
+	
 	private float power, hull, shield, weapon, engine;
 	private float powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
 	private float hover = -1;
@@ -38,6 +41,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 
 		game.batch.begin();
 		game.batch.draw(new Texture(Gdx.files.internal("upgrade_background.png")), 0, 0);
+		
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
 		createBar(power, powerLvl, "Power: " + powerLvl);
 		createBar(shield, shieldLvl, "Shield: " + shieldLvl);
@@ -200,5 +204,4 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
-
 }

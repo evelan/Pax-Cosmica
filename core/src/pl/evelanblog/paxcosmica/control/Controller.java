@@ -2,8 +2,8 @@ package pl.evelanblog.paxcosmica.control;
 
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.scenes.GameStateManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -16,10 +16,9 @@ public class Controller implements InputProcessor {
 
 	private PaxCosmica game;
 	private static Vector2 defKnobPos = new Vector2(96, 96);
+	private Rectangle mousePointer = new Rectangle(0, 0, 1, 1);
 	public static Sprite knob;
 	public static Button buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton;
-
-	private Rectangle mousePointer = new Rectangle(0, 0, 1, 1);
 
 	private static float velX = 0, velY = 0;
 	private static boolean hit = false;
@@ -139,6 +138,8 @@ public class Controller implements InputProcessor {
 				knob.setPosition(screenX - (knob.getWidth() / 2), screenY - (knob.getHeight() / 2));
 				knobPressed = true;
 				knobPointer = pointer;
+				velX = (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64;
+				velY = ((screenY - (knob.getHeight() / 2)) - defKnobPos.y) / 64;
 			} else {
 				knobPressed = false;
 			}

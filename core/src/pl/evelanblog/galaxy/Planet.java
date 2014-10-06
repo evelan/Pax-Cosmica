@@ -13,7 +13,6 @@ public class Planet extends Sprite {
 	private float x;
 	private float y;
 	private float count;
-	private float rotation;
 	private float size;
 	private float speed;
 	private boolean clockwise;

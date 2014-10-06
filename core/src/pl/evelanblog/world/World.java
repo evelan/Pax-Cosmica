@@ -5,14 +5,14 @@ import java.util.ListIterator;
 
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.booster.Booster;
-import pl.evelanblog.enemy.fighter.Enemy;
+import pl.evelanblog.enemy.Enemy;
 import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.Bullet;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
-import pl.evelanblog.paxcosmica.control.Controller;
+import pl.evelanblog.scenes.GameScreen;
 import pl.evelanblog.scenes.LostScreen;
 import pl.evelanblog.scenes.WinScreen;
 
@@ -23,35 +23,37 @@ public class World {
 
 	private final PaxCosmica game;
 	private Collider colider;
-	public static Player player;
-	public Background background;
+	private Background background;
+	private Player player;
+	private ArrayList<DynamicObject> objectArray;
 
-	public static ArrayList<DynamicObject> objectArray = new ArrayList<DynamicObject>();
-
-	private boolean stageFinished;
 	private long startTime;
 	private long stageTime;
 	private long pauseTime;
-
-	float[] sleepTime = { 0, 0, 0, 0, 0, 0 }; // miejsce dla 6 czasów
+	private boolean stageFinished;
+	private float[] sleepTime = new float[6];
 
 	public World(final PaxCosmica game) {
 		this.game = game;
-		player = new Player();
 		background = new Background();
-		colider = new Collider(player);
-		objectArray = new ArrayList<DynamicObject>();
 	}
 
 	public void prepare(int time)
 	{
+		objectArray = new ArrayList<DynamicObject>();
+		player = new Player();
+		colider = new Collider(player);
+
+		for (int i = 0; i < 6; i++)
+			sleepTime[i] = 0;
+
 		pauseTime = 0;
 		startTime = TimeUtils.millis();
 		if (time == 0)
 			stageTime = 30000;
 		else
 			stageTime = time * (1000 * 60);
-		
+
 		stageFinished = false;
 	}
 
@@ -117,13 +119,12 @@ public class World {
 				else
 					itr.remove();
 			}
-
 		}
 	}
 
 	private void spawnObjects(float delta) {
 
-		if (Controller.getHit() && sleepTime[0] > Player.getShootSpeed()) {
+		if (GameScreen.getHit() && sleepTime[0] > player.getShootFrequency() && player.ableToShoot()) {
 			objectArray.add(player.shoot());
 			sleepTime[0] = 0;
 		}
@@ -154,8 +155,21 @@ public class World {
 		}
 
 		if (sleepTime[4] > Booster.getSpawnTime()) {
-			objectArray.add(new Booster());
+			//objectArray.add(new Booster());
 			sleepTime[4] = 0;
 		}
+	}
+
+	public Background getBackground() {
+		return background;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public ArrayList<DynamicObject> getObjects()
+	{
+		return objectArray;
 	}
 }

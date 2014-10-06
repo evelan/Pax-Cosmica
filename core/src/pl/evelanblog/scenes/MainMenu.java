@@ -2,7 +2,9 @@ package pl.evelanblog.scenes;
 
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -10,7 +12,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -42,7 +43,7 @@ public class MainMenu implements Screen, InputProcessor {
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
 
-		game.camera.update();
+		//game.camera.update();
 
 		game.batch.begin();
 		background.draw(game.batch);
@@ -71,19 +72,28 @@ public class MainMenu implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 		mousePointer.setPosition(screenX, screenY);
 		Assets.playSound(Assets.clickSfx);
+		
+		//PLAY BUTTON
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
-			GalaxyMap.create();
-			game.setScreen(GameStateManager.gameScreen);
+			Stats.clear();
+			//GameScreen.prepare();
 			Assets.track1.stop();
+			game.setScreen(GameStateManager.gameScreen);
 			dispose();
 		}
+		
+		//OPTIONS BUTTON
 		else if (options.getBoundingRectangle().overlaps(mousePointer)) {
 			Assets.track1.stop();
 			dispose();
 		}
+		
+		//CREDITS BUTTON
 		else if (credits.getBoundingRectangle().overlaps(mousePointer)) {
 			game.setScreen(new CreditsScreen(game));
 		}
+		
+		//EXIT BUTTON
 		else if (exit.getBoundingRectangle().overlaps(mousePointer))
 			Gdx.app.exit();
 
@@ -101,7 +111,6 @@ public class MainMenu implements Screen, InputProcessor {
 
 		game.batch = new SpriteBatch();
 
-		game.font = new BitmapFont();
 		mousePointer = new Rectangle();
 		mousePointer.setSize(2);
 		dimValue = 1f;
@@ -149,43 +158,36 @@ public class MainMenu implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

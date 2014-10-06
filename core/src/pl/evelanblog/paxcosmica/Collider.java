@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.booster.Booster;
-import pl.evelanblog.enemy.fighter.Enemy;
-import pl.evelanblog.paxcosmica.control.FloatingText;
-import pl.evelanblog.scenes.GameScreen;
+import pl.evelanblog.enemy.Enemy;
 
 public class Collider {
 
@@ -39,7 +37,6 @@ public class Collider {
 						Assets.hitEffect.setPosition(obj.getX(), obj.getY() + (obj.getHeight() / 2));
 						Assets.hitEffect.start();
 						player.hurt(bullet.getImpactDamage());
-						GameScreen.textArray.add(new FloatingText(obj.getX(), obj.getY(), "" + bullet.getImpactDamage()));
 						obj.kill();
 
 						if (!player.isAlive()) {
@@ -71,7 +68,6 @@ public class Collider {
 									+ (dynamicObject.getHeight() / 2));
 							Assets.hitEffect.start();
 							asteroid.hurt(dynamicObject.impactDamage);
-							GameScreen.textArray.add(new FloatingText(dynamicObject.getX(), dynamicObject.getY(), "" + dynamicObject.getImpactDamage()));
 							dynamicObject.kill();
 
 							if (!asteroid.isAlive()) {
@@ -97,7 +93,7 @@ public class Collider {
 									+ (dynamicObject.getHeight() / 2));
 							Assets.hitEffect.start();
 							enemy.hurt(dynamicObject.impactDamage);
-							GameScreen.textArray.add(new FloatingText(dynamicObject.getX(), dynamicObject.getY(), "" + dynamicObject.getImpactDamage()));
+							//TODO: GameScreen.textArray.add(new FloatingText(dynamicObject.getX(), dynamicObject.getY(), "" + dynamicObject.getImpactDamage()));
 							dynamicObject.kill();
 
 							if (!enemy.isAlive()) {

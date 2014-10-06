@@ -58,7 +58,7 @@ public class DynamicObject extends Sprite {
 			hp -= damage;
 		}
 
-		if (hp < 0)
+		if (hp <= 0)
 			kill();
 	}
 

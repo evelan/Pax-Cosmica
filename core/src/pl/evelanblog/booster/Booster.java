@@ -4,7 +4,6 @@ import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.DynamicObject;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Booster extends DynamicObject {

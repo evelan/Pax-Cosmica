@@ -1,6 +1,7 @@
 package pl.evelanblog.scenes;
 
 import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 
@@ -44,6 +45,11 @@ public class CreditsScreen implements Screen, InputProcessor {
 		font.draw(game.batch, "Wykonanie", 200, scroll + 70);
 		font.draw(game.batch, "Jakub Pomykala", 200, scroll + 50);
 		font.draw(game.batch, "Umyj pazdzierz sukwo", 200, scroll);
+		font.draw(game.batch, "Lecz jestem tu gdzie wodka zwala z nog", 200, scroll - 50);
+		font.draw(game.batch, "Tych, co przepijaja hajs za zdrowie glupich suk", 200, scroll - 100);
+		
+		
+		
 		exit.draw(game.batch);
 		game.batch.end();
 	}

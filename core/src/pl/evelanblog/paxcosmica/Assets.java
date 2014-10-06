@@ -25,7 +25,7 @@ public class Assets {
 	public static Texture planet;
 	public static Texture mainmenu;
 	public static Texture paxCosmica;
-	public static Texture down;
+	public static Texture down, up;
 	
 	public static Texture upgradeBar;
 	public static Texture upgradeBtn;
@@ -83,6 +83,7 @@ public class Assets {
 		galaxyPlanet = loadTexture("galaxy_planet.png");
 		upgradeBar = loadTexture("power_bar.png");
 		down = loadTexture("down.png");
+		up = loadTexture("up.png");
 		upgradeBtn = loadTexture("upgrade_button.png");
 
 		planet = loadTexture("planet_1.png");

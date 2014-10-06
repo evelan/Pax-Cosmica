@@ -23,5 +23,4 @@ public class Button extends Sprite {
 		super(texture);
 		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
 	}
-
 }

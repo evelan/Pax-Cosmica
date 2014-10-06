@@ -24,7 +24,7 @@ public class WinScreen implements Screen, InputProcessor {
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		play = new Button(400, 100, "buttons/playButton.png");
 		exit = new Button(800, 100, "buttons/exitButton.png");
-		mousePointer = new Rectangle();
+		mousePointer = new Rectangle(0, 0, 1, 1);
 		mousePointer.setSize(2);
 	}
 
@@ -103,6 +103,7 @@ public class WinScreen implements Screen, InputProcessor {
 		Assets.playSound(Assets.clickSfx);
 		
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
+			GalaxyMap.create();
 			game.setScreen(new GalaxyMap(game));
 			dispose();
 		}
