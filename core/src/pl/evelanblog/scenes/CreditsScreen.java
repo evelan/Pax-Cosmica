@@ -38,14 +38,14 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 		scroll += speed * delta;
 
-		game.batch.begin();
-		font.draw(game.batch, "Pax Cosmica", 200, scroll + 120);
-		font.draw(game.batch, "Wykonanie", 200, scroll + 70);
-		font.draw(game.batch, "Jakub Pomykala", 200, scroll + 50);
-		font.draw(game.batch, "Umyj pazdzierz sukwo", 200, scroll);
+		game.getBatch().begin();
+		font.draw(game.getBatch(), "Pax Cosmica", 200, scroll + 120);
+		font.draw(game.getBatch(), "Wykonanie", 200, scroll + 70);
+		font.draw(game.getBatch(), "Jakub Pomykala", 200, scroll + 50);
+		font.draw(game.getBatch(), "Umyj pazdzierz sukwo", 200, scroll);
 
-		exit.draw(game.batch);
-		game.batch.end();
+		exit.draw(game.getBatch());
+		game.getBatch().end();
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (game.mousePointer.overlaps(screenX, screenY, exit))
+		if (game.getMouse().overlaps(screenX, screenY, exit))
 		{
 			game.setScreen(GameStateManager.mainMenu);
 			dispose();

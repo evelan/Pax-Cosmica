@@ -100,38 +100,38 @@ public class Controller implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.mousePointer.setPosition(screenX, screenY);
+		game.getMouse().setPosition(screenX, screenY);
 
-		if (!hit && game.mousePointer.overlaps(buttonA.getBoundingRectangle())) {
+		if (!hit && game.getMouse().overlaps(buttonA.getBoundingRectangle())) {
 			hit = true;
 			hitPointer = pointer;
 		}
 
-		if (game.mousePointer.overlaps(pauseButton.getBoundingRectangle()))
+		if (game.getMouse().overlaps(pauseButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
 			menuGame = menuGame ? false : true;
 			pauseGame = pauseGame ? false : true;
 
-		} else if (game.mousePointer.overlaps(powerButton.getBoundingRectangle()))
+		} else if (game.getMouse().overlaps(powerButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
 			pauseGame = pauseGame ? false : true;
 			upgradeScreen = upgradeScreen ? false : true;
 
-		} else if (game.mousePointer.overlaps(continueButton.getBoundingRectangle()))
+		} else if (game.getMouse().overlaps(continueButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
 			pauseGame = pauseGame ? false : true;
 			menuGame = menuGame ? false : true;
-		} else if (game.mousePointer.overlaps(exitButton.getBoundingRectangle()))
+		} else if (game.getMouse().overlaps(exitButton.getBoundingRectangle()))
 		{
 			pauseGame = pauseGame ? false : true;
 			game.setScreen(GameStateManager.mainMenu);
 		}
 
 		if (!knobPressed) {
-			if (game.mousePointer.overlaps(knob.getBoundingRectangle())) {
+			if (game.getMouse().overlaps(knob.getBoundingRectangle())) {
 				knob.setPosition(screenX - (knob.getWidth() / 2), screenY - (knob.getHeight() / 2));
 				knobPressed = true;
 				knobPointer = pointer;

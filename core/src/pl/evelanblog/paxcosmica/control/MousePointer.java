@@ -34,5 +34,4 @@ public class MousePointer extends Rectangle {
 		else
 			return false;
 	}
-
 }

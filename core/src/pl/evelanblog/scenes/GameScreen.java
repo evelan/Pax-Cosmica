@@ -1,14 +1,14 @@
 package pl.evelanblog.scenes;
 
-import pl.evelanblog.asteroid.Asteroid;
-import pl.evelanblog.enemy.Enemy;
+import pl.evelanblog.dynamicobjects.Asteroid;
+import pl.evelanblog.dynamicobjects.DynamicObject;
+import pl.evelanblog.dynamicobjects.Enemy;
+import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.world.World;
 import pl.evelanblog.world.World.GameState;
@@ -92,63 +92,63 @@ public class GameScreen implements Screen, InputProcessor {
 			game.setScreen(GameStateManager.galaxyMap);
 		}
 
-		game.batch.begin();
-		background.draw(game.batch, delta);
+		game.getBatch().begin();
+		background.draw(game.getBatch(), delta);
 
 		for (DynamicObject obj : world.getObjects())
 		{
 			// TODO: spróbowaæ przekazaæ deltê inaczej do funkcji draw w Enemy,
-			// ¿eby móc daæ po prostu obj.draw(game.batch)
+			// ¿eby móc daæ po prostu obj.draw(game.getBatch())
 			if (obj instanceof Enemy)
-				((Enemy) obj).draw(game.batch, delta);
+				((Enemy) obj).draw(game.getBatch(), delta);
 			else if (obj instanceof Asteroid)
-				((Asteroid) obj).draw(game.batch, delta);
+				((Asteroid) obj).draw(game.getBatch(), delta);
 			else
-				obj.draw(game.batch);
+				obj.draw(game.getBatch());
 		}
 
 		if (world.getPlayer().isAlive())
-			world.getPlayer().draw(game.batch, delta);
+			world.getPlayer().draw(game.getBatch(), delta);
 
-		Assets.hitEffect.draw(game.batch, delta);
-		Assets.explosionEffect.draw(game.batch, delta);
+		Assets.hitEffect.draw(game.getBatch(), delta);
+		Assets.explosionEffect.draw(game.getBatch(), delta);
 
 		for (int i = 0; i < world.getPlayer().getHealth(); i++)
-			game.batch.draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
+			game.getBatch().draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
 
 		for (int i = 0; i < world.getPlayer().getShield(); i++)
-			game.batch.draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
+			game.getBatch().draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
 
-		font.draw(game.batch, "Score: " + Stats.score, 5, Gdx.graphics.getHeight() - 100);
-		font.draw(game.batch, "Scrap: " + Stats.scrap, 5, Gdx.graphics.getHeight() - 80);
+		font.draw(game.getBatch(), "Score: " + Stats.score, 5, Gdx.graphics.getHeight() - 100);
+		font.draw(game.getBatch(), "Scrap: " + Stats.scrap, 5, Gdx.graphics.getHeight() - 80);
 
 		// controls HUD
-		knob.draw(game.batch, 0.3f);
-		buttonA.draw(game.batch, 0.3f);
-		buttonB.draw(game.batch, 0.3f);
+		knob.draw(game.getBatch(), 0.3f);
+		buttonA.draw(game.getBatch(), 0.3f);
+		buttonB.draw(game.getBatch(), 0.3f);
 
 		if (world.getState() == GameState.powermanager || world.getState() == GameState.menu)
 		{
-			dimScreen.draw(game.batch, 0.6f);
+			dimScreen.draw(game.getBatch(), 0.6f);
 			pauseButton.setTexture(Assets.unpauseButton);
-			pauseButton.draw(game.batch, 0.9f);
+			pauseButton.draw(game.getBatch(), 0.9f);
 			if (world.getState() == GameState.menu)
 			{
-				continueButton.draw(game.batch);
-				exitButton.draw(game.batch);
+				continueButton.draw(game.getBatch());
+				exitButton.draw(game.getBatch());
 			} else if (world.getState() == GameState.powermanager)
 			{
 				drawPwrManager();
-				powerButton.draw(game.batch, 0.9f);
+				powerButton.draw(game.getBatch(), 0.9f);
 			}
 		} else
 		{
 			pauseButton.setTexture(Assets.pauseButton);
-			pauseButton.draw(game.batch, 0.3f);
-			powerButton.draw(game.batch, 0.3f);
+			pauseButton.draw(game.getBatch(), 0.3f);
+			powerButton.draw(game.getBatch(), 0.3f);
 		}
 
-		game.batch.end();
+		game.getBatch().end();
 	}
 
 	private void drawPwrManager()
@@ -163,16 +163,16 @@ public class GameScreen implements Screen, InputProcessor {
 	private void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++)
-			game.batch.draw(Assets.upgradeBar, x, 200 + i * 30);
+			game.getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
 
 		if (hover != -1) {
 			downPwr.setPosition(hover, 100);
 			upPwr.setPosition(hover, 500);
-			downPwr.draw(game.batch);
-			upPwr.draw(game.batch);
+			downPwr.draw(game.getBatch());
+			upPwr.draw(game.getBatch());
 		}
 
-		font.draw(game.batch, name, x + 10, 190);
+		font.draw(game.getBatch(), name, x + 10, 190);
 	}
 
 	@Override

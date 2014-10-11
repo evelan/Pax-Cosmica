@@ -1,10 +1,10 @@
 package pl.evelanblog.scenes;
 
+import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
@@ -39,8 +39,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		game.batch.begin();
-		game.batch.draw(new Texture(Gdx.files.internal("upgrade_background.png")), 0, 0);
+		game.getBatch().begin();
+		game.getBatch().draw(new Texture(Gdx.files.internal("upgrade_background.png")), 0, 0);
 		
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
 		createBar(power, powerLvl, "Power: " + powerLvl);
@@ -48,25 +48,26 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
 		createBar(engine, engineLvl, "Engine: " + engineLvl);
 
-		apply.draw(game.batch);
-		discard.draw(game.batch);
-		font.draw(game.batch, "Scrap: " + scrap, 10, 710);
-		game.batch.end();
+		apply.draw(game.getBatch());
+		discard.draw(game.getBatch());
+		font.draw(game.getBatch(), "Scrap: " + scrap, 10, 710);
+		game.getBatch().end();
+		
 	}
 
 	public void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++) 
-			game.batch.draw(Assets.upgradeBar, x, 200 + i * 50);
+			game.getBatch().draw(Assets.upgradeBar, x, 200 + i * 50);
 
-		font.draw(game.batch, "Cost: " + cost, x, level * 50 + 250);
+		font.draw(game.getBatch(), "Cost: " + cost, x, level * 50 + 250);
 
 		if (hover != -1) {
 			upgrade.setPosition(hover, 100);
-			upgrade.draw(game.batch);
+			upgrade.draw(game.getBatch());
 		}
 
-		font.draw(game.batch, name, x+10, 190);
+		font.draw(game.getBatch(), name, x+10, 190);
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		scrap = Stats.scrap;
 
 		mousePointer = new Rectangle();
-		mousePointer.setSize(2);
+		mousePointer.setSize(1);
 
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		Gdx.input.setInputProcessor(this);

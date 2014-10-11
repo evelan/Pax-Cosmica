@@ -3,13 +3,13 @@ package pl.evelanblog.world;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import pl.evelanblog.asteroid.Asteroid;
-import pl.evelanblog.booster.Booster;
-import pl.evelanblog.enemy.Enemy;
-import pl.evelanblog.paxcosmica.Bullet;
+import pl.evelanblog.dynamicobjects.Asteroid;
+import pl.evelanblog.dynamicobjects.Booster;
+import pl.evelanblog.dynamicobjects.Bullet;
+import pl.evelanblog.dynamicobjects.DynamicObject;
+import pl.evelanblog.dynamicobjects.Enemy;
+import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Collider;
-import pl.evelanblog.paxcosmica.DynamicObject;
-import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.scenes.GameScreen;
 
 import com.badlogic.gdx.utils.TimeUtils;

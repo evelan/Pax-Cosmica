@@ -20,13 +20,15 @@ public class MainMenu implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	private Button play, options, credits, exit;
-	private Sprite planet, background, paxCosmica;
+	private Sprite planet, background, paxCosmica, dim;
 	private Rectangle mousePointer;
 	private float count = 360.0f;
 	private float dimValue;
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
+		dim = new Sprite(Assets.dim);
+
 	}
 
 	@Override
@@ -43,20 +45,20 @@ public class MainMenu implements Screen, InputProcessor {
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
 
-		game.camera.update();
+		game.getCamera().update();
 
-		game.batch.begin();
-		background.draw(game.batch);
-		planet.draw(game.batch);
-		paxCosmica.draw(game.batch);
-		play.draw(game.batch);
-		options.draw(game.batch);
-		credits.draw(game.batch);
-		exit.draw(game.batch);
+		game.getBatch().begin();
+		background.draw(game.getBatch());
+		planet.draw(game.getBatch());
+		paxCosmica.draw(game.getBatch());
+		play.draw(game.getBatch());
+		options.draw(game.getBatch());
+		credits.draw(game.getBatch());
+		exit.draw(game.getBatch());
 
 		dimScreen(delta);
 
-		game.batch.end();
+		game.getBatch().end();
 	}
 
 	private void dimScreen(float delta) {
@@ -64,7 +66,7 @@ public class MainMenu implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			game.dim.draw(game.batch, dimValue);
+			dim.draw(game.getBatch(), dimValue);
 	}
 
 	@Override
@@ -105,13 +107,8 @@ public class MainMenu implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		game.camera = new OrthographicCamera();
-		game.camera.setToOrtho(false, 1280, 768);
-
-		game.batch = new SpriteBatch();
-
 		mousePointer = new Rectangle();
-		mousePointer.setSize(2);
+		mousePointer.setSize(1);
 		dimValue = 1f;
 
 		background = new Sprite(Assets.mainmenu);

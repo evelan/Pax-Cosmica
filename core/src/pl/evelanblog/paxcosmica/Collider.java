@@ -2,9 +2,12 @@ package pl.evelanblog.paxcosmica;
 
 import java.util.ArrayList;
 
-import pl.evelanblog.asteroid.Asteroid;
-import pl.evelanblog.booster.Booster;
-import pl.evelanblog.enemy.Enemy;
+import pl.evelanblog.dynamicobjects.Asteroid;
+import pl.evelanblog.dynamicobjects.Booster;
+import pl.evelanblog.dynamicobjects.Bullet;
+import pl.evelanblog.dynamicobjects.DynamicObject;
+import pl.evelanblog.dynamicobjects.Enemy;
+import pl.evelanblog.dynamicobjects.Player;
 
 public class Collider {
 
@@ -50,7 +53,7 @@ public class Collider {
 					{
 						// kolizja asteroidiy i pocisku
 						if (asteroid.getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) {
-							asteroid.hurt(bullet.impactDamage);
+							asteroid.hurt(bullet.getImpactDamage());
 							bullet.kill();
 						}
 					}
@@ -62,7 +65,7 @@ public class Collider {
 					{
 						// kolizja wroga i pocisku
 						if (enemy.getBoundingRectangle().overlaps(bullet.getBoundingRectangle()) && bullet.getDirection()) {
-							enemy.hurt(bullet.impactDamage);
+							enemy.hurt(bullet.getImpactDamage());
 							bullet.kill();
 						}
 					}

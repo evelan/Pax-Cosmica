@@ -1,7 +1,7 @@
 package pl.evelanblog.paxcosmica.control;
 
+import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

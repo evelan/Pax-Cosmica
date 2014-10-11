@@ -3,24 +3,46 @@ package pl.evelanblog.paxcosmica;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PaxCosmica extends Game {
 
-	public OrthographicCamera camera;
-	public GameStateManager gsm;
-	public SpriteBatch batch;
-	public Sprite dim;
-	public MousePointer mousePointer;
+	private OrthographicCamera camera;
+	private GameStateManager gsm;
+	private SpriteBatch batch;
+	private MousePointer mousePointer;
 
 	@Override
 	public void create() {
-		mousePointer = new MousePointer();
 		Assets.load();
-		dim = new Sprite(Assets.dim, 0, 0, 1280, 768);
+		mousePointer = new MousePointer();
+		batch = new SpriteBatch();
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 1280, 720);
+
 		gsm = new GameStateManager(this);
 		setScreen(GameStateManager.mainMenu);
+	}
+
+	public MousePointer getMouse()
+	{
+		return mousePointer;
+	}
+
+	public SpriteBatch getBatch()
+	{
+		return batch;
+	}
+
+	public Camera getCamera()
+	{
+		return camera;
+	}
+
+	public GameStateManager getGsm()
+	{
+		return gsm;
 	}
 }
