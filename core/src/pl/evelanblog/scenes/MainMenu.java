@@ -18,12 +18,12 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MainMenu implements Screen, InputProcessor {
 
-	final PaxCosmica game;
+	private final PaxCosmica game;
 	private Button play, options, credits, exit;
 	private Sprite planet, background, paxCosmica;
 	private Rectangle mousePointer;
 	private float count = 360.0f;
-	float dimValue;
+	private float dimValue;
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
@@ -43,7 +43,7 @@ public class MainMenu implements Screen, InputProcessor {
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
 
-		//game.camera.update();
+		game.camera.update();
 
 		game.batch.begin();
 		background.draw(game.batch);
@@ -76,7 +76,6 @@ public class MainMenu implements Screen, InputProcessor {
 		//PLAY BUTTON
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
 			Stats.clear();
-			//GameScreen.prepare();
 			Assets.track1.stop();
 			game.setScreen(GameStateManager.gameScreen);
 			dispose();

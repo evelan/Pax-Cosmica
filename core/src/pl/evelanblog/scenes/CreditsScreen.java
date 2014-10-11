@@ -3,7 +3,6 @@ package pl.evelanblog.scenes;
 import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.control.MousePointer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -16,16 +15,15 @@ public class CreditsScreen implements Screen, InputProcessor {
 	private BitmapFont font;
 	private PaxCosmica game;
 	private Button exit;
-	private MousePointer mousePointer;
-	private static float scroll = 200;
-	private static float speed = 50;
+	private float scroll;
+	private float speed = 50;
 
 	public CreditsScreen(final PaxCosmica game)
 	{
 		this.game = game;
-		mousePointer = new MousePointer();
 		exit = new Button(1060, 20, "buttons/exitButton.png");
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+
 	}
 
 	@Override
@@ -45,11 +43,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 		font.draw(game.batch, "Wykonanie", 200, scroll + 70);
 		font.draw(game.batch, "Jakub Pomykala", 200, scroll + 50);
 		font.draw(game.batch, "Umyj pazdzierz sukwo", 200, scroll);
-		font.draw(game.batch, "Lecz jestem tu gdzie wodka zwala z nog", 200, scroll - 50);
-		font.draw(game.batch, "Tych, co przepijaja hajs za zdrowie glupich suk", 200, scroll - 100);
-		
-		
-		
+
 		exit.draw(game.batch);
 		game.batch.end();
 	}
@@ -62,6 +56,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
+		scroll = 200;
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -109,7 +104,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (mousePointer.overlaps(screenX, screenY, exit))
+		if (game.mousePointer.overlaps(screenX, screenY, exit))
 		{
 			game.setScreen(GameStateManager.mainMenu);
 			dispose();

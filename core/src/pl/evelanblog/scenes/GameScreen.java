@@ -3,6 +3,7 @@ package pl.evelanblog.scenes;
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.enemy.Enemy;
 import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.DynamicObject;
 import pl.evelanblog.paxcosmica.GameStateManager;
@@ -10,6 +11,7 @@ import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.world.World;
+import pl.evelanblog.world.World.GameState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -24,9 +26,10 @@ import com.badlogic.gdx.math.Vector2;
 public class GameScreen implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
-	private final World world;
-	private final BitmapFont font;
+	private World world;
+	private BitmapFont font;
 
+	private Background background;
 	private Vector2 defKnobPos = new Vector2(96, 96);
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
 	private Rectangle mousePointer;
@@ -35,10 +38,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private static float velX = 0;
 	private static float velY = 0;
 	private static boolean hit = false;
-	private boolean powerManager = false;
 	private boolean knobPressed = false;
-	private boolean pauseGame = false;
-	private boolean menuGame = false;
 
 	private int knobPointer = -1;
 	private int hitPointer = -1;
@@ -47,7 +47,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
-		world = new World(game);
 
 		knob = new Button("knob.png");
 		knob.setPosition(defKnobPos.x, defKnobPos.y);
@@ -70,24 +69,14 @@ public class GameScreen implements Screen, InputProcessor {
 		exitButton = new Button("buttons/exitButton.png");
 		exitButton.setPosition(540, 380);
 
+		upPwr = new Button("up.png");
+		downPwr = new Button("down.png");
+
 		dimScreen = new Sprite(Assets.dim);
 
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
-	}
-
-	public void prepare()
-	{
-		velX = 0;
-		velY = 0;
-		hit = false;
-		powerManager = false;
-		knobPressed = false;
-		pauseGame = false;
-		menuGame = false;
-		knobPointer = -1;
-		hitPointer = -1;
-		hover = -1;
+		background = new Background();
 	}
 
 	@Override
@@ -95,12 +84,16 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		if (!pauseGame)
+		if (world.getState() == GameState.ongoing) {
+			background.update(delta);
 			world.update(delta);
+		} else if (world.getState() == GameState.win)
+		{
+			game.setScreen(GameStateManager.galaxyMap);
+		}
 
 		game.batch.begin();
-
-		world.getBackground().draw(game.batch, delta);
+		background.draw(game.batch, delta);
 
 		for (DynamicObject obj : world.getObjects())
 		{
@@ -120,9 +113,6 @@ public class GameScreen implements Screen, InputProcessor {
 		Assets.hitEffect.draw(game.batch, delta);
 		Assets.explosionEffect.draw(game.batch, delta);
 
-		/*
-		 * TODO: for (FloatingText text : textArray) text.draw(game.batch);
-		 */
 		for (int i = 0; i < world.getPlayer().getHealth(); i++)
 			game.batch.draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
 
@@ -137,26 +127,31 @@ public class GameScreen implements Screen, InputProcessor {
 		buttonA.draw(game.batch, 0.3f);
 		buttonB.draw(game.batch, 0.3f);
 
-		if (menuGame) {
-			continueButton.draw(game.batch);
-			exitButton.draw(game.batch);
-		}
-
-		if (powerManager)
+		if (world.getState() == GameState.powermanager || world.getState() == GameState.menu)
 		{
 			dimScreen.draw(game.batch, 0.6f);
-			drawPwrManager();
-			powerButton.draw(game.batch, 0.9f);
+			pauseButton.setTexture(Assets.unpauseButton);
 			pauseButton.draw(game.batch, 0.9f);
+			if (world.getState() == GameState.menu)
+			{
+				continueButton.draw(game.batch);
+				exitButton.draw(game.batch);
+			} else if (world.getState() == GameState.powermanager)
+			{
+				drawPwrManager();
+				powerButton.draw(game.batch, 0.9f);
+			}
 		} else
 		{
+			pauseButton.setTexture(Assets.pauseButton);
 			pauseButton.draw(game.batch, 0.3f);
 			powerButton.draw(game.batch, 0.3f);
 		}
+
 		game.batch.end();
 	}
 
-	public void drawPwrManager()
+	private void drawPwrManager()
 	{
 		createBar(power, Player.powerGenerator, "Power " + (int) Player.powerGenerator + "  L" + (int) Player.powerLvl);
 		createBar(hull, Player.hullPwr, "Hull " + (int) Player.hullPwr + "  L" + (int) Player.hullLvl);
@@ -165,7 +160,7 @@ public class GameScreen implements Screen, InputProcessor {
 		createBar(engine, Player.enginePwr, "Engine " + (int) Player.enginePwr + "  L" + (int) Player.engineLvl);
 	}
 
-	public void createBar(float x, float level, String name)
+	private void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++)
 			game.batch.draw(Assets.upgradeBar, x, 200 + i * 30);
@@ -190,10 +185,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		world.prepare(0);
-
-		upPwr = new Button("up.png");
-		downPwr = new Button("down.png");
+		world = new World();
 
 		power = 100;
 		hull = 300;
@@ -203,6 +195,15 @@ public class GameScreen implements Screen, InputProcessor {
 		dimScreen.setPosition(0, 0);
 
 		Assets.track2.play();
+
+		velX = 0;
+		velY = 0;
+		hit = false;
+		knobPressed = false;
+		knobPointer = -1;
+		hitPointer = -1;
+		hover = -1;
+
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -233,51 +234,53 @@ public class GameScreen implements Screen, InputProcessor {
 		if (mousePointer.overlaps(pauseButton.getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
-			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			menuGame = menuGame ? false : true;
-			pauseGame = pauseGame ? false : true;
+			world.setState(world.getState() == GameState.menu ? GameState.ongoing : GameState.menu);
 
 			// powerManagerButton
 		} else if (mousePointer.overlaps(powerButton.getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
-			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			pauseGame = pauseGame ? false : true;
-			powerManager = powerManager ? false : true;
+			world.setState(world.getState() == GameState.powermanager ? GameState.ongoing : GameState.powermanager);
 
 			// continueButton
 		} else if (mousePointer.overlaps(continueButton.getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
-			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			pauseGame = pauseGame ? false : true;
-			menuGame = menuGame ? false : true;
-
+			world.setState(GameState.ongoing);
 			// exitButton
 		} else if (mousePointer.overlaps(exitButton.getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
-			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			pauseGame = pauseGame ? false : true;
-			menuGame = menuGame ? false : true;
+			world.setState(GameState.defeat);
 			game.setScreen(GameStateManager.mainMenu);
 		}
 
-		// knob, galka
+		/*
+		 * TODO: if (!knobPressed) { if (knobArea.overlaps(mousePointerCircle))
+		 * { knob.setPosition(screenX - (knob.getWidth() / 2), screenY -
+		 * (knob.getHeight() / 2)); knobPressed = true; knobPointer = pointer;
+		 * velX = (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64;
+		 * velY = ((screenY - (knob.getHeight() / 2)) - defKnobPos.y) / 64; }
+		 * else { knobPressed = false; } }
+		 */
+
+		// knob
 		if (!knobPressed) {
 			if (mousePointer.overlaps(knob.getBoundingRectangle())) {
-				knob.setPosition(screenX - (knob.getWidth() / 2), screenY - (knob.getHeight() / 2));
+				knob.setPosition(screenX - (knob.getWidth() / 2), screenY -
+						(knob.getHeight() / 2));
 				knobPressed = true;
 				knobPointer = pointer;
 				velX = (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64;
 				velY = ((screenY - (knob.getHeight() / 2)) - defKnobPos.y) / 64;
-			} else {
+			}
+			else {
 				knobPressed = false;
 			}
 		}
 
 		// powerManager
-		if (powerManager) {
+		if (world.getState() == GameState.powermanager) {
 
 			if (mousePointer.overlaps(upPwr.getBoundingRectangle()))
 			{

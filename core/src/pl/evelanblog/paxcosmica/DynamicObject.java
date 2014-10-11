@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class DynamicObject extends Sprite {
+public abstract class DynamicObject extends Sprite {
 
 	protected float hp;
 	protected boolean live;
@@ -62,9 +62,7 @@ public class DynamicObject extends Sprite {
 			kill();
 	}
 
-	public void kill() {
-		live = false;
-	}
+	public abstract void kill();
 
 	public boolean isAlive() {
 		return live;

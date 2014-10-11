@@ -9,25 +9,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Controller implements InputProcessor {
 
 	private PaxCosmica game;
-	private static Vector2 defKnobPos = new Vector2(96, 96);
-	private Rectangle mousePointer = new Rectangle(0, 0, 1, 1);
-	public static Sprite knob;
-	public static Button buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton;
+	private Vector2 defKnobPos = new Vector2(96, 96);
+	private Sprite knob;
+	private Button buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton;
 
-	private static float velX = 0, velY = 0;
-	private static boolean hit = false;
-	private static boolean knobPressed = false;
-	private static boolean pauseGame = false;
-	private static boolean menuGame = false;
-	private static boolean upgradeScreen = false;
-	private static int hitPointer = -1;
-	private static int knobPointer = -1;
+	private float velX = 0, velY = 0;
+	private boolean hit = false;
+	private boolean knobPressed = false;
+	private boolean pauseGame = false;
+	private boolean menuGame = false;
+	private boolean upgradeScreen = false;
+	private int hitPointer = -1;
+	private int knobPointer = -1;
 
 	public Controller(final PaxCosmica game) {
 
@@ -55,32 +53,32 @@ public class Controller implements InputProcessor {
 		exitButton.setPosition(540, 380);
 	}
 
-	public static float getVelX()
+	public float getVelX()
 	{
 		return velX;
 	}
 
-	public static float getVelY()
+	public float getVelY()
 	{
 		return velY;
 	}
 
-	public static boolean getHit()
+	public boolean getHit()
 	{
 		return hit;
 	}
 
-	public static boolean getPause()
+	public boolean getPause()
 	{
 		return pauseGame;
 	}
 
-	public static boolean getUpgradeScreen()
+	public boolean getUpgradeScreen()
 	{
 		return upgradeScreen;
 	}
 
-	public static boolean getMenuGame()
+	public boolean getMenuGame()
 	{
 		return menuGame;
 	}
@@ -102,39 +100,38 @@ public class Controller implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX, screenY);
+		game.mousePointer.setPosition(screenX, screenY);
 
-		if (!hit && mousePointer.overlaps(buttonA.getBoundingRectangle())) {
+		if (!hit && game.mousePointer.overlaps(buttonA.getBoundingRectangle())) {
 			hit = true;
 			hitPointer = pointer;
 		}
 
-		if (mousePointer.overlaps(pauseButton.getBoundingRectangle()))
+		if (game.mousePointer.overlaps(pauseButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
 			menuGame = menuGame ? false : true;
 			pauseGame = pauseGame ? false : true;
 
-		} else if (mousePointer.overlaps(powerButton.getBoundingRectangle()))
+		} else if (game.mousePointer.overlaps(powerButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
 			pauseGame = pauseGame ? false : true;
 			upgradeScreen = upgradeScreen ? false : true;
 
-		} else if (mousePointer.overlaps(continueButton.getBoundingRectangle()))
+		} else if (game.mousePointer.overlaps(continueButton.getBoundingRectangle()))
 		{
 			pauseButton.setTexture(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
 			pauseGame = pauseGame ? false : true;
 			menuGame = menuGame ? false : true;
-		} else if (mousePointer.overlaps(exitButton.getBoundingRectangle()))
+		} else if (game.mousePointer.overlaps(exitButton.getBoundingRectangle()))
 		{
 			pauseGame = pauseGame ? false : true;
 			game.setScreen(GameStateManager.mainMenu);
 		}
 
 		if (!knobPressed) {
-			if (mousePointer.overlaps(knob.getBoundingRectangle())) {
+			if (game.mousePointer.overlaps(knob.getBoundingRectangle())) {
 				knob.setPosition(screenX - (knob.getWidth() / 2), screenY - (knob.getHeight() / 2));
 				knobPressed = true;
 				knobPointer = pointer;

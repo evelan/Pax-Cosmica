@@ -6,40 +6,30 @@ import java.util.ListIterator;
 import pl.evelanblog.asteroid.Asteroid;
 import pl.evelanblog.booster.Booster;
 import pl.evelanblog.enemy.Enemy;
-import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.Bullet;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.DynamicObject;
-import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Player;
 import pl.evelanblog.scenes.GameScreen;
-import pl.evelanblog.scenes.LostScreen;
-import pl.evelanblog.scenes.WinScreen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class World {
 
-	private final PaxCosmica game;
 	private Collider colider;
-	private Background background;
 	private Player player;
 	private ArrayList<DynamicObject> objectArray;
 
-	private long startTime;
-	private long stageTime;
-	private long pauseTime;
-	private boolean stageFinished;
-	private float[] sleepTime = new float[6];
-
-	public World(final PaxCosmica game) {
-		this.game = game;
-		background = new Background();
+	public static enum GameState {
+		ongoing, win, defeat, menu, powermanager, paused
 	}
 
-	public void prepare(int time)
-	{
+	private GameState state;
+	private long startTime;
+	private long stageTime;
+	private float[] sleepTime = new float[6];
+
+	public World() {
 		objectArray = new ArrayList<DynamicObject>();
 		player = new Player();
 		colider = new Collider(player);
@@ -47,26 +37,21 @@ public class World {
 		for (int i = 0; i < 6; i++)
 			sleepTime[i] = 0;
 
-		pauseTime = 0;
 		startTime = TimeUtils.millis();
-		if (time == 0)
-			stageTime = 30000;
-		else
-			stageTime = time * (1000 * 60);
+		stageTime = 3000;
 
-		stageFinished = false;
+		state = GameState.ongoing;
 	}
 
 	public void update(float delta) {
 
-		if (TimeUtils.timeSinceMillis(startTime) + pauseTime > stageTime)
-			stageFinished = true;
+		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
+			state = GameState.win;
 
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
 
-		background.update(delta);
 		spawnObjects(delta); // spawning objetcs like asteroids
 		updateObjects(delta); // update all objects
 
@@ -75,12 +60,8 @@ public class World {
 			colider.checkBulletCollision(objectArray);
 		} else if (!player.isAlive())
 		{
-			if (Gdx.input.isTouched())
-				game.setScreen(new LostScreen(game));
+			state = GameState.defeat;
 		}
-
-		if (stageFinished)
-			game.setScreen(new WinScreen(game));
 	}
 
 	private void updateObjects(float delta) {
@@ -155,21 +136,27 @@ public class World {
 		}
 
 		if (sleepTime[4] > Booster.getSpawnTime()) {
-			//objectArray.add(new Booster());
+			// objectArray.add(new Booster());
 			sleepTime[4] = 0;
 		}
-	}
-
-	public Background getBackground() {
-		return background;
 	}
 
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	public ArrayList<DynamicObject> getObjects()
 	{
 		return objectArray;
+	}
+
+	public GameState getState()
+	{
+		return state;
+	}
+	
+	public void setState(GameState state)
+	{
+		this.state = state;
 	}
 }

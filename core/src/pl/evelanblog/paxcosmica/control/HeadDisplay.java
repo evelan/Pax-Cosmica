@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class HeadDisplay {
 
-	Player player;
+	private Player player;
 
 	public HeadDisplay(Player player)
 	{

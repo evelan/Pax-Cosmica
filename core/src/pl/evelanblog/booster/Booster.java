@@ -31,4 +31,10 @@ public class Booster extends DynamicObject {
 	public static float getSpawnTime() {
 		return spawnTime;
 	}
+
+	@Override
+	public void kill() {
+		// TODO Auto-generated method stub
+		
+	}
 }

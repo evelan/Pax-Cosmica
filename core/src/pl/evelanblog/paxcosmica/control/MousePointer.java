@@ -9,13 +9,18 @@ public class MousePointer extends Rectangle {
 
 	public MousePointer()
 	{
-
+		setPosition(0, 0);
+		setSize(1);
 	}
 
-	public void set(float x, float y)
+	public float getX()
 	{
-		setPosition(x, y);
-		setSize(1);
+		return x;
+	}
+
+	public float getY()
+	{
+		return y;
 	}
 
 	public boolean overlaps(float x, float y, Button button)

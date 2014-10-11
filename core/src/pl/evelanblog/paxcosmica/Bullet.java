@@ -3,7 +3,7 @@ package pl.evelanblog.paxcosmica;
 import com.badlogic.gdx.Gdx;
 
 public class Bullet extends DynamicObject {
-	private boolean direction; //true - strza造 gracza, false - strza造 wroga
+	private boolean direction; // true - strza造 gracza, false - strza造 wroga
 
 	public Bullet(float x, float y, float speed, boolean direction, float damage) {
 		super(x, y, speed, 1, 0, damage, "bullet.png");
@@ -19,9 +19,19 @@ public class Bullet extends DynamicObject {
 		if (getX() < 0 || getX() > Gdx.graphics.getWidth())
 			live = false;
 	}
-	
+
 	public boolean getDirection()
 	{
 		return direction;
+	}
+
+	@Override
+	public void kill()
+	{
+		live = false;
+		Assets.playSound(Assets.hitSfx);
+		Assets.hitEffect.setPosition(getX(), getY() + (getHeight() / 2));
+		Assets.hitEffect.start();
+
 	}
 }

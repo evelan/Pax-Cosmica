@@ -93,6 +93,15 @@ public class Player extends DynamicObject {
 	
 	public boolean ableToShoot()
 	{
-		return (weaponPwr > 0);
+		return (weaponPwr > 0 && live == true);
+	}
+	
+	@Override
+	public void kill()
+	{
+		live = false;
+		Assets.playSound(Assets.explosionSfx);
+		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.explosionEffect.start();
 	}
 }

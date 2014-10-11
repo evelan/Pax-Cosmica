@@ -3,6 +3,7 @@ package pl.evelanblog.enemy;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Bullet;
 import pl.evelanblog.paxcosmica.DynamicObject;
+import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -13,7 +14,7 @@ public class Enemy extends DynamicObject {
 
 	private ParticleEffect engine;
 	private float bulletSpeed = 600f;
-	private static float spawnTime = 2f;
+	private static float spawnTime = 4f;
 	private float shootTime = 1f;
 	private float lastShoot = 0f;
 	private float startY;
@@ -82,5 +83,16 @@ public class Enemy extends DynamicObject {
 
 	public static float getSpawnTime() {
 		return spawnTime;
+	}
+	
+	@Override
+	public void kill()
+	{
+		live = false;
+		Assets.playSound(Assets.explosionSfx);
+		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.explosionEffect.start();
+		Stats.score += 10;
+		Stats.scrap += 4;
 	}
 }

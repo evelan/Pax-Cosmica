@@ -22,9 +22,6 @@ public class Collider {
 			if (obj.getBoundingRectangle().overlaps(player.getBoundingRectangle()))
 			{
 				if (obj instanceof Enemy || obj instanceof Asteroid) {
-					Assets.playSound(Assets.explosionSfx);
-					Assets.explosionEffect.setPosition(player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 2));
-					Assets.explosionEffect.start();
 					player.kill();
 				} else if (obj instanceof Booster) {
 					obj.kill();
@@ -33,22 +30,11 @@ public class Collider {
 					Bullet bullet = (Bullet) obj;
 					if (!bullet.getDirection())
 					{
-						Assets.playSound(Assets.hitSfx);
-						Assets.hitEffect.setPosition(obj.getX(), obj.getY() + (obj.getHeight() / 2));
-						Assets.hitEffect.start();
 						player.hurt(bullet.getImpactDamage());
 						obj.kill();
-
-						if (!player.isAlive()) {
-							Assets.playSound(Assets.explosionSfx);
-							Assets.explosionEffect.setPosition(player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 2));
-							Assets.explosionEffect.start();
-						}
 					}
-
 				}
 			}
-
 		}
 	}
 
@@ -57,26 +43,15 @@ public class Collider {
 		{
 			if (dynamicObject instanceof Bullet)
 			{
+				Bullet bullet = (Bullet) dynamicObject;
 				for (DynamicObject asteroid : array)
 				{
 					if (asteroid instanceof Asteroid)
 					{
 						// kolizja asteroidiy i pocisku
-						if (asteroid.getBoundingRectangle().overlaps(dynamicObject.getBoundingRectangle())) {
-							Assets.playSound(Assets.hitSfx);
-							Assets.hitEffect.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY()
-									+ (dynamicObject.getHeight() / 2));
-							Assets.hitEffect.start();
-							asteroid.hurt(dynamicObject.impactDamage);
-							dynamicObject.kill();
-
-							if (!asteroid.isAlive()) {
-								Assets.playSound(Assets.explosionSfx);
-								Assets.explosionEffect.setPosition(asteroid.getX() + (asteroid.getWidth() / 2), asteroid.getY() + (asteroid.getHeight() / 2));
-								Assets.explosionEffect.start();
-								Stats.score += 10;
-								Stats.scrap += 4;
-							}
+						if (asteroid.getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) {
+							asteroid.hurt(bullet.impactDamage);
+							bullet.kill();
 						}
 					}
 				}
@@ -85,29 +60,14 @@ public class Collider {
 				{
 					if (enemy instanceof Enemy)
 					{
-						Bullet bullet = (Bullet) dynamicObject;
 						// kolizja wroga i pocisku
-						if (enemy.getBoundingRectangle().overlaps(dynamicObject.getBoundingRectangle()) && bullet.getDirection()) {
-							Assets.playSound(Assets.hitSfx);
-							Assets.hitEffect.setPosition(dynamicObject.getX() + dynamicObject.getWidth(), dynamicObject.getY()
-									+ (dynamicObject.getHeight() / 2));
-							Assets.hitEffect.start();
-							enemy.hurt(dynamicObject.impactDamage);
-							//TODO: GameScreen.textArray.add(new FloatingText(dynamicObject.getX(), dynamicObject.getY(), "" + dynamicObject.getImpactDamage()));
-							dynamicObject.kill();
-
-							if (!enemy.isAlive()) {
-								Assets.playSound(Assets.explosionSfx);
-								Assets.explosionEffect.setPosition(enemy.getX() + (enemy.getWidth() / 2), enemy.getY() + (enemy.getHeight() / 2));
-								Assets.explosionEffect.start();
-								Stats.score += 10;
-								Stats.scrap += 4;
-							}
+						if (enemy.getBoundingRectangle().overlaps(bullet.getBoundingRectangle()) && bullet.getDirection()) {
+							enemy.hurt(bullet.impactDamage);
+							bullet.kill();
 						}
 					}
 				}
 			}
 		}
 	}
-
 }

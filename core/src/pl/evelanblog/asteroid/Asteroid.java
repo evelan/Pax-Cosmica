@@ -1,6 +1,8 @@
 package pl.evelanblog.asteroid;
 
+import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.DynamicObject;
+import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -24,14 +26,13 @@ public class Asteroid extends DynamicObject {
 		super(Gdx.graphics.getWidth(), 0f, 40f + (MathUtils.random(10) * 10), 2f, 0f, 200f, "asteroid_1.png");
 
 		startY = (MathUtils.random(0, Gdx.graphics.getHeight() - 64));
-		
+
 		particle = new ParticleEffect();
 		particle.load(Gdx.files.internal("data/asteroid.p"), Gdx.files.internal(""));
 		textureNum = MathUtils.random(2);
 		rotation = MathUtils.randomBoolean();
 		radius = MathUtils.random(5, 20);
-		
-		
+
 		getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		if (textureNum == 0)
@@ -69,5 +70,16 @@ public class Asteroid extends DynamicObject {
 	public static float getSpawnTime()
 	{
 		return spawnTime;
+	}
+
+	@Override
+	public void kill()
+	{
+		live = false;
+		Assets.playSound(Assets.explosionSfx);
+		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.explosionEffect.start();
+		Stats.score += 10;
+		Stats.scrap += 4;
 	}
 }
