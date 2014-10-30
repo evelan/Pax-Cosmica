@@ -46,12 +46,16 @@ public class Enemy extends DynamicObject {
 		radians += (deltaTime);
 
 		setX(getX() - speed * deltaTime);
-		setY((MathUtils.sin(radians) * radius) + 50 + startY);
+		
+		//protects enemy from getting out of screen (Y axis)
+		temp_y = (MathUtils.sin(radians) * radius) + 50 + startY;
+		if(temp_y > 0  &&  temp_y < Gdx.graphics.getHeight() - getHeight())
+			setY(temp_y);
 
 		engine.setPosition(getX() + getWidth() - 20, getY() + (getHeight() / 2));
 
 		if (getX() + getWidth() < 0)
-			live = false;
+			live = false;			
 	}
 
 	public void draw(SpriteBatch batch, float delta)

@@ -3,6 +3,7 @@ package pl.evelanblog.dynamicobjects;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.scenes.GameScreen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -39,7 +40,7 @@ public class Player extends DynamicObject {
 	}
 
 	public void setSpaceshipPosition(float x, float y)
-	{
+	{   
 		setPosition(x, y);
 		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 	}
@@ -66,8 +67,14 @@ public class Player extends DynamicObject {
 
 		if (getX() >= 0)
 		{
+			
 			setX(getX() + (GameScreen.getVelX() * deltaTime * speed));
-			setY(getY() + (GameScreen.getVelY() * deltaTime * speed));
+			
+			//protects player from getting out of screen (Y axis)
+			temp_y = getY() + (GameScreen.getVelY() * deltaTime * speed);
+			if(temp_y > 0  &&  temp_y < Gdx.graphics.getHeight() - getHeight())
+				setY(temp_y);
+			
 			Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		} else
 			setX(0);
