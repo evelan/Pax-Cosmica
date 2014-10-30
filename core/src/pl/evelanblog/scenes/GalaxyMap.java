@@ -28,7 +28,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 	// TODO: Crystal you can avoid
 
 	private final PaxCosmica game;
-	private Sprite background, player, dim;
+	private Sprite background, player, dimScreen;
 	private ArrayList<Planet> planets;
 	private Button attack, move, store, upgrade, exit;
 	private BitmapFont font;
@@ -46,7 +46,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 		store = new Button("buttons/storeButton.png");
 		upgrade = new Button(1060, 20, "buttons/upgradesButton.png");
 		exit = new Button(860, 20, "buttons/exitButton.png");
-		dim = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		dimScreen = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		destiny = new Vector2(-1, -1);
 		mousePointer = new MousePointer();
@@ -121,7 +121,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			dim.draw(game.getBatch(), dimValue);
+			dimScreen.draw(game.getBatch(), dimValue);
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class World {
 			sleepTime[i] = 0;
 
 		startTime = TimeUtils.millis();
-		stageTime = 3000;
+		stageTime = 60000;
 
 		state = GameState.ongoing;
 	}

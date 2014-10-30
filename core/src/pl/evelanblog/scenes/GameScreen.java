@@ -1,5 +1,7 @@
 package pl.evelanblog.scenes;
 
+import java.util.ArrayList;
+
 import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Enemy;
@@ -34,6 +36,8 @@ public class GameScreen implements Screen, InputProcessor {
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
 	private Rectangle mousePointer;
 	private Sprite dimScreen;
+	
+	public static ArrayList<Sprite> floatingText;
 
 	private static float velX = 0;
 	private static float velY = 0;
@@ -77,6 +81,8 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		background = new Background();
+		
+		floatingText = new ArrayList<Sprite>();
 	}
 
 	@Override
