@@ -11,7 +11,7 @@ public abstract class DynamicObject extends Sprite {
 	protected float speed;
 	protected float impactDamage;
 	protected float shield;
-
+	protected float temp_x, temp_y;
 	public DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
@@ -22,6 +22,8 @@ public abstract class DynamicObject extends Sprite {
 		this.impactDamage = impactDamage;
 		this.shield = shield;
 		this.hp = hp;
+		this.temp_x=0;
+		this.temp_y=0;
 	}
 
 	public void setTexture(String file)

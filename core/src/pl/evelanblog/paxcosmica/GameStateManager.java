@@ -1,7 +1,5 @@
 package pl.evelanblog.paxcosmica;
 
-import com.badlogic.gdx.Gdx;
-
 import pl.evelanblog.scenes.GalaxyMap;
 import pl.evelanblog.scenes.GameScreen;
 import pl.evelanblog.scenes.MainMenu;

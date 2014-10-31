@@ -52,7 +52,7 @@ public class World {
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
 
-		spawnObjects(delta); // spawning objetcs like asteroids
+		spawnObjects(delta); // spawning objects like asteroids
 		updateObjects(delta); // update all objects
 
 		if (player.isAlive()) {

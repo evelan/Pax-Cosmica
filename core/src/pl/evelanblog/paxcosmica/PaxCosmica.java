@@ -3,7 +3,6 @@ package pl.evelanblog.paxcosmica;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,7 +20,7 @@ public class PaxCosmica extends Game {
 		mousePointer = new MousePointer();
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.setToOrtho(false, 1280, 720);
 
 		gsm = new GameStateManager(this);
 		setScreen(GameStateManager.mainMenu);
