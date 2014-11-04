@@ -17,6 +17,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 	private Button exit;
 	private float scroll;
 	private float speed = 50;
+	
 
 	public CreditsScreen(final PaxCosmica game)
 	{
@@ -39,11 +40,9 @@ public class CreditsScreen implements Screen, InputProcessor {
 		scroll += speed * delta;
 
 		game.getBatch().begin();
-		font.draw(game.getBatch(), "Pax Cosmica", 200, scroll + 120);
-		font.draw(game.getBatch(), "Wykonanie", 200, scroll + 70);
-		font.draw(game.getBatch(), "Jakub Pomykala", 200, scroll + 50);
-		font.draw(game.getBatch(), "Umyj pazdzierz sukwo", 200, scroll+20);
-		font.draw(game.getBatch(), "Code destroyer: Dave", 200, scroll);
+		font.draw(game.getBatch(), "Pax Cosmica", 200, scroll + 80);
+		font.draw(game.getBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
+		font.draw(game.getBatch(), "Code destroyer: Dave", 200, scroll + 20);
 		exit.draw(game.getBatch());
 		game.getBatch().end();
 	}
