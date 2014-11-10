@@ -13,7 +13,8 @@ public class Player extends DynamicObject {
 	private float shootFrequency = 0.2f;
 	private Sprite shieldSprite;
 	public float shieldReloadLvl = 0;
-
+	private float temp_x, temp_y;
+	
 	public static float powerLvl = 4;
 	public static float shieldLvl = 1;
 	public static float hullLvl = 1;
@@ -75,25 +76,17 @@ public class Player extends DynamicObject {
 			}
 		}
 
-		bulletSpeed = 600f + (weaponPwr * 80);
-		
+		bulletSpeed = 600f + (weaponPwr * 80); //standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomem weaponPwr bedzie on przyspieszac razy 80
 
+		temp_y = getY() + (GameScreen.getVelY() * deltaTime * speed);
+		if(temp_y > 0 && temp_y < Gdx.graphics.getHeight() - getHeight())
+			setY(temp_y);
 		
-		if (getX() >= 0)
-		{
-			
-			setX(getX() + (GameScreen.getVelX() * deltaTime * speed));
-			
-			//protects player from getting out of screen (Y axis)
-			/* what is a beautiful code 
-			 * said no one ever, temp_y :D */
-			temp_y = getY() + (GameScreen.getVelY() * deltaTime * speed);
-			if(temp_y > 0  &&  temp_y < Gdx.graphics.getHeight() - getHeight())
-				setY(temp_y);
-			
-			Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
-		} else
-			setX(0);
+		temp_x = getX() + (GameScreen.getVelX() * deltaTime * speed);
+		if(temp_x > 0 && temp_x < Gdx.graphics.getWidth() - getWidth())
+			setX(temp_x);
+		
+		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		shieldSprite.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
 	}
 

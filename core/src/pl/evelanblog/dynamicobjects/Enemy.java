@@ -47,7 +47,8 @@ public class Enemy extends DynamicObject {
 
 		setX(getX() - speed * deltaTime);
 		
-		//protects enemy from getting out of screen (Y axis)
+		//protects enemy from getting out of screen (Y axis) 
+		//zrobi³bym to w ten sposób ¿e po prostu maksymalna wartosc sinusa nie moze byc tak duza zeby wychodzilo to poza ekran 
 		temp_y = (MathUtils.sin(radians) * radius) + 50 + startY;
 		if(temp_y > 0  &&  temp_y < Gdx.graphics.getHeight() - getHeight())
 			setY(temp_y);
