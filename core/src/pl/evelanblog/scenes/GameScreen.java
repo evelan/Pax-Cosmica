@@ -36,7 +36,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
 	private Rectangle mousePointer;
 	private Sprite dimScreen;
-	
+
 	public static ArrayList<Sprite> floatingText;
 
 	private static float velX = 0;
@@ -56,16 +56,16 @@ public class GameScreen implements Screen, InputProcessor {
 		knob.setPosition(defKnobPos.x, defKnobPos.y);
 
 		buttonA = new Button("buttonA.png");
-		buttonA.setPosition(1100, 160);
+		buttonA.setPosition(Gdx.graphics.getWidth() - buttonA.getWidth() - 60, 160);
 
 		buttonB = new Button("buttonB.png");
-		buttonB.setPosition(920, 32);
+		buttonB.setPosition(Gdx.graphics.getWidth() - buttonB.getWidth() - 160, 32);
 
 		powerButton = new Button("buttons/powerButton.png");
-		powerButton.setPosition(540, 20);
+		powerButton.setPosition((Gdx.graphics.getWidth() - powerButton.getWidth()) / 2, 20);
 
 		pauseButton = new Button("pauseButton.png");
-		pauseButton.setPosition(1200, Gdx.graphics.getHeight() - 50);
+		pauseButton.setPosition(Gdx.graphics.getWidth() - pauseButton.getWidth() - 20, Gdx.graphics.getHeight() - 50);
 
 		continueButton = new Button("buttons/continueButton.png");
 		continueButton.setPosition(540, 312);
@@ -81,7 +81,7 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		background = new Background();
-		
+
 		floatingText = new ArrayList<Sprite>();
 	}
 
