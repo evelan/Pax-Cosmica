@@ -52,26 +52,14 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
-		knob = new Button("knob.png");
-		knob.setPosition(defKnobPos.x, defKnobPos.y);
-
-		buttonA = new Button("buttonA.png");
-		buttonA.setPosition(Gdx.graphics.getWidth() - buttonA.getWidth() - 60, 160);
-
-		buttonB = new Button("buttonB.png");
-		buttonB.setPosition(Gdx.graphics.getWidth() - buttonB.getWidth() - 160, 32);
-
-		powerButton = new Button("buttons/powerButton.png");
-		powerButton.setPosition((Gdx.graphics.getWidth() - powerButton.getWidth()) / 2, 20);
-
-		pauseButton = new Button("pauseButton.png");
-		pauseButton.setPosition(Gdx.graphics.getWidth() - pauseButton.getWidth() - 20, Gdx.graphics.getHeight() - 50);
-
-		continueButton = new Button("buttons/continueButton.png");
-		continueButton.setPosition(540, 312);
-
-		exitButton = new Button("buttons/exitButton.png");
-		exitButton.setPosition(540, 380);
+		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "knob.png");
+		buttonA = new Button(true, 1600,256,256,256,"buttonA.png");
+		buttonB = new Button(true, 1472,0,256,256,"buttonB.png");
+		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
+		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(),"pauseButton.png");
+		continueButton = new Button(false, 640,540, 640, 192, "buttons/continueButton.png");
+		exitButton = new Button(false, 640,348, 640, 192,"buttons/exitButton.png");
+		
 
 		upPwr = new Button("up.png");
 		downPwr = new Button("down.png");
@@ -103,8 +91,8 @@ public class GameScreen implements Screen, InputProcessor {
 
 		for (DynamicObject obj : world.getObjects())
 		{
-			// TODO: spróbowaæ przekazaæ deltê inaczej do funkcji draw w Enemy,
-			// ¿eby móc daæ po prostu obj.draw(game.getBatch())
+			// TODO: sprÃ³bowaÄ‡ przekazaÄ‡ inaczej deltÄ™ do funkcji draw w Enemy,
+			//Å¼eby mÃ³c po prostu obj.draw(game.getBatch())
 			if (obj instanceof Enemy)
 				((Enemy) obj).draw(game.getBatch(), delta);
 			else if (obj instanceof Asteroid)
