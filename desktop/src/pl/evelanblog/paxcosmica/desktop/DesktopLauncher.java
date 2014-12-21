@@ -6,11 +6,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
+	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Pax Cosmica";
 		config.width = 1280;
-		config.height = 720;
+		config.height = 768;
 		config.vSyncEnabled = true;
 		config.resizable = false;
 		config.fullscreen = false;

@@ -41,6 +41,8 @@ public class Assets {
 	public static Texture exitButton;
 	public static Texture discardButton;
 	public static Texture applyButton;
+	public static Texture continueButton;
+	public static Texture powerButton;
 
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
@@ -97,9 +99,11 @@ public class Assets {
 		optionsButton = loadTexture("buttons/optionsButton.png");
 		creditsButton = loadTexture("buttons/creditsButton.png");
 		exitButton = loadTexture("buttons/exitButton.png");
+		continueButton = loadTexture("buttons/continueButton.png");
 		discardButton = loadTexture("buttons/discardButton.png");
 		applyButton = loadTexture("buttons/applyButton.png");
-
+		powerButton = loadTexture("buttons/powerButton.png");
+		
 		hitSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/hit.wav"));
 		shootSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/shoot.wav"));
 		explosionSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/explosion.wav"));

@@ -50,26 +50,13 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
-		knob = new Button("knob.png");
-		knob.setPosition(defKnobPos.x, defKnobPos.y);
-
-		buttonA = new Button("buttonA.png");
-		buttonA.setPosition(1100, 160);
-
-		buttonB = new Button("buttonB.png");
-		buttonB.setPosition(920, 32);
-
-		powerButton = new Button("buttons/powerButton.png");
-		powerButton.setPosition(540, 20);
-
-		pauseButton = new Button("pauseButton.png");
-		pauseButton.setPosition(1200, Gdx.graphics.getHeight() - 50);
-
-		continueButton = new Button("buttons/continueButton.png");
-		continueButton.setPosition(540, 312);
-
-		exitButton = new Button("buttons/exitButton.png");
-		exitButton.setPosition(540, 380);
+		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "knob.png");
+		buttonA = new Button(true, 1600, 256, 256, 256, "buttonA.png");
+		buttonB = new Button(true, 1472, 0, 256, 256, "buttonB.png");
+		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
+		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "pauseButton.png");
+		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
+		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
 
 		upPwr = new Button("up.png");
 		downPwr = new Button("down.png");

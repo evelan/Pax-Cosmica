@@ -26,7 +26,7 @@ public class Controller implements InputProcessor {
 	private boolean upgradeScreen = false;
 	private int hitPointer = -1;
 	private int knobPointer = -1;
-
+/* DAFUQ ?! Czemu trzymasz metody, które nic nie robią :o */
 	public Controller(final PaxCosmica game) {
 
 		this.game = game;
