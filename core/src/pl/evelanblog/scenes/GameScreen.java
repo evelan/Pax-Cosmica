@@ -2,9 +2,7 @@ package pl.evelanblog.scenes;
 
 import java.util.ArrayList;
 
-import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Enemy;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Background;
@@ -36,7 +34,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
 	private Rectangle mousePointer;
 	private Sprite dimScreen;
-	
+
 	public static ArrayList<Sprite> floatingText;
 
 	private static float velX = 0;
@@ -81,7 +79,7 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		background = new Background();
-		
+
 		floatingText = new ArrayList<Sprite>();
 	}
 
@@ -96,22 +94,16 @@ public class GameScreen implements Screen, InputProcessor {
 		} else if (world.getState() == GameState.win)
 		{
 			game.setScreen(GameStateManager.galaxyMap);
+		} else if (world.getState() == GameState.defeat)
+		{
+			exitButton.draw(game.getBatch());
 		}
 
 		game.getBatch().begin();
 		background.draw(game.getBatch(), delta);
 
 		for (DynamicObject obj : world.getObjects())
-		{
-			// TODO: spróbowaæ przekazaæ deltê inaczej do funkcji draw w Enemy,
-			// ¿eby móc daæ po prostu obj.draw(game.getBatch())
-			if (obj instanceof Enemy)
-				((Enemy) obj).draw(game.getBatch(), delta);
-			else if (obj instanceof Asteroid)
-				((Asteroid) obj).draw(game.getBatch(), delta);
-			else
-				obj.draw(game.getBatch());
-		}
+			obj.draw(game.getBatch(), delta);
 
 		if (world.getPlayer().isAlive())
 			world.getPlayer().draw(game.getBatch(), delta);
@@ -262,12 +254,10 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 
 		/*
-		 * TODO: if (!knobPressed) { if (knobArea.overlaps(mousePointerCircle))
-		 * { knob.setPosition(screenX - (knob.getWidth() / 2), screenY -
-		 * (knob.getHeight() / 2)); knobPressed = true; knobPointer = pointer;
-		 * velX = (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64;
-		 * velY = ((screenY - (knob.getHeight() / 2)) - defKnobPos.y) / 64; }
-		 * else { knobPressed = false; } }
+		 * TODO: if (!knobPressed) { if (knobArea.overlaps(mousePointerCircle)) { knob.setPosition(screenX -
+		 * (knob.getWidth() / 2), screenY - (knob.getHeight() / 2)); knobPressed = true; knobPointer = pointer; velX =
+		 * (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64; velY = ((screenY - (knob.getHeight() / 2)) -
+		 * defKnobPos.y) / 64; } else { knobPressed = false; } }
 		 */
 
 		// knob
@@ -389,15 +379,40 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if (keycode == Keys.A)
+		if (keycode == Keys.ENTER)
 			hit = true;
+
+		if (keycode == Keys.W)
+			velY = 1;
+
+		if (keycode == Keys.S)
+			velY = -1;
+
+		if (keycode == Keys.A)
+			velX = -1;
+
+		if (keycode == Keys.D)
+			velX = 1;
+
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (keycode == Keys.A)
+		if (keycode == Keys.ENTER)
 			hit = false;
+
+		if (keycode == Keys.W)
+			velY = 0;
+
+		if (keycode == Keys.S)
+			velY = 0;
+
+		if (keycode == Keys.A)
+			velX = 0;
+
+		if (keycode == Keys.D)
+			velX = 0;
 		return false;
 	}
 

@@ -23,21 +23,25 @@ public class Enemy extends DynamicObject {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
 		super(Gdx.graphics.getWidth(), 0, 80f + (MathUtils.random(6) * 10), 3f, 0f, 150f, "enemy.png");
 		shootTime += ((MathUtils.random(20)) / 10);
-		startY = MathUtils.random(0, 720);
-		radius = MathUtils.random(30, 100);
+		radius = MathUtils.random(30, 100); // amplituda, maks wychylenie
+		
+		startY = MathUtils.random(0, Gdx.graphics.getHeight() - radius); // pozycja w Y
+		// TODO maks apmlituda + pozycja Y nie moze byæ wiêksz/ mniejsza ni¿ pozycja ekrnu.
+
 		engine = new ParticleEffect();
 		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 	}
 
-	public Enemy(float y, float speed, float hp, float shield, float impactDamage, String texture) {
-		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);
-		shootTime += ((MathUtils.random(20)) / 10);
-		startY = MathUtils.random(0, 720);
-		radius = MathUtils.random(30, 100);
-		engine = new ParticleEffect();
-		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
-	}
+	//do dziedziczenia 
+//	public Enemy(float y, float speed, float hp, float shield, float impactDamage, String texture) {
+//		// pos x, pos y, speed , hp, shield, impactDamage, texture
+//		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);
+//		shootTime += ((MathUtils.random(20)) / 10);
+//		startY = MathUtils.random(0, 720);
+//		radius = MathUtils.random(30, 100);
+//		engine = new ParticleEffect();
+//		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
+//	}
 
 	public void update(float deltaTime) {
 		if (deltaTime > 0.1f)
@@ -46,17 +50,12 @@ public class Enemy extends DynamicObject {
 		radians += (deltaTime);
 
 		setX(getX() - speed * deltaTime);
-		
-		//protects enemy from getting out of screen (Y axis) 
-		//zrobi³bym to w ten sposób ¿e po prostu maksymalna wartosc sinusa nie moze byc tak duza zeby wychodzilo to poza ekran 
-		temp_y = (MathUtils.sin(radians) * radius) + 50 + startY;
-		if(temp_y > 0  &&  temp_y < Gdx.graphics.getHeight() - getHeight())
-			setY(temp_y);
+		setY((MathUtils.sin(radians) * radius) + 50 + startY);
 
 		engine.setPosition(getX() + getWidth() - 20, getY() + (getHeight() / 2));
 
 		if (getX() + getWidth() < 0)
-			live = false;			
+			live = false;
 	}
 
 	public void draw(SpriteBatch batch, float delta)
@@ -87,7 +86,7 @@ public class Enemy extends DynamicObject {
 	public static float getSpawnTime() {
 		return spawnTime;
 	}
-	
+
 	@Override
 	public void kill()
 	{
