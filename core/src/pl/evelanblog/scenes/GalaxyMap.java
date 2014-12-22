@@ -44,8 +44,8 @@ public class GalaxyMap implements Screen, InputProcessor {
 		attack = new Button("buttons/attackButton.png");
 		move = new Button("buttons/moveButton.png");
 		store = new Button("buttons/storeButton.png");
-		upgrade = new Button(1060, 20, "buttons/upgradesButton.png");
-		exit = new Button(860, 20, "buttons/exitButton.png");
+		upgrade = new Button(false, 1470, 116, 400, 96, "buttons/upgradesButton.png");
+		exit = new Button(false, 1470, 20, 400, 96, "buttons/exitButton.png");
 		dimScreen = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		destiny = new Vector2(-1, -1);

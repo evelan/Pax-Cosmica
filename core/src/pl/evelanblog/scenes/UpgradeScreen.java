@@ -63,7 +63,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		font.draw(game.getBatch(), "Cost: " + cost, x, level * 50 + 250);
 
 		if (hover != -1) {
-			upgrade.setPosition(hover, 100);
+			upgrade.setPosition(hover, 10);
 			upgrade.draw(game.getBatch());
 		}
 
@@ -77,9 +77,9 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 
-		apply = new Button(1060, 20, "buttons/applyButton.png");
-		discard = new Button(860, 20, "buttons/discardButton.png");
-		upgrade = new Button("upgrade_button.png");
+		apply = new Button(false, 1470, 196, 400, 96, "buttons/applyButton.png");
+		discard = new Button(false, 1470, 100, 400, 96, "buttons/discardButton.png");
+		upgrade = new Button(false, 1470, 0, 400, 100, "upgrade_button.png");
 
 		power = 100;
 		hull = 300;

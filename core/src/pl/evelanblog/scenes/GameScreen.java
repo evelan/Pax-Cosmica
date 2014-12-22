@@ -53,7 +53,7 @@ public class GameScreen implements Screen, InputProcessor {
 		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "knob.png");
 		buttonA = new Button(true, 1600, 256, 256, 256, "buttonA.png");
 		buttonB = new Button(true, 1472, 0, 256, 256, "buttonB.png");
-		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
+		powerButton = new Button(false, 760, 20, 400, 96, "buttons/powerButton.png");
 		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "pauseButton.png");
 		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
 		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
