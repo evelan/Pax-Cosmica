@@ -10,8 +10,9 @@ public abstract class DynamicObject extends Sprite {
 	protected float hp;
 	protected boolean live;
 	protected float speed;
-	protected float impactDamage;
+	protected float impactDamage; // im wyższa tym większe obrażenia będą zadawane przy uderzeniu
 	protected float shield;
+
 	public DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
@@ -49,6 +50,12 @@ public abstract class DynamicObject extends Sprite {
 		return shield;
 	}
 
+	/**
+	 * Uszkadza obiekt, jak HP spadnie poniżej 0 to umiera
+	 * 
+	 * @param damage
+	 *            ilość zadawanych obrażeń
+	 */
 	public void hurt(float damage) {
 
 		if (shield > 0) {

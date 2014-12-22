@@ -9,6 +9,10 @@ import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Enemy;
 import pl.evelanblog.dynamicobjects.Player;
 
+/**
+ * bardzo brzydkie sprawdzanie kolizji, szkoda czasu na zagłębianie się w to skoro działa 
+ */
+
 public class Collider {
 
 	private Player player;
@@ -18,6 +22,10 @@ public class Collider {
 		this.player = player;
 	}
 
+	/**
+	 * Sprawdza czy jakiś inny obiekt koliduje z graczem
+	 * @param array
+	 */
 	public void checkPlayerCollision(ArrayList<DynamicObject> array) {
 
 		for (DynamicObject obj : array)
@@ -41,6 +49,10 @@ public class Collider {
 		}
 	}
 
+	/**
+	 * Sprawdza czy strzały przeciwnika lub gracza kolidują z czymś
+	 * @param array
+	 */
 	public void checkBulletCollision(ArrayList<DynamicObject> array) {
 		for (DynamicObject dynamicObject : array)
 		{

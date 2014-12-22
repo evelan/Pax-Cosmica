@@ -18,16 +18,23 @@ public class World {
 
 	private Collider colider;
 	private Player player;
-	private ArrayList<DynamicObject> objectArray;
+	private ArrayList<DynamicObject> objectArray; // wszystkie ruszające się obiekty w grze, TODO: przydałoby się
+													// zamienić na hashsety bo szybsze
 
 	public static enum GameState {
-		ongoing, win, defeat, menu, powermanager, paused
+		ongoing, // gra się toczy i jest elegancko, szczelanie etc
+		win,
+		defeat,
+		menu,
+		powermanager,
+		paused
 	}
 
 	private GameState state;
 	private long startTime;
 	private long stageTime;
-	private float[] sleepTime = new float[6];
+	private float[] sleepTime = new float[6]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się
+												// pojawiać na ekranie, asteroidy etc
 
 	public World() {
 		objectArray = new ArrayList<DynamicObject>();
@@ -59,9 +66,7 @@ public class World {
 			colider.checkPlayerCollision(objectArray);
 			colider.checkBulletCollision(objectArray);
 		} else if (!player.isAlive())
-		{
 			state = GameState.defeat;
-		}
 	}
 
 	private void updateObjects(float delta) {
@@ -136,7 +141,7 @@ public class World {
 		}
 
 		if (sleepTime[4] > Booster.getSpawnTime()) {
-			// objectArray.add(new Booster());
+			// objectArray.add(new Booster()); // wyłączyłem dodawanie boosterów, bo tak
 			sleepTime[4] = 0;
 		}
 	}
@@ -154,7 +159,7 @@ public class World {
 	{
 		return state;
 	}
-	
+
 	public void setState(GameState state)
 	{
 		this.state = state;

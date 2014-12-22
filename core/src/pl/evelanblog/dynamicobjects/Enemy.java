@@ -32,7 +32,7 @@ public class Enemy extends DynamicObject {
 		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 	}
 
-	//do dziedziczenia 
+	//do dziedziczenia, to ja napisa³em? ~Kuba
 //	public Enemy(float y, float speed, float hp, float shield, float impactDamage, String texture) {
 //		// pos x, pos y, speed , hp, shield, impactDamage, texture
 //		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);

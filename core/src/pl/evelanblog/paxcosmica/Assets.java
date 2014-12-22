@@ -86,14 +86,14 @@ public class Assets {
 		upgradeBar = loadTexture("power_bar.png");
 		down = loadTexture("down.png");
 		up = loadTexture("up.png");
-		upgradeBtn = loadTexture("upgrade_button.png");
+		upgradeBtn = loadTexture("buttons/upgrade_button.png");
 
 		planet = loadTexture("planet_1.png");
 		mainmenu = loadTexture("mainmenu.png");
 		paxCosmica = loadTexture("pax_cosmica.png");
 
-		pauseButton = loadTexture("pauseButton.png");
-		unpauseButton = loadTexture("unpauseButton.png");
+		pauseButton = loadTexture("buttons/pauseButton.png");
+		unpauseButton = loadTexture("buttons/unpauseButton.png");
 
 		playButton = loadTexture("buttons/playButton.png");
 		optionsButton = loadTexture("buttons/optionsButton.png");

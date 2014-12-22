@@ -15,13 +15,13 @@ public class HeadDisplay {
 		this.player = player;
 	}
 
-	public void drawHullBar(SpriteBatch batch)
+	public void drawHullBar(SpriteBatch batch) // rysuje paski zdrowia w lewym górnym rogu
 	{
 		for (int i = 0; i < player.getHealth(); i++)
 			batch.draw(Assets.hullBar, 10 * 20, Gdx.graphics.getHeight() - 20);
 	}
 
-	public void drawShieldBar(SpriteBatch batch)
+	public void drawShieldBar(SpriteBatch batch) // rysuje paski osłony w lewym górnym rogu
 	{
 		for (int i = 0; i < player.getShield(); i++)
 			batch.draw(Assets.hullBar, 10 * 20, Gdx.graphics.getHeight() - 120);

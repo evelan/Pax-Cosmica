@@ -1,7 +1,5 @@
 package pl.evelanblog.scenes;
 
-import java.util.ArrayList;
-
 import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
@@ -35,8 +33,6 @@ public class GameScreen implements Screen, InputProcessor {
 	private Rectangle mousePointer;
 	private Sprite dimScreen;
 
-	public static ArrayList<Sprite> floatingText;
-
 	private static float velX = 0;
 	private static float velY = 0;
 	private static boolean hit = false;
@@ -54,7 +50,7 @@ public class GameScreen implements Screen, InputProcessor {
 		buttonA = new Button(true, 1600, 256, 256, 256, "buttonA.png");
 		buttonB = new Button(true, 1472, 0, 256, 256, "buttonB.png");
 		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
-		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "pauseButton.png");
+		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/pauseButton.png");
 		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
 		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
 
@@ -66,8 +62,6 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		background = new Background();
-
-		floatingText = new ArrayList<Sprite>();
 	}
 
 	@Override
@@ -75,20 +69,19 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
 			background.update(delta);
 			world.update(delta);
-		} else if (world.getState() == GameState.win)
-		{
+		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 			game.setScreen(GameStateManager.galaxyMap);
-		} else if (world.getState() == GameState.defeat)
-		{
+		else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
 			exitButton.draw(game.getBatch());
-		}
 
 		game.getBatch().begin();
 		background.draw(game.getBatch(), delta);
 
+		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
 		for (DynamicObject obj : world.getObjects())
 			obj.draw(game.getBatch(), delta);
 
@@ -98,6 +91,7 @@ public class GameScreen implements Screen, InputProcessor {
 		Assets.hitEffect.draw(game.getBatch(), delta);
 		Assets.explosionEffect.draw(game.getBatch(), delta);
 
+		// te dwie pętle renderują paski osłony i HP
 		for (int i = 0; i < world.getPlayer().getHealth(); i++)
 			game.getBatch().draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
 
@@ -172,6 +166,7 @@ public class GameScreen implements Screen, InputProcessor {
 	public void show() {
 		world = new World();
 
+		//pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
 		power = 100;
 		hull = 300;
 		shield = 500;
@@ -239,13 +234,6 @@ public class GameScreen implements Screen, InputProcessor {
 			world.setState(GameState.defeat);
 			game.setScreen(GameStateManager.mainMenu);
 		}
-
-		/*
-		 * TODO: if (!knobPressed) { if (knobArea.overlaps(mousePointerCircle)) { knob.setPosition(screenX -
-		 * (knob.getWidth() / 2), screenY - (knob.getHeight() / 2)); knobPressed = true; knobPointer = pointer; velX =
-		 * (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64; velY = ((screenY - (knob.getHeight() / 2)) -
-		 * defKnobPos.y) / 64; } else { knobPressed = false; } }
-		 */
 
 		// knob
 		if (!knobPressed) {

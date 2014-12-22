@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 
 public class MousePointer extends Rectangle {
+	private static final long serialVersionUID = 3373269279037859745L;
 
 	public MousePointer()
 	{
