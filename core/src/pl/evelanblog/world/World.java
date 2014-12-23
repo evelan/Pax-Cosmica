@@ -7,9 +7,10 @@ import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Enemy;
+import pl.evelanblog.dynamicobjects.Fighter;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Collider;
+import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
 
 import com.badlogic.gdx.utils.TimeUtils;
@@ -52,8 +53,11 @@ public class World {
 
 	public void update(float delta) {
 
-		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
-			state = GameState.win;
+		// if (TimeUtils.timeSinceMillis(startTime) > stageTime)
+		// state = GameState.win;
+
+		if(Stats.kills > 10)
+		 state = GameState.win;
 
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
@@ -75,9 +79,9 @@ public class World {
 		ListIterator<DynamicObject> itr = objectArray.listIterator();
 		while (itr.hasNext()) {
 			DynamicObject obj = itr.next();
-			if (obj instanceof Enemy)
+			if (obj instanceof Fighter)
 			{
-				Enemy e = (Enemy) obj;
+				Fighter e = (Fighter) obj;
 				if (e.isAlive())
 					e.update(delta);
 				else
@@ -120,8 +124,8 @@ public class World {
 			sleepTime[1] = 0;
 		}
 
-		if (sleepTime[2] > Enemy.getSpawnTime()) {
-			objectArray.add(new Enemy());
+		if (sleepTime[2] > Fighter.getSpawnTime()) {
+			objectArray.add(new Fighter());
 			sleepTime[2] = 0;
 		}
 
@@ -129,9 +133,9 @@ public class World {
 		while (iter.hasNext())
 		{
 			DynamicObject obj = iter.next();
-			if (obj instanceof Enemy)
+			if (obj instanceof Fighter)
 			{
-				Enemy e = (Enemy) obj;
+				Fighter e = (Fighter) obj;
 				e.setLastShoot(e.getLastShoot() + delta);
 				if (e.getLastShoot() > e.getShootTime()) {
 					iter.add(e.shoot());

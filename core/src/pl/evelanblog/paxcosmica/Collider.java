@@ -6,7 +6,7 @@ import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Enemy;
+import pl.evelanblog.dynamicobjects.Fighter;
 import pl.evelanblog.dynamicobjects.Player;
 
 /**
@@ -32,7 +32,7 @@ public class Collider {
 		{
 			if (obj.getBoundingRectangle().overlaps(player.getBoundingRectangle()))
 			{
-				if (obj instanceof Enemy || obj instanceof Asteroid) {
+				if (obj instanceof Fighter || obj instanceof Asteroid) {
 					player.kill();
 				} else if (obj instanceof Booster) {
 					obj.kill();
@@ -73,7 +73,7 @@ public class Collider {
 
 				for (DynamicObject enemy : array)
 				{
-					if (enemy instanceof Enemy)
+					if (enemy instanceof Fighter)
 					{
 						// kolizja wroga i pocisku
 						if (enemy.getBoundingRectangle().overlaps(bullet.getBoundingRectangle()) && bullet.getDirection()) {

@@ -1,7 +1,7 @@
 package pl.evelanblog.paxcosmica;
 
 public class Stats {
-	
+
 	public static int score = 0;
 	public static int scrap = 0;
 	public static float fuel = 100f;
@@ -9,6 +9,7 @@ public class Stats {
 
 	public static void clear()
 	{
+		kills = 0;
 		score = 0;
 		scrap = 0;
 		fuel = 100f;

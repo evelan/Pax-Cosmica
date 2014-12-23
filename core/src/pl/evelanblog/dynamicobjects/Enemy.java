@@ -8,40 +8,22 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Enemy extends DynamicObject {
+public abstract class Enemy extends DynamicObject {
 
-	private ParticleEffect engine;
-	private float bulletSpeed = 600f;
-	private static float spawnTime = 4f;
-	private float shootTime = 1f;
-	private float lastShoot = 0f;
-	private float startY;
-	private float radians = 0;
-	private float radius = 0;
+	protected ParticleEffect engine;
+	protected float bulletSpeed;
+	protected float shootTime; // czÄ™stotliwoÅ›Ä‡ strzelania
+	protected float lastShoot = 0f;
+	protected float startY;
+	protected float radians = 0;
+	protected float radius = 0;
+	public static float spawnTime; // co jaki czas ma siÄ™ spawnowaÄ‡
 
-	public Enemy() {
-		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(Gdx.graphics.getWidth(), 0, 80f + (MathUtils.random(6) * 10), 3f, 0f, 150f, "enemy.png");
-		shootTime += ((MathUtils.random(20)) / 10);
-		radius = MathUtils.random(30, 100); // amplituda, maks wychylenie
-		
-		startY = MathUtils.random(0, Gdx.graphics.getHeight() - radius); // pozycja w Y
-		// TODO maks apmlituda + pozycja Y nie moze byæ wiêksz/ mniejsza ni¿ pozycja ekrnu.
-
-		engine = new ParticleEffect();
-		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
+	public Enemy(float y, float speed, float bulletSpeed, float hp, float shield, float impactDamage, String texture) {
+		// DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String file)
+		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);
+		this.bulletSpeed = bulletSpeed;
 	}
-
-	//do dziedziczenia, to ja napisa³em? ~Kuba
-//	public Enemy(float y, float speed, float hp, float shield, float impactDamage, String texture) {
-//		// pos x, pos y, speed , hp, shield, impactDamage, texture
-//		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);
-//		shootTime += ((MathUtils.random(20)) / 10);
-//		startY = MathUtils.random(0, 720);
-//		radius = MathUtils.random(30, 100);
-//		engine = new ParticleEffect();
-//		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
-//	}
 
 	public void update(float deltaTime) {
 		if (deltaTime > 0.1f)
@@ -83,18 +65,19 @@ public class Enemy extends DynamicObject {
 		return shootTime;
 	}
 
-	public static float getSpawnTime() {
-		return spawnTime;
-	}
-
 	@Override
 	public void kill()
 	{
+		Stats.kills++;
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
 		Assets.explosionEffect.start();
 		Stats.score += 10;
 		Stats.scrap += 4;
+	}
+
+	public static float getSpawnTime() {
+		return spawnTime;
 	}
 }
