@@ -1,13 +1,17 @@
 package pl.evelanblog.paxcosmica;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Planet extends Sprite {
+public class Planet extends Actor {
 
+	private Sprite sprite;
 	private float x;
 	private float y;
 	private float count;
@@ -20,15 +24,16 @@ public class Planet extends Sprite {
 	private String name;
 	private boolean discovered = false;
 	private BitmapFont font;
+	private MyFont tekst;
 
-	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String name)
+	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String name, String filename)
 	{
-		super(Assets.galaxyPlanet);
-		setBounds(x, y, Assets.galaxyPlanet.getWidth(), Assets.galaxyPlanet.getHeight());
+		setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
+		getSprite().setBounds(x, y, Assets.galaxyPlanet.getWidth(), Assets.galaxyPlanet.getHeight());
 
-		getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		setScale(size);
-		setOriginCenter();
+		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		getSprite().setScale(size);
+		getSprite().setOriginCenter();
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -37,7 +42,7 @@ public class Planet extends Sprite {
 		this.store = store;
 		this.name = name;
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
-
+		tekst = new MyFont(font, portal ? "P:" + name : name, getX(), getY());
 	}
 
 	public float getX()
@@ -68,20 +73,20 @@ public class Planet extends Sprite {
 				count += speed;
 		}
 
-		setRotation(count);
+		getSprite().setRotation(count);
 	}
-
-	public void draw(SpriteBatch batch, float delta)
-	{
-		draw(batch);
-		setScale(size);
-		font.draw(batch, portal ? "P:" + name : name, getX(), getY());
+	@Override
+    public void draw(Batch batch, float alpha){
+		getSprite().setScale(size);
+		
 		if (hover)
 		{
-			setScale(size + 0.2f);
+			getSprite().setScale(size + 0.2f);
 			drawOptions();
 		}
-	}
+		getSprite().draw(batch);
+		tekst.draw(batch, alpha);
+    }
 
 	public boolean isDiscovered()
 	{
@@ -110,5 +115,13 @@ public class Planet extends Sprite {
 
 	private void drawOptions()
 	{
+	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 }

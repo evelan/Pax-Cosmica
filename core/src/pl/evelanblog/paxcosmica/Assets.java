@@ -19,8 +19,28 @@ public class Assets {
 	public static Texture hullBar;
 	public static Texture shieldBar;
 	public static Texture bubbleShield;
+	public static Texture leftArrow;
+	public static Texture rightArrow;
 	
 	public static Texture galaxyPlanet;
+	public static Texture firePlanet;
+	public static Texture icePlanet;
+	public static Texture goldPlanet;
+	public static Texture purplePlanet;
+	public static Texture marsPlanet;
+	public static Texture mars2Planet;
+	public static Texture mars3Planet;
+	public static Texture fire2Planet;
+	public static Texture fire3Planet;
+	public static Texture coldPlanet;
+	public static Texture cold2Planet;
+	public static Texture neptunePlanet;
+	public static Texture staturnPlanet;
+	public static Texture venusPlanet;
+	public static Texture rockPlanet;
+	public static Texture snowPlanet;
+	
+	
 
 	public static Texture planet;
 	public static Texture mainmenu;
@@ -82,13 +102,15 @@ public class Assets {
 		bubbleShield = loadTexture("bubble_shield.png");
 		dim = loadTexture("dim.png");
 		
-		galaxyPlanet = loadTexture("galaxy_planet.png");
+		firePlanet = loadTexture("planet/fire.png");
+		icePlanet = loadTexture("planet/ice.png");
+		galaxyPlanet = loadTexture("planet/galaxy_planet.png");
 		upgradeBar = loadTexture("power_bar.png");
 		down = loadTexture("down.png");
 		up = loadTexture("up.png");
 		upgradeBtn = loadTexture("upgrade_button.png");
 
-		planet = loadTexture("planet_1.png");
+		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("mainmenu.png");
 		paxCosmica = loadTexture("pax_cosmica.png");
 

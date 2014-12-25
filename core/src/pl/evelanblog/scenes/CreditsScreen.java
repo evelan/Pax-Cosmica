@@ -22,7 +22,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 	public CreditsScreen(final PaxCosmica game)
 	{
 		this.game = game;
-		exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
+		exit = new Button(1230, 50, 640, 192, "buttons/exitButton.png");
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 
 	}

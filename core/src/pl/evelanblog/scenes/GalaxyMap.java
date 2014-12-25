@@ -1,11 +1,12 @@
 package pl.evelanblog.scenes;
 
-import java.util.ArrayList;
-
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
+import pl.evelanblog.paxcosmica.MyButton;
+import pl.evelanblog.paxcosmica.MyFont;
+import pl.evelanblog.paxcosmica.MySprite;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Planet;
 import pl.evelanblog.paxcosmica.Stats;
@@ -17,7 +18,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -28,92 +28,81 @@ public class GalaxyMap implements Screen, InputProcessor {
 	// TODO: Crystal you can avoid
 
 	private final PaxCosmica game;
-	private Sprite background, player, dimScreen;
-	private ArrayList<Planet> planets;
-	private Button attack, move, store, upgrade, exit;
+	private Sprite player, dimScreen;
+	private MySprite background;
+	private MyButton attack, move, store, upgrade, exit, left, right;
+	private MyFont score, scrap, fuel;
 	private BitmapFont font;
 	private Vector2 destiny;
 	private Rectangle mousePointer;
+	private Planet fire, ice;
 	private float dimValue;
 	private boolean portal = false;
-	private int offsetX = 0, offsetY = 0;
 
 	public GalaxyMap(final PaxCosmica game) {
 		this.game = game;
-
-		attack = new Button("buttons/attackButton.png");
-		move = new Button("buttons/moveButton.png");
-		store = new Button("buttons/storeButton.png");
-		upgrade = new Button(false, 1470, 116, 400, 96, "buttons/upgradesButton.png");
-		exit = new Button(false, 1470, 20, 400, 96, "buttons/exitButton.png");
+		
+		background = new MySprite(Assets.mainmenu);
+		
+		game.getHud().addActor(background);
+		
+		attack = new MyButton("buttons/attackButton.png");
+		move = new MyButton("buttons/moveButton.png");
+		store = new MyButton("buttons/storeButton.png");
+		upgrade = new MyButton(1520, 116, 400, 96, "buttons/upgradesButton.png");
+		exit = new MyButton(1520, 20, 400, 96, "buttons/exitButton.png");
 		dimScreen = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+		left = new MyButton(0,540,128,"left.png");
+		right = new MyButton(1792,540,128,"right.png");
+		game.getHud().addActor(left);
+		game.getHud().addActor(right);
+		game.getHud().addActor(upgrade);
+		game.getHud().addActor(exit);
+		
+		
 		destiny = new Vector2(-1, -1);
 		mousePointer = new MousePointer();
 		mousePointer.setSize(1);
 
-		planets = new ArrayList<Planet>();
 
-		for (int i = 0; i < 10; i++) {
-			planets.add(new Planet(MathUtils.random(20 + offsetX, 60 + offsetX),
-					MathUtils.random(50 + offsetY, 600 + offsetY),
-					MathUtils.random(0.6f, 1f),
-					MathUtils.random(0.05f, 0.5f),
-					MathUtils.randomBoolean(),
-					MathUtils.randomBoolean(0.1f),
-					"Planet "));
-			offsetX += 100;
-		}
-
-		player = new Player(planets.get(0).getX(), planets.get(0).getY());
+		player = new Player(0, 0);
 		player.setTexture(Assets.spaceship);
 		player.setScale(0.7f);
 
-		background = new Sprite(Assets.mainmenu);
-		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
-
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		
+		score = new MyFont(font, "Score: "+Stats.score, 100, 1000);
+		scrap = new MyFont(font, "Scrap: "+Stats.scrap, 300, 1000);
+		fuel = new MyFont(font, "Fuel: "+Stats.fuel, 500, 1000);
+		
+		game.getHud().addActor(score);
+		game.getHud().addActor(scrap);
+		game.getHud().addActor(fuel);
+		
+		ice = new Planet(200, 200, 4, (float)0.05, true, false, "Ice", "planet/ice.png");
+		fire = new Planet(600, 540, 4, (float)0.10, true, false, "Fire", "planet/fire.png");
+		game.getScene().addActor(ice);
+		game.getScene().addActor(fire);
+		
+		game.getScene().addActor(attack);
+		game.getScene().addActor(move);
+		game.getScene().addActor(store);
+		attack.setVisible(false);
+		move.setVisible(false);
+		store.setVisible(false);
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		for (Planet obj : planets)
-			obj.update();
-
-		game.getCamera().update();
-
-		game.getBatch().begin();
-		background.draw(game.getBatch());
-		for (Planet obj : planets)
-		{
-			obj.draw(game.getBatch(), 0);
-			if (obj.isHover())
-			{
-				attack.setPosition(obj.getX(), obj.getY() + 60);
-				attack.draw(game.getBatch());
-
-				move.setPosition(obj.getX(), obj.getY() + 20);
-				move.draw(game.getBatch());
-
-				store.setPosition(obj.getX(), obj.getY() - 20);
-				if (obj.isStore())
-					store.draw(game.getBatch());
-			}
-		}
-
-		player.draw(game.getBatch());
-
-		upgrade.draw(game.getBatch());
-		exit.draw(game.getBatch());
-
-		font.draw(game.getBatch(), "Score: " + Stats.score, 100, 710);
-		font.draw(game.getBatch(), "Scrap: " + Stats.scrap, 300, 710);
-		font.draw(game.getBatch(), "Fuel: " + Stats.fuel, 500, 710);
+		game.getHud().act(Gdx.graphics.getDeltaTime());
+		game.getHud().draw();	
+		ice.update();
+		fire.update();
+		game.getScene().draw();
 		dimScreen(delta);
-		game.getBatch().end();
+		
 	}
 
 	private void dimScreen(float delta) {
@@ -173,38 +162,46 @@ public class GalaxyMap implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 		game.getMouse().setPosition(screenX, screenY);
 
-		for (Planet obj : planets)
+//zrobić pętlę na liście planet ... rozwiazanie na szybko do sprawdzenia czy dzialalo :P
+		if (game.getMouse().overlaps(ice.getSprite().getBoundingRectangle()))
 		{
-			obj.reset();
-			if (game.getMouse().overlaps(obj.getBoundingRectangle()))
-				obj.setHover();
+			attack.getButton().setPosition(ice.getX()-ice.getSprite().getWidth(), ice.getY());
+			attack.setVisible(true);
+			fire.reset();
+			ice.setHover();
 		}
-
-		if (game.getMouse().overlaps(attack.getBoundingRectangle()) && !portal)
+		if (game.getMouse().overlaps(fire.getSprite().getBoundingRectangle()))
 		{
-
-			for (Planet obj : planets)
-				obj.reset();
-
+			attack.getButton().setPosition(fire.getX()-fire.getSprite().getWidth(), fire.getY());
+			attack.setVisible(true);
+			ice.reset();
+			fire.setHover();
+		}
+//////////////////////////////////////////////////////////////////////
+		if (game.getMouse().overlaps(attack.getButton().getBoundingRectangle()) && !portal)
+		{
 			destiny.set(game.getMouse().x, game.getMouse().y);
 			player.setPosition(destiny.x, destiny.y);
 			game.setScreen(GameStateManager.gameScreen);
 
-		} else if (game.getMouse().overlaps(move.getBoundingRectangle())) {
-
-			for (Planet obj : planets)
-				obj.reset();
-
+		}else if(game.getMouse().overlaps(left.getButton().getBoundingRectangle())){
+			game.getScene().getCamera().position.x-=1920;
+		}
+		else if(game.getMouse().overlaps(right.getButton().getBoundingRectangle())){
+			game.getScene().getCamera().position.x+=1920;
+		}
+		
+		else if (game.getMouse().overlaps(move.getButton().getBoundingRectangle())) {
 			destiny.set(game.getMouse().x, game.getMouse().y);
 			player.setPosition(destiny.x, destiny.y);
-		} else if (game.getMouse().overlaps(store.getBoundingRectangle()))
+		} else if (game.getMouse().overlaps(store.getButton().getBoundingRectangle()))
 		{
 			// TODO: displayStore();
-		} else if (game.getMouse().overlaps(upgrade.getBoundingRectangle()))
+		} else if (game.getMouse().overlaps(upgrade.getButton().getBoundingRectangle()))
 		{
 			game.setScreen(GameStateManager.upgradeScreen);
 			dispose();
-		} else if (game.getMouse().overlaps(exit.getBoundingRectangle()))
+		} else if (game.getMouse().overlaps(exit.getButton().getBoundingRectangle()))
 		{
 			game.setScreen(GameStateManager.mainMenu);
 			dispose();

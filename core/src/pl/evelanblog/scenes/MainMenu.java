@@ -10,10 +10,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class MainMenu implements Screen, InputProcessor {
@@ -79,7 +77,7 @@ public class MainMenu implements Screen, InputProcessor {
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
 			Stats.clear();
 			Assets.track1.stop();
-			game.setScreen(GameStateManager.gameScreen);
+			game.setScreen(GameStateManager.galaxyMap);
 			dispose();
 		}
 		
@@ -124,10 +122,10 @@ public class MainMenu implements Screen, InputProcessor {
 		paxCosmica = new Sprite(Assets.paxCosmica);
 		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
 		
-		play = new Button(false, 1440, 602, 480, 144, "buttons/playButton.png");
-		options = new Button(false, 1440, 458, 480, 144, "buttons/optionsButton.png");
-		credits = new Button(false, 1440, 314, 480, 144, "buttons/creditsButton.png");
-		exit = new Button(false, 1440, 170, 480, 144, "buttons/exitButton.png");
+		play = new Button(1440, 602, 480, 144, "buttons/playButton.png");
+		options = new Button(1440, 458, 480, 144, "buttons/optionsButton.png");
+		credits = new Button(1440, 314, 480, 144, "buttons/creditsButton.png");
+		exit = new Button(1440, 170, 480, 144, "buttons/exitButton.png");
 
 		Gdx.input.setInputProcessor(this);
 		Assets.track1.play();

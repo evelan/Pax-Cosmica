@@ -77,9 +77,9 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 
-		apply = new Button(false, 1470, 196, 400, 96, "buttons/applyButton.png");
-		discard = new Button(false, 1470, 100, 400, 96, "buttons/discardButton.png");
-		upgrade = new Button(false, 1470, 0, 400, 100, "upgrade_button.png");
+		apply = new Button(1470, 196, 400, 96, "buttons/applyButton.png");
+		discard = new Button(1470, 100, 400, 96, "buttons/discardButton.png");
+		upgrade = new Button(1470, 0, 400, 100, "upgrade_button.png");
 
 		power = 100;
 		hull = 300;
