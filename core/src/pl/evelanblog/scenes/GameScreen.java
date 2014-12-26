@@ -8,6 +8,7 @@ import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.utilities.MeasureBox;
 import pl.evelanblog.world.World;
 import pl.evelanblog.world.World.GameState;
 
@@ -32,6 +33,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
 	private Rectangle mousePointer;
 	private Sprite dimScreen;
+	private MeasureBox box;
 
 	private static float velX = 0;
 	private static float velY = 0;
@@ -62,6 +64,7 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		background = new Background();
+		box = new MeasureBox();
 	}
 
 	@Override
@@ -72,12 +75,16 @@ public class GameScreen implements Screen, InputProcessor {
 		
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
+			box.start();
 			background.update(delta);
 			world.update(delta);
+			box.stop();
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 			game.setScreen(GameStateManager.galaxyMap);
 		else if (world.getState() == GameState.defeat) // przegrana i wypierdlamy kolesia za bramę
 			game.setScreen(GameStateManager.mainMenu);
+
+		Gdx.app.log("czas", "Time: " + box.getNano());
 
 		game.getBatch().begin();
 		background.draw(game.getBatch(), delta);
@@ -167,7 +174,7 @@ public class GameScreen implements Screen, InputProcessor {
 	public void show() {
 		world = new World();
 
-		//pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
+		// pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
 		power = 100;
 		hull = 300;
 		shield = 500;
