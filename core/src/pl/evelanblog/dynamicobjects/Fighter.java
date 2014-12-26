@@ -14,7 +14,7 @@ public class Fighter extends Enemy {
 
 	public Fighter() {
 		// Enemy(float y, float speed, float bulletSpeed, float hp, float shield, float impactDamage, String texture)
-		super(0, 80f + (MathUtils.random(6) * 10), 600f, 3f, 0f, 150f, "enemy.png");
+		super(0, 80f + (MathUtils.random(6) * 10), 600f, 3f, 0f, 150f, "enemy/fighter.png");
 		spawnTime = 4f;
 		shootTime = 1f + ((MathUtils.random(20)) / 10);
 		radius = MathUtils.random(30, 100);

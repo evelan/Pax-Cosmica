@@ -1,14 +1,15 @@
 package pl.evelanblog.paxcosmica.desktop;
 
+import pl.evelanblog.paxcosmica.PaxCosmica;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-
-import pl.evelanblog.paxcosmica.PaxCosmica;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Pax Cosmica";
+
 		config.width = 1280;
 		config.height = 768;
 		config.vSyncEnabled = true;

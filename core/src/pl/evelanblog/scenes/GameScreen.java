@@ -83,7 +83,7 @@ public class GameScreen implements Screen, InputProcessor {
 		background.draw(game.getBatch(), delta);
 
 		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
-		for (DynamicObject obj : world.getObjects())
+		for (DynamicObject obj : World.getObjects())
 			obj.draw(game.getBatch(), delta);
 
 		if (world.getPlayer().isAlive())
@@ -355,6 +355,15 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+		
+		if(Gdx.input.isKeyPressed(Keys.HOME)){
+			hit = true;
+		} 
+	
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+			hit = true;
+		}
+		
 		if (keycode == Keys.ENTER)
 			hit = true;
 

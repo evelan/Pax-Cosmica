@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import pl.evelanblog.dynamicobjects.Asteroid;
+import pl.evelanblog.dynamicobjects.Bomber;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
@@ -13,14 +14,14 @@ import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
 
-import com.badlogic.gdx.utils.TimeUtils;
-
 public class World {
 
 	private Collider colider;
 	private Player player;
-	private ArrayList<DynamicObject> objectArray; // wszystkie ruszające się obiekty w grze, TODO: przydałoby się
-													// zamienić na hashsety bo szybsze
+	private static ArrayList<DynamicObject> objectArray; // wszystkie ruszające się obiekty w grze, TODO: przydałoby się
+	private static ListIterator<DynamicObject> objIterator;
+
+	// zamienić na hashsety bo szybsze czy coś
 
 	public static enum GameState {
 		ongoing, // gra się toczy i jest elegancko, szczelanie etc
@@ -32,8 +33,6 @@ public class World {
 	}
 
 	private GameState state;
-	private long startTime;
-	private long stageTime;
 	private float[] sleepTime = new float[6]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się
 												// pojawiać na ekranie, asteroidy etc
 
@@ -45,9 +44,6 @@ public class World {
 		for (int i = 0; i < 6; i++)
 			sleepTime[i] = 0;
 
-		startTime = TimeUtils.millis();
-		stageTime = 60000;
-
 		state = GameState.ongoing;
 	}
 
@@ -56,8 +52,8 @@ public class World {
 		// if (TimeUtils.timeSinceMillis(startTime) > stageTime)
 		// state = GameState.win;
 
-		if(Stats.kills > 10)
-		 state = GameState.win;
+		if (Stats.kills > 10)
+			state = GameState.win;
 
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
@@ -73,33 +69,38 @@ public class World {
 			state = GameState.defeat;
 	}
 
-	private void updateObjects(float delta) {
+	private void updateObjects(float delta) { // aktualizacja wszystkich obiektów, pozycji itd
 		player.update(delta); // update position
 
-		ListIterator<DynamicObject> itr = objectArray.listIterator();
-		while (itr.hasNext()) {
-			DynamicObject obj = itr.next();
+		// TODO tutaj też trzeba te ify jakoś ogarnąć na bardziej czytelne
+		objIterator = objectArray.listIterator();
+		while (objIterator.hasNext()) {
+			DynamicObject obj = objIterator.next();
 			if (obj instanceof Fighter)
 			{
 				Fighter e = (Fighter) obj;
 				if (e.isAlive())
 					e.update(delta);
-				else
-					itr.remove();
+
+			} else if (obj instanceof Bomber)
+			{
+				Bomber e = (Bomber) obj;
+				if (e.isAlive())
+					e.update(delta);
 			} else if (obj instanceof Asteroid)
 			{
 				Asteroid a = (Asteroid) obj;
 				if (a.isAlive())
 					a.update(delta);
 				else
-					itr.remove();
+					objIterator.remove();
 			} else if (obj instanceof Bullet)
 			{
 				Bullet bullet = (Bullet) obj;
 				if (bullet.isAlive()) {
 					bullet.update(delta);
 				} else if (!bullet.isAlive() && bullet != null) {
-					itr.remove();
+					objIterator.remove();
 				}
 			} else if (obj instanceof Booster)
 			{
@@ -107,13 +108,14 @@ public class World {
 				if (booster.isAlive())
 					booster.update(delta);
 				else
-					itr.remove();
+					objIterator.remove();
 			}
 		}
 	}
 
-	private void spawnObjects(float delta) {
+	private void spawnObjects(float delta) { // spownoawnie obiektów
 
+		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
 		if (GameScreen.getHit() && sleepTime[0] > player.getShootFrequency() && player.ableToShoot()) {
 			objectArray.add(player.shoot());
 			sleepTime[0] = 0;
@@ -129,19 +131,33 @@ public class World {
 			sleepTime[2] = 0;
 		}
 
-		ListIterator<DynamicObject> iter = objectArray.listIterator();
-		while (iter.hasNext())
-		{
-			DynamicObject obj = iter.next();
-			if (obj instanceof Fighter)
-			{
-				Fighter e = (Fighter) obj;
-				e.setLastShoot(e.getLastShoot() + delta);
-				if (e.getLastShoot() > e.getShootTime()) {
-					iter.add(e.shoot());
-					e.setLastShoot(0f);
-				}
-			}
+		// TODO: To jest spawnowanie pocisków od wrogów i chyba powinniśmy przenieść to do update() w klasie u wrogów
+		// ListIterator<DynamicObject> iter = objectArray.listIterator();
+		// while (iter.hasNext())
+		// {
+		// DynamicObject obj = iter.next();
+		// if (obj instanceof Fighter)
+		// {
+		// Fighter e = (Fighter) obj;
+		// e.setLastShoot(e.getLastShoot() + delta);
+		// if (e.getLastShoot() > e.getShootTime()) {
+		// iter.add(e.shoot());
+		// e.setLastShoot(0f);
+		// }
+		// } else if (obj instanceof Bomber)
+		// {
+		// Bomber e = (Bomber) obj;
+		// e.setLastShoot(e.getLastShoot() + delta);
+		// if (e.getLastShoot() > e.getShootTime()) {
+		// iter.add(e.shoot());
+		// e.setLastShoot(0f);
+		// }
+		// }
+		// }
+
+		if (sleepTime[3] > Bomber.getSpawnTime()) {
+			objectArray.add(new Bomber());
+			sleepTime[3] = 0;
 		}
 
 		if (sleepTime[4] > Booster.getSpawnTime()) {
@@ -154,7 +170,12 @@ public class World {
 		return player;
 	}
 
-	public ArrayList<DynamicObject> getObjects()
+	public static ListIterator<DynamicObject> getIterator()
+	{
+		return objIterator;
+	}
+
+	public static ArrayList<DynamicObject> getObjects()
 	{
 		return objectArray;
 	}

@@ -2,6 +2,7 @@ package pl.evelanblog.dynamicobjects;
 
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.world.World;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -18,10 +19,11 @@ public abstract class Enemy extends DynamicObject {
 	protected float radians = 0;
 	protected float radius = 0;
 	public static float spawnTime; // co jaki czas ma się spawnować
+	private float time = 0;
 
 	public Enemy(float y, float speed, float bulletSpeed, float hp, float shield, float impactDamage, String texture) {
 		// DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String file)
-		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);
+		super(Gdx.graphics.getWidth(), 0, speed, hp, shield, impactDamage, texture);
 		this.bulletSpeed = bulletSpeed;
 	}
 
@@ -29,27 +31,36 @@ public abstract class Enemy extends DynamicObject {
 		if (deltaTime > 0.1f)
 			deltaTime = 0.1f;
 
-		radians += (deltaTime);
+		radians += deltaTime;
 
 		setX(getX() - speed * deltaTime);
-		setY((MathUtils.sin(radians) * radius) + 50 + startY);
+		setY((MathUtils.sin(radians) * radius));
 
 		engine.setPosition(getX() + getWidth() - 20, getY() + (getHeight() / 2));
 
 		if (getX() + getWidth() < 0)
 			live = false;
-	}
 
-	public void draw(SpriteBatch batch, float delta)
-	{
-		engine.draw(batch, delta);
-		draw(batch);
+		time += deltaTime;
+
+		if (time > shootTime)
+		{
+			World.getIterator().add(shoot());
+			time = 0;
+		}
+
 	}
 
 	public Bullet shoot() {
 		Assets.playSound(Assets.shootSfx);
 		// pos x, pos y, float speed, boolean direction, float damage
 		return new Bullet(getX(), getY() + (getHeight() / 2) - 4, bulletSpeed, false, 1f);
+	}
+
+	public void draw(SpriteBatch batch, float delta)
+	{
+		engine.draw(batch, delta);
+		draw(batch);
 	}
 
 	public float getLastShoot() {
@@ -68,6 +79,7 @@ public abstract class Enemy extends DynamicObject {
 	@Override
 	public void kill()
 	{
+		//World.getIterator()
 		Stats.kills++;
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
