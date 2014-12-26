@@ -1,15 +1,19 @@
 package pl.evelanblog.utilities;
 
+import com.badlogic.gdx.graphics.FPSLogger;
+
 /**
  * Taka popierdółka żeby łatwiej było mierzyć czas, oczywiście trochę bardziej zakłamane wyniki wyjdą przez to że to
  * nowy obiekt i tkaie tam ale tak jest łatwiej i szybciej
  * 
+ * Dodany fpslogger żeby spełniało to od razu kilka funkcji ;)
+ * 
  * @author Evelan
- * @version 1.0
+ * @version 1.1
  *
  */
 
-public class MeasureBox {
+public class MeasureBox extends FPSLogger {
 
 	private long startTime;
 	private long elapsedTime; // w nanosekundach
