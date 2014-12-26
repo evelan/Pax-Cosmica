@@ -84,7 +84,8 @@ public class GameScreen implements Screen, InputProcessor {
 			exitButton.draw(game.getBatch());
 
 		Gdx.app.log("czas", "Time: " + box.getNano());
-
+		box.log();
+		
 		game.getBatch().begin();
 		background.draw(game.getBatch(), delta);
 
