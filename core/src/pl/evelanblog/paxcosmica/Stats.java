@@ -1,5 +1,11 @@
 package pl.evelanblog.paxcosmica;
 
+/**
+ * Statystyki dostępne bez konieczności tworzenia obiektu, bo to byłoby bez sensu.
+ * @author Evelan
+ *
+ */
+
 public class Stats {
 
 	public static int score = 0;

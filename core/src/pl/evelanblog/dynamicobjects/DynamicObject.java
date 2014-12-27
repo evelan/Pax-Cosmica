@@ -4,14 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Wszystkie latające obiekty na ekranie dziedziczą po tym
+ * @author Evelan
+ *
+ */
 public abstract class DynamicObject extends Sprite {
 
-	protected float hp;
-	protected boolean live;
-	protected float speed;
+	protected float hp; // wartość hp
+	protected float shield; // wartość tarczy
+	protected float speed; // prędkosć 
+	protected boolean live; //czy obiekt żyje?
 	protected float impactDamage; // im wyższa tym większe obrażenia będą zadawane przy uderzeniu
-	protected float shield;
 
 	protected DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String texture)
 	{
@@ -69,6 +75,7 @@ public abstract class DynamicObject extends Sprite {
 		if (hp <= 0)
 			kill();
 	}
+	
 	public abstract void update(float delta);
 	
 	public void kill()
@@ -76,7 +83,6 @@ public abstract class DynamicObject extends Sprite {
 		live = false;
 	}
 	
-
 	public boolean isAlive() {
 		return live;
 	}
@@ -84,5 +90,10 @@ public abstract class DynamicObject extends Sprite {
 	public void draw(SpriteBatch batch, float delta) {
 		draw(batch);
 	}
-
+	
+	//zwraca po prostu wektror 
+	public Vector2 getVector()
+	{
+		return new Vector2(this.getX(), this.getY());
+	}
 }

@@ -4,6 +4,12 @@ import pl.evelanblog.paxcosmica.Assets;
 
 import com.badlogic.gdx.Gdx;
 
+/**
+ * Klasa pocisków wszelakich
+ * @author Evelan
+ *
+ */
+
 public class Bullet extends DynamicObject {
 	private boolean direction; // true - strzały gracza, false - strzały wroga
 

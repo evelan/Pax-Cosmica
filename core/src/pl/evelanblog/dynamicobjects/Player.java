@@ -8,6 +8,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Klasa gracza, do poprawy
+ * @author Evelan
+ *
+ */
+
 public class Player extends DynamicObject {
 	private float bulletSpeed = 1000f;
 	private float shootFrequency = 0.2f;
@@ -130,9 +136,9 @@ public class Player extends DynamicObject {
 	@Override
 	public void kill()
 	{
-		live = false;
-		Assets.playSound(Assets.explosionSfx);
+		super.kill();
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.start();
 	}
 }

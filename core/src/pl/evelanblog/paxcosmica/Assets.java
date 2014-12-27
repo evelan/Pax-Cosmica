@@ -6,6 +6,12 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
+/**
+ * Masakra
+ * @author Evelan
+ *
+ */
+
 public class Assets {
 	public static Texture galaxy, stars, stars2;
 	public static Texture spaceship;

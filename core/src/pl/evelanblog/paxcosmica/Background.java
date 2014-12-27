@@ -3,7 +3,13 @@ package pl.evelanblog.paxcosmica;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+/**
+ * Odpowiada za przesuwanie się gwiazd i samo tło 
+ * Można tutaj dodać takie pojedyncze gwiazdy ktore będa latać gdzieś w oddali wraz z efektem cząsteczkowym
+ * @author Evelan
+ * @version 1.0
+ * 
+ */
 public class Background {
 
 	public Sprite galaxy;

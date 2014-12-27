@@ -9,6 +9,12 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
+/**
+ * Po niej dziedziczą wszyscy przeciwnicy, można uznać ją póki co za skończoną i piękną 
+ * @author Evelan
+ * @version 1.0
+ */
+
 public abstract class Enemy extends DynamicObject {
 
 	protected float time = 0;

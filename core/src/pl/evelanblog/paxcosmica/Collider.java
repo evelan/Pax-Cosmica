@@ -11,6 +11,8 @@ import pl.evelanblog.enemy.Fighter;
 
 /**
  * bardzo brzydkie sprawdzanie kolizji, szkoda czasu na zagłębianie się w to skoro działa 
+ * @author zginał śmiecią tragiczną za chujowy kod, bo ja się do tego na pewno nie przynznaje 
+ * 
  */
 
 public class Collider {
