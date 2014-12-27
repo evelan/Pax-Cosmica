@@ -5,7 +5,6 @@ import java.util.ListIterator;
 
 import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
-import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.enemy.Bomber;
@@ -49,9 +48,6 @@ public class World {
 
 	public void update(float delta) {
 
-		// if (TimeUtils.timeSinceMillis(startTime) > stageTime)
-		// state = GameState.win;
-
 		if (Stats.kills > 10)
 			state = GameState.win;
 
@@ -69,51 +65,22 @@ public class World {
 			state = GameState.defeat;
 	}
 
+	// w tej funkcji także spawnują się strzały wrogów!!
 	private void updateObjects(float delta) { // aktualizacja wszystkich obiektów, pozycji itd
 		player.update(delta); // update position
 
-		// TODO tutaj też trzeba te ify jakoś ogarnąć na bardziej czytelne
 		objIterator = objectArray.listIterator();
 		while (objIterator.hasNext()) {
 			DynamicObject obj = objIterator.next();
-			if (obj instanceof Fighter)
-			{
-				Fighter e = (Fighter) obj;
-				if (e.isAlive())
-					e.update(delta);
-
-			} else if (obj instanceof Bomber)
-			{
-				Bomber e = (Bomber) obj;
-				if (e.isAlive())
-					e.update(delta);
-			} else if (obj instanceof Asteroid)
-			{
-				Asteroid a = (Asteroid) obj;
-				if (a.isAlive())
-					a.update(delta);
-				else
-					objIterator.remove();
-			} else if (obj instanceof Bullet)
-			{
-				Bullet bullet = (Bullet) obj;
-				if (bullet.isAlive()) {
-					bullet.update(delta);
-				} else if (!bullet.isAlive() && bullet != null) {
-					objIterator.remove();
-				}
-			} else if (obj instanceof Booster)
-			{
-				Booster booster = (Booster) obj;
-				if (booster.isAlive())
-					booster.update(delta);
-				else
-					objIterator.remove();
-			}
+			// hheheheheh, wcześniej tu było 40 linijek i robiły to samo, pozdrawiam z 4 rano roku pańskiego 2014
+			if (obj.isAlive())
+				obj.update(delta);
+			else
+				objIterator.remove();
 		}
 	}
 
-	private void spawnObjects(float delta) { // spownoawnie obiektów
+	private void spawnObjects(float delta) { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update
 
 		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
 		if (GameScreen.getHit() && sleepTime[0] > player.getShootFrequency() && player.ableToShoot()) {
@@ -126,42 +93,18 @@ public class World {
 			sleepTime[1] = 0;
 		}
 
-		if (sleepTime[2] > Fighter.getSpawnTime()) {
+		if (sleepTime[2] > Fighter.SPAWN_TIME) {
 			objectArray.add(new Fighter());
 			sleepTime[2] = 0;
 		}
 
-		// TODO: To jest spawnowanie pocisków od wrogów i chyba powinniśmy przenieść to do update() w klasie u wrogów
-		// ListIterator<DynamicObject> iter = objectArray.listIterator();
-		// while (iter.hasNext())
-		// {
-		// DynamicObject obj = iter.next();
-		// if (obj instanceof Fighter)
-		// {
-		// Fighter e = (Fighter) obj;
-		// e.setLastShoot(e.getLastShoot() + delta);
-		// if (e.getLastShoot() > e.getShootTime()) {
-		// iter.add(e.shoot());
-		// e.setLastShoot(0f);
-		// }
-		// } else if (obj instanceof Bomber)
-		// {
-		// Bomber e = (Bomber) obj;
-		// e.setLastShoot(e.getLastShoot() + delta);
-		// if (e.getLastShoot() > e.getShootTime()) {
-		// iter.add(e.shoot());
-		// e.setLastShoot(0f);
-		// }
-		// }
-		// }
-
-		if (sleepTime[3] > Bomber.getSpawnTime()) {
+		if (sleepTime[3] > Bomber.SPAWN_TIME) {
 			objectArray.add(new Bomber());
 			sleepTime[3] = 0;
 		}
 
 		if (sleepTime[4] > Booster.getSpawnTime()) {
-			// objectArray.add(new Booster()); // wyłączyłem dodawanie boosterów, bo tak
+			// objectArray.add(new Booster()); // wyłączyłem dodawanie boosterów, bo tak, bo ich nie potrzebuje teraz
 			sleepTime[4] = 0;
 		}
 	}

@@ -1,10 +1,8 @@
 package pl.evelanblog.enemy;
 
-import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.world.World;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -13,8 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public abstract class Enemy extends DynamicObject {
 
-	private static float SPAWN_TIME;
-	private float time = 0;
+	protected float time = 0;
 	protected ParticleEffect engine; // efekt cząsteczkowy silnika
 	protected float bulletSpeed; // prędkość pocisku
 	protected float shootTime; // częstotliwość strzelania
@@ -23,12 +20,12 @@ public abstract class Enemy extends DynamicObject {
 	protected float radius = 0; // jak mocno będzie się wychylać statek w pionie, to jest ustawiane w klasach które
 								// dziedziczą po Enemy
 
-	protected Enemy(float speed, float hp, float shield, float bulletSpeed, float impactDamage, float SPAWN_TIME, String texture) {
+	protected Enemy(float speed, float hp, float shield, float bulletSpeed, float shootTime, float impactDamage, String texture) {
 		super(Gdx.graphics.getWidth(), 0, speed, hp, shield, impactDamage, texture);
 
-		Enemy.SPAWN_TIME = SPAWN_TIME;
 		engine = new ParticleEffect();
 		this.bulletSpeed = bulletSpeed;
+		this.shootTime = shootTime;
 	}
 
 	public void update(float deltaTime) {
@@ -42,32 +39,29 @@ public abstract class Enemy extends DynamicObject {
 			live = false;
 
 		if ((time += deltaTime) > shootTime)
-		{
-			World.getIterator().add(shoot());
-			time = 0;
-		}
+			shoot();
 	}
 
 	public void draw(SpriteBatch batch, float delta)
 	{
-		engine.draw(batch, delta);
-		super.draw(batch, delta);
+		engine.draw(batch, delta); // najpierw rysujemey silnik
+		super.draw(batch, delta); // a potem zasłąniamy jego część texturą statku
 	}
 
-	public abstract Bullet shoot(); // każdy rodzaj wroga może strzelać
+	/**
+	 * każdy rodzaj wroga może strzelać inaczej, np dawać dwa pociski w jednym czasie albo inny dźwięk pocisku czy coś
+	 */
+	public abstract void shoot();
 
+	@Override
 	public void kill()
 	{
+		super.kill();
 		Stats.score += 10;
 		Stats.scrap += 4;
 		Stats.kills++;
-		live = false;
-		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.start();
-	}
-
-	public static float getSpawnTime() {
-		return SPAWN_TIME;
 	}
 }

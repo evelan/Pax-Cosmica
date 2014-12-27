@@ -69,8 +69,13 @@ public abstract class DynamicObject extends Sprite {
 		if (hp <= 0)
 			kill();
 	}
+	public abstract void update(float delta);
 	
-	public abstract void kill();
+	public void kill()
+	{
+		live = false;
+	}
+	
 
 	public boolean isAlive() {
 		return live;

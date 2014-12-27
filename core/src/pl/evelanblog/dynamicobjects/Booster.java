@@ -31,7 +31,5 @@ public class Booster extends DynamicObject {
 
 	@Override
 	public void kill() {
-		// TODO Auto-generated method stub
-
 	}
 }
