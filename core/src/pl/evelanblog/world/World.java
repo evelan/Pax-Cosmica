@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import pl.evelanblog.dynamicobjects.Asteroid;
-import pl.evelanblog.dynamicobjects.Bomber;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Fighter;
 import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.enemy.Bomber;
+import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
@@ -18,7 +18,7 @@ public class World {
 
 	private Collider colider;
 	private Player player;
-	private static ArrayList<DynamicObject> objectArray; // wszystkie ruszające się obiekty w grze, TODO: przydałoby się
+	private ArrayList<DynamicObject> objectArray; // wszystkie ruszające się obiekty w grze, TODO: przydałoby się
 	private static ListIterator<DynamicObject> objIterator;
 
 	// zamienić na hashsety bo szybsze czy coś
@@ -175,7 +175,7 @@ public class World {
 		return objIterator;
 	}
 
-	public static ArrayList<DynamicObject> getObjects()
+	public ArrayList<DynamicObject> getObjects()
 	{
 		return objectArray;
 	}

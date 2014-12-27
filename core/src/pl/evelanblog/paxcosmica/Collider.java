@@ -6,8 +6,8 @@ import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Fighter;
 import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.enemy.Fighter;
 
 /**
  * bardzo brzydkie sprawdzanie kolizji, szkoda czasu na zagłębianie się w to skoro działa 

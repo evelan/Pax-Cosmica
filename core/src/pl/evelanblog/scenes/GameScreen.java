@@ -72,7 +72,9 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		
+		if (delta > 0.1f)
+			delta = 0.1f;
+
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
 			box.start();
@@ -84,14 +86,13 @@ public class GameScreen implements Screen, InputProcessor {
 		else if (world.getState() == GameState.defeat) // przegrana i wypierdlamy kolesia za bramę
 			game.setScreen(GameStateManager.mainMenu);
 
-		Gdx.app.log("czas", "Time: " + box.getNano());
 		box.log();
-		
+
 		game.getBatch().begin();
 		background.draw(game.getBatch(), delta);
 
 		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
-		for (DynamicObject obj : World.getObjects())
+		for (DynamicObject obj : world.getObjects())
 			obj.draw(game.getBatch(), delta);
 
 		if (world.getPlayer().isAlive())
@@ -363,15 +364,15 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		
-		if(Gdx.input.isKeyPressed(Keys.HOME)){
-			hit = true;
-		} 
-	
-		if(Gdx.input.isKeyPressed(Keys.BACK)){
+
+		if (Gdx.input.isKeyPressed(Keys.HOME)) {
 			hit = true;
 		}
-		
+
+		if (Gdx.input.isKeyPressed(Keys.BACK)) {
+			hit = true;
+		}
+
 		if (keycode == Keys.ENTER)
 			hit = true;
 
