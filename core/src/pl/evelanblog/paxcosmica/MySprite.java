@@ -12,6 +12,10 @@ public MySprite(Texture foo){
 	sprite = new Sprite(foo);
 	sprite.setBounds(0, 0, foo.getWidth(), foo.getHeight());
 	}
+public MySprite(Texture foo, float x, float y){
+	sprite = new Sprite(foo);
+	sprite.setBounds(x, y, foo.getWidth(), foo.getHeight());
+	}
 @Override
 public void draw(Batch batch, float alpha){
     batch.draw(sprite.getTexture(),this.getX(),getY());

@@ -1,8 +1,10 @@
 package pl.evelanblog.scenes;
 
+import java.util.ArrayList;
+
+import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.MyButton;
 import pl.evelanblog.paxcosmica.MyFont;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class GalaxyMap implements Screen, InputProcessor {
 
@@ -28,23 +31,26 @@ public class GalaxyMap implements Screen, InputProcessor {
 	// TODO: Crystal you can avoid
 
 	private final PaxCosmica game;
-	private Sprite player, dimScreen;
+	private Sprite dimScreen;
+	private DynamicObject player;
 	private MySprite background;
 	private MyButton attack, move, store, upgrade, exit, left, right;
 	private MyFont score, scrap, fuel;
 	private BitmapFont font;
 	private Vector2 destiny;
 	private Rectangle mousePointer;
-	private Planet fire, ice;
 	private float dimValue;
 	private boolean portal = false;
+	private ArrayList<Planet> planets;
 
 	public GalaxyMap(final PaxCosmica game) {
 		this.game = game;
 		
+		planets = new ArrayList<Planet>();
+		
 		background = new MySprite(Assets.mainmenu);
 		
-		game.getHud().addActor(background);
+		game.getMapHud().addActor(background);
 		
 		attack = new MyButton("buttons/attackButton.png");
 		move = new MyButton("buttons/moveButton.png");
@@ -54,10 +60,10 @@ public class GalaxyMap implements Screen, InputProcessor {
 		dimScreen = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		left = new MyButton(0,540,128,"left.png");
 		right = new MyButton(1792,540,128,"right.png");
-		game.getHud().addActor(left);
-		game.getHud().addActor(right);
-		game.getHud().addActor(upgrade);
-		game.getHud().addActor(exit);
+		game.getMapHud().addActor(left);
+		game.getMapHud().addActor(right);
+		game.getMapHud().addActor(upgrade);
+		game.getMapHud().addActor(exit);
 		
 		
 		destiny = new Vector2(-1, -1);
@@ -66,7 +72,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 
 
 		player = new Player(0, 0);
-		player.setTexture(Assets.spaceship);
+		player.getSprite().setTexture(Assets.spaceship);
 		player.setScale(0.7f);
 
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
@@ -75,18 +81,21 @@ public class GalaxyMap implements Screen, InputProcessor {
 		scrap = new MyFont(font, "Scrap: "+Stats.scrap, 300, 1000);
 		fuel = new MyFont(font, "Fuel: "+Stats.fuel, 500, 1000);
 		
-		game.getHud().addActor(score);
-		game.getHud().addActor(scrap);
-		game.getHud().addActor(fuel);
+		game.getMapHud().addActor(score);
+		game.getMapHud().addActor(scrap);
+		game.getMapHud().addActor(fuel);
+		// tworzenie planet
+		planets.add(new Planet(200, 200, 4, 0.10f, true, false, "Ice", "planet/ice.png", 0.05f));
+		planets.add(new Planet(600, 540, 4, 0.01f, true, false, "Fire", "planet/fire.png", 0.01f));
 		
-		ice = new Planet(200, 200, 4, (float)0.05, true, false, "Ice", "planet/ice.png");
-		fire = new Planet(600, 540, 4, (float)0.10, true, false, "Fire", "planet/fire.png");
-		game.getScene().addActor(ice);
-		game.getScene().addActor(fire);
+		for(Planet obj: planets)
+		game.getMapScene().addActor(obj);
 		
-		game.getScene().addActor(attack);
-		game.getScene().addActor(move);
-		game.getScene().addActor(store);
+		game.setActivePlanet(planets.get(0));
+		
+		game.getMapScene().addActor(attack);
+		game.getMapScene().addActor(move);
+		game.getMapScene().addActor(store);
 		attack.setVisible(false);
 		move.setVisible(false);
 		store.setVisible(false);
@@ -96,11 +105,10 @@ public class GalaxyMap implements Screen, InputProcessor {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.getHud().act(Gdx.graphics.getDeltaTime());
-		game.getHud().draw();	
-		ice.update();
-		fire.update();
-		game.getScene().draw();
+		for(Planet obj: planets)
+			obj.update();
+		game.getMapHud().draw();
+		game.getMapScene().draw();
 		dimScreen(delta);
 		
 	}
@@ -110,7 +118,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			dimScreen.draw(game.getBatch(), dimValue);
+			dimScreen.draw(game.getMapScene().getBatch(), dimValue);
 	}
 
 	@Override
@@ -162,33 +170,19 @@ public class GalaxyMap implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 		game.getMouse().setPosition(screenX, screenY);
 
-//zrobić pętlę na liście planet ... rozwiazanie na szybko do sprawdzenia czy dzialalo :P
-		if (game.getMouse().overlaps(ice.getSprite().getBoundingRectangle()))
-		{
-			attack.getButton().setPosition(ice.getX()-ice.getSprite().getWidth(), ice.getY());
-			attack.setVisible(true);
-			fire.reset();
-			ice.setHover();
-		}
-		if (game.getMouse().overlaps(fire.getSprite().getBoundingRectangle()))
-		{
-			attack.getButton().setPosition(fire.getX()-fire.getSprite().getWidth(), fire.getY());
-			attack.setVisible(true);
-			ice.reset();
-			fire.setHover();
-		}
-//////////////////////////////////////////////////////////////////////
+
 		if (game.getMouse().overlaps(attack.getButton().getBoundingRectangle()) && !portal)
 		{
 			destiny.set(game.getMouse().x, game.getMouse().y);
 			player.setPosition(destiny.x, destiny.y);
+			Assets.track1.stop();
 			game.setScreen(GameStateManager.gameScreen);
 
 		}else if(game.getMouse().overlaps(left.getButton().getBoundingRectangle())){
-			game.getScene().getCamera().position.x-=1920;
+			game.getMapScene().getCamera().position.x-=1920;
 		}
 		else if(game.getMouse().overlaps(right.getButton().getBoundingRectangle())){
-			game.getScene().getCamera().position.x+=1920;
+			game.getMapScene().getCamera().position.x+=1920;
 		}
 		
 		else if (game.getMouse().overlaps(move.getButton().getBoundingRectangle())) {
@@ -205,6 +199,18 @@ public class GalaxyMap implements Screen, InputProcessor {
 		{
 			game.setScreen(GameStateManager.mainMenu);
 			dispose();
+		}
+		// Obsługa wyboru planet
+		for (Planet obj : planets)
+		{ 	
+			obj.reset();
+			if (game.getMouse().overlaps(obj.getSprite().getBoundingRectangle()))
+			{
+				attack.getButton().setPosition(obj.getX()-obj.getSprite().getWidth(), obj.getY());
+				attack.setVisible(true);
+				obj.setHover();
+				game.setActivePlanet(obj);
+			} 	 
 		}
 		return true;
 	}

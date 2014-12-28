@@ -22,7 +22,7 @@ public class Collider {
 
 		for (DynamicObject obj : array)
 		{
-			if (obj.getBoundingRectangle().overlaps(player.getBoundingRectangle()))
+			if (obj.getSprite().getBoundingRectangle().overlaps(player.getSprite().getBoundingRectangle()))
 			{
 				if (obj instanceof Enemy || obj instanceof Asteroid) {
 					player.kill();
@@ -52,7 +52,7 @@ public class Collider {
 					if (asteroid instanceof Asteroid)
 					{
 						// kolizja asteroidiy i pocisku
-						if (asteroid.getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) {
+						if (asteroid.getSprite().getBoundingRectangle().overlaps(bullet.getSprite().getBoundingRectangle())) {
 							asteroid.hurt(bullet.getImpactDamage());
 							bullet.kill();
 						}
@@ -64,7 +64,7 @@ public class Collider {
 					if (enemy instanceof Enemy)
 					{
 						// kolizja wroga i pocisku
-						if (enemy.getBoundingRectangle().overlaps(bullet.getBoundingRectangle()) && bullet.getDirection()) {
+						if (enemy.getSprite().getBoundingRectangle().overlaps(bullet.getSprite().getBoundingRectangle()) && bullet.getDirection()) {
 							enemy.hurt(bullet.getImpactDamage());
 							bullet.kill();
 						}

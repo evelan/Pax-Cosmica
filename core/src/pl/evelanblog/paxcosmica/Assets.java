@@ -67,6 +67,7 @@ public class Assets {
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
 	public static ParticleEffect playerEngineEffect;
+	public static ParticleEffect enemyEngineEffect;
 	public static Texture dim;
 
 	public static Texture loadTexture(String file) {
@@ -83,6 +84,8 @@ public class Assets {
 
 		playerEngineEffect = new ParticleEffect();
 		playerEngineEffect.load(Gdx.files.internal("data/engine.p"), Gdx.files.internal(""));
+		enemyEngineEffect = new ParticleEffect();
+		enemyEngineEffect.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 
 		galaxy = loadTexture("galaxy.png");
 		stars = loadTexture("stars-pow2.png");

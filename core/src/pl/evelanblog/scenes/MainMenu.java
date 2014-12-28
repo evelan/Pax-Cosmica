@@ -43,20 +43,20 @@ public class MainMenu implements Screen, InputProcessor {
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
 
-		game.getCamera().update();
+		game.getCam().update();
 
-		game.getBatch().begin();
-		background.draw(game.getBatch());
-		planet.draw(game.getBatch());
-		paxCosmica.draw(game.getBatch());
-		play.draw(game.getBatch());
-		options.draw(game.getBatch());
-		credits.draw(game.getBatch());
-		exit.draw(game.getBatch());
+		game.getSprBatch().begin();
+		background.draw(game.getSprBatch());
+		planet.draw(game.getSprBatch());
+		paxCosmica.draw(game.getSprBatch());
+		play.draw(game.getSprBatch());
+		options.draw(game.getSprBatch());
+		credits.draw(game.getSprBatch());
+		exit.draw(game.getSprBatch());
 
 		dimScreen(delta);
 
-		game.getBatch().end();
+		game.getSprBatch().end();
 	}
 
 	private void dimScreen(float delta) {
@@ -64,7 +64,7 @@ public class MainMenu implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			dim.draw(game.getBatch(), dimValue);
+			dim.draw(game.getSprBatch(), dimValue);
 	}
 
 	@Override
@@ -76,7 +76,6 @@ public class MainMenu implements Screen, InputProcessor {
 		//PLAY BUTTON
 		if (play.getBoundingRectangle().overlaps(mousePointer)) {
 			Stats.clear();
-			Assets.track1.stop();
 			game.setScreen(GameStateManager.galaxyMap);
 			dispose();
 		}

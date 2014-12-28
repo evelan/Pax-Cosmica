@@ -10,6 +10,7 @@ import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Enemy;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Collider;
+import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.scenes.GameScreen;
 
 import com.badlogic.gdx.utils.TimeUtils;
@@ -44,10 +45,8 @@ public class World {
 	}
 
 	public void update(float delta) {
-
 		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
 			state = GameState.win;
-
 		// adding delta time to array
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
@@ -76,20 +75,30 @@ public class World {
 				if (e.isAlive())
 					e.update(delta);
 				else
+				{
+					if(PaxCosmica.getGameScene().getActors().contains(e, true))
+						PaxCosmica.getGameScene().getActors().get(PaxCosmica.getGameScene().getActors().indexOf(e, true)).remove();
 					itr.remove();
+				}
 			} else if (obj instanceof Asteroid)
 			{
 				Asteroid a = (Asteroid) obj;
 				if (a.isAlive())
-					a.update(delta);
+					a.update();
 				else
+					{
+					if(PaxCosmica.getGameScene().getActors().contains(a, true))
+					PaxCosmica.getGameScene().getActors().get(PaxCosmica.getGameScene().getActors().indexOf(a, true)).remove();
 					itr.remove();
+					}
 			} else if (obj instanceof Bullet)
 			{
 				Bullet bullet = (Bullet) obj;
 				if (bullet.isAlive()) {
 					bullet.update(delta);
 				} else if (!bullet.isAlive() && bullet != null) {
+					if(PaxCosmica.getGameScene().getActors().contains(bullet, true))
+						PaxCosmica.getGameScene().getActors().get(PaxCosmica.getGameScene().getActors().indexOf(bullet, true)).remove();
 					itr.remove();
 				}
 			} else if (obj instanceof Booster)
@@ -104,22 +113,23 @@ public class World {
 	}
 
 	private void spawnObjects(float delta) {
-
 		if (GameScreen.getHit() && sleepTime[0] > player.getShootFrequency() && player.ableToShoot()) {
 			objectArray.add(player.shoot());
 			sleepTime[0] = 0;
+			PaxCosmica.getGameScene().addActor(objectArray.get(objectArray.size()-1));
 		}
 
 		if (sleepTime[1] > Asteroid.getSpawnTime()) {
 			objectArray.add(new Asteroid());
 			sleepTime[1] = 0;
+			PaxCosmica.getGameScene().addActor(objectArray.get(objectArray.size()-1));
 		}
 
 		if (sleepTime[2] > Enemy.getSpawnTime()) {
 			objectArray.add(new Enemy());
 			sleepTime[2] = 0;
+			PaxCosmica.getGameScene().addActor(objectArray.get(objectArray.size()-1));
 		}
-
 		ListIterator<DynamicObject> iter = objectArray.listIterator();
 		while (iter.hasNext())
 		{
@@ -129,7 +139,9 @@ public class World {
 				Enemy e = (Enemy) obj;
 				e.setLastShoot(e.getLastShoot() + delta);
 				if (e.getLastShoot() > e.getShootTime()) {
+					
 					iter.add(e.shoot());
+					PaxCosmica.getGameScene().addActor(iter.previous());
 					e.setLastShoot(0f);
 				}
 			}
@@ -138,6 +150,7 @@ public class World {
 		if (sleepTime[4] > Booster.getSpawnTime()) {
 			// objectArray.add(new Booster());
 			sleepTime[4] = 0;
+			//wasCreated=true;
 		}
 	}
 

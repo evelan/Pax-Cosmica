@@ -39,8 +39,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		game.getBatch().begin();
-		game.getBatch().draw(new Texture(Gdx.files.internal("upgrade_background.png")), 0, 0);
+		game.getSprBatch().begin();
+		game.getSprBatch().draw(new Texture(Gdx.files.internal("upgrade_background.png")), 0, 0);
 		
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
 		createBar(power, powerLvl, "Power: " + powerLvl);
@@ -48,26 +48,26 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
 		createBar(engine, engineLvl, "Engine: " + engineLvl);
 
-		apply.draw(game.getBatch());
-		discard.draw(game.getBatch());
-		font.draw(game.getBatch(), "Scrap: " + scrap, 10, 710);
-		game.getBatch().end();
+		apply.draw(game.getSprBatch());
+		discard.draw(game.getSprBatch());
+		font.draw(game.getSprBatch(), "Scrap: " + scrap, 10, 710);
+		game.getSprBatch().end();
 		
 	}
 
 	public void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++) 
-			game.getBatch().draw(Assets.upgradeBar, x, 200 + i * 50);
+			game.getSprBatch().draw(Assets.upgradeBar, x, 200 + i * 50);
 
-		font.draw(game.getBatch(), "Cost: " + cost, x, level * 50 + 250);
+		font.draw(game.getSprBatch(), "Cost: " + cost, x, level * 50 + 250);
 
 		if (hover != -1) {
 			upgrade.setPosition(hover, 10);
-			upgrade.draw(game.getBatch());
+			upgrade.draw(game.getSprBatch());
 		}
 
-		font.draw(game.getBatch(), name, x+10, 190);
+		font.draw(game.getSprBatch(), name, x+10, 190);
 	}
 
 	@Override

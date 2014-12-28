@@ -1,11 +1,15 @@
 package pl.evelanblog.scenes;
 
-import pl.evelanblog.dynamicobjects.DynamicObject;
+import java.util.ArrayList;
+
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Background;
-import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
+import pl.evelanblog.paxcosmica.MyButton;
+import pl.evelanblog.paxcosmica.MyEffect;
+import pl.evelanblog.paxcosmica.MyFont;
+import pl.evelanblog.paxcosmica.MySprite;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.world.World;
@@ -17,7 +21,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -27,16 +30,21 @@ public class GameScreen implements Screen, InputProcessor {
 	private World world;
 	private BitmapFont font;
 
-	private Background background;
+	private static Background background;
 	private Vector2 defKnobPos = new Vector2(96, 96);
-	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
+	private MyButton knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr;
 	private Rectangle mousePointer;
-	private Sprite dimScreen;
-
+	private MySprite dimScreen;
+	private static MyEffect explodeEff;
+	private static MyEffect hitEff;
+	private ArrayList<MySprite> hp;
+	private MyFont scrap, score;
 	private static float velX = 0;
 	private static float velY = 0;
 	private static boolean hit = false;
 	private boolean knobPressed = false;
+	private Player player;
+	int i;
 
 	private int knobPointer = -1;
 	private int hitPointer = -1;
@@ -45,89 +53,127 @@ public class GameScreen implements Screen, InputProcessor {
 
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
+		background = new Background(game.getActivePlanet().getBackground());
+		hp=new ArrayList<MySprite>();
+		knob = new MyButton(defKnobPos.x, defKnobPos.y, 256, "knob.png");
+		knob.getButton().setAlpha(0.3f);
+		buttonA = new MyButton(1600, 256, 256, "buttonA.png");
+		buttonB = new MyButton(1472, 0, 256, "buttonB.png");
+		powerButton = new MyButton(860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
+		pauseButton = new MyButton(1750, 920, Assets.pauseButton.getWidth(), "pauseButton.png");
+		continueButton = new MyButton(640, 540, 640, 192, "buttons/continueButton.png");
+		exitButton = new MyButton(640, 348, 640, 192, "buttons/exitButton.png");
 
-		knob = new Button(defKnobPos.x, defKnobPos.y, 256, "knob.png");
-		buttonA = new Button(1600, 256, 256, "buttonA.png");
-		buttonB = new Button(1472, 0, 256, "buttonB.png");
-		powerButton = new Button(860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
-		pauseButton = new Button(1750, 920, Assets.pauseButton.getWidth(), "pauseButton.png");
-		continueButton = new Button(640, 540, 640, 192, "buttons/continueButton.png");
-		exitButton = new Button(640, 348, 640, 192, "buttons/exitButton.png");
+		upPwr = new MyButton("up.png");
+		downPwr = new MyButton("down.png");
 
-		upPwr = new Button("up.png");
-		downPwr = new Button("down.png");
-
-		dimScreen = new Sprite(Assets.dim);
+		dimScreen = new MySprite(Assets.dim);
 
 		mousePointer = new Rectangle(0, 0, 1, 1);
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
-		background = new Background();
+		
+		game.getGameHud().addActor(knob);
+		game.getGameHud().addActor(buttonA);
+		game.getGameHud().addActor(buttonB);
+		game.getGameHud().addActor(powerButton);
+		game.getGameHud().addActor(pauseButton);
+		game.getGameHud().addActor(continueButton);
+		game.getGameHud().addActor(exitButton);
+		game.getGameHud().addActor(upPwr);
+		game.getGameHud().addActor(downPwr);
+		//game.getGameHud().addActor(dimScreen);
+		
+		hp.add(new MySprite(Assets.hullBar,0,800));
+		hp.add(new MySprite(Assets.hullBar,15,800));
+		hp.add(new MySprite(Assets.hullBar,30,800));
+		
+		game.getGameHud().addActor(hp.get(0));
+		game.getGameHud().addActor(hp.get(1));
+		game.getGameHud().addActor(hp.get(2));
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		background.getBackground().setY(PaxCosmica.getGameScene().getCamera().position.y-PaxCosmica.getGameScene().getHeight()/2);
+		
+		PaxCosmica.getGameScene().draw();
+		game.getGameHud().draw();
+		
+		
+		
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
-			background.update(delta);
+			background.update(game.getActivePlanet().getRotationSpeed());
 			world.update(delta);
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
-			game.setScreen(GameStateManager.galaxyMap);
+			{
+				Assets.track2.stop();
+				Assets.track1.play();
+				game.setScreen(GameStateManager.galaxyMap);
+			}
 		else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
-			exitButton.draw(game.getBatch());
-
-		game.getBatch().begin();
-		background.draw(game.getBatch(), delta);
-
-		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
-		for (DynamicObject obj : world.getObjects())
-			obj.draw(game.getBatch(), delta);
+		{
+			exitButton.setVisible(true);
+			player.setVisible(false);
+		}
 
 		if (world.getPlayer().isAlive())
-			world.getPlayer().draw(game.getBatch(), delta);
-
-		Assets.hitEffect.draw(game.getBatch(), delta);
-		Assets.explosionEffect.draw(game.getBatch(), delta);
-
+			world.getPlayer().setVisible(true);
+		hitEff.setVisible(true);
+		explodeEff.setVisible(true);
 		// te dwie pętle renderują paski osłony i HP
-		for (int i = 0; i < world.getPlayer().getHealth(); i++)
-			game.getBatch().draw(Assets.hullBar, 15 * i, Gdx.graphics.getHeight() - Assets.hullBar.getHeight());
+		for (int i = 2; i > world.getPlayer().getHealth(); i--)
+			hp.get(i).setVisible(false);
 
-		for (int i = 0; i < world.getPlayer().getShield(); i++)
-			game.getBatch().draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
+//		for (int i = 0; i < world.getPlayer().getShield(); i++)
+//			game.getGameHud().getBatch().draw(Assets.shieldBar, 15 * i, Gdx.graphics.getHeight() - (2 * Assets.shieldBar.getHeight()));
 
-		font.draw(game.getBatch(), "Score: " + Stats.score, 5, Gdx.graphics.getHeight() - 100);
-		font.draw(game.getBatch(), "Scrap: " + Stats.scrap, 5, Gdx.graphics.getHeight() - 80);
-
-		// controls HUD
-		knob.draw(game.getBatch(), 0.3f);
-		buttonA.draw(game.getBatch(), 0.3f);
-		buttonB.draw(game.getBatch(), 0.3f);
-
+		
+		score = new MyFont(font, "Score: "+Stats.score, 100, 1000);
+		scrap = new MyFont(font, "Scrap: "+Stats.scrap, 300, 1000);
+		game.getGameHud().addActor(score);
+		game.getGameHud().addActor(scrap);
+		
 		if (world.getState() == GameState.powermanager || world.getState() == GameState.menu)
 		{
-			dimScreen.draw(game.getBatch(), 0.6f);
-			pauseButton.setTexture(Assets.unpauseButton);
-			pauseButton.draw(game.getBatch(), 0.9f);
+			//dimScreen.draw(game.getGameScene().getBatch(), 0.6f);
+			pauseButton.getButton().setTexture(Assets.unpauseButton);
+			pauseButton.setVisible(true);
 			if (world.getState() == GameState.menu)
 			{
-				continueButton.draw(game.getBatch());
-				exitButton.draw(game.getBatch());
+				continueButton.setVisible(true);
+				exitButton.setVisible(true);
 			} else if (world.getState() == GameState.powermanager)
 			{
 				drawPwrManager();
-				powerButton.draw(game.getBatch(), 0.9f);
+				powerButton.draw(game.getGameHud().getBatch(), 0.9f);
 			}
 		} else
 		{
-			pauseButton.setTexture(Assets.pauseButton);
-			pauseButton.draw(game.getBatch(), 0.3f);
-			powerButton.draw(game.getBatch(), 0.3f);
+			pauseButton.getButton().setTexture(Assets.pauseButton);
+			pauseButton.setVisible(true);
+			pauseButton.getButton().setAlpha(0.3f);
+			powerButton.setVisible(true);
+			powerButton.getButton().setAlpha(0.3f);
 		}
+	}
 
-		game.getBatch().end();
+	public static MyEffect getExplodeEff() {
+		return explodeEff;
+	}
+
+	public void setExplodeEff(MyEffect explodeEff) {
+		GameScreen.explodeEff = explodeEff;
+	}
+
+	public static MyEffect getHitEff() {
+		return hitEff;
+	}
+
+	public void setHitEff(MyEffect hitEff) {
+		GameScreen.hitEff = hitEff;
 	}
 
 	private void drawPwrManager()
@@ -142,16 +188,16 @@ public class GameScreen implements Screen, InputProcessor {
 	private void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++)
-			game.getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
+			game.getGameHud().getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
 
 		if (hover != -1) {
 			downPwr.setPosition(hover, 100);
 			upPwr.setPosition(hover, 500);
-			downPwr.draw(game.getBatch());
-			upPwr.draw(game.getBatch());
+			downPwr.setVisible(true);
+			upPwr.setVisible(true);
 		}
 
-		font.draw(game.getBatch(), name, x + 10, 190);
+		//font.draw(game.getGameHud().getBatch(), name, x + 10, 190);
 	}
 
 	@Override
@@ -164,8 +210,23 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
+		i=0;
 		world = new World();
-
+		player=world.getPlayer();
+		exitButton.setVisible(false);
+		continueButton.setVisible(false);
+		background = new Background(game.getActivePlanet().getBackground());
+		
+		hitEff=new MyEffect(Assets.hitEffect);
+		explodeEff = new MyEffect (Assets.explosionEffect);
+		hitEff.setVisible(false);
+		explodeEff.setVisible(false);
+		
+		PaxCosmica.getGameScene().addActor(background);
+		PaxCosmica.getGameScene().addActor(player);
+		
+		PaxCosmica.getGameScene().addActor(hitEff);
+		PaxCosmica.getGameScene().addActor(explodeEff);
 		//pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
 		power = 100;
 		hull = 300;
@@ -183,7 +244,7 @@ public class GameScreen implements Screen, InputProcessor {
 		knobPointer = -1;
 		hitPointer = -1;
 		hover = -1;
-
+		
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -205,41 +266,45 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX, screenY);
 
 		// A BUTTON
-		if (!hit && mousePointer.overlaps(buttonA.getBoundingRectangle())) {
+		if (!hit && mousePointer.overlaps(buttonA.getButton().getBoundingRectangle())) {
 			hit = true;
 			hitPointer = pointer;
 		}
 
 		// pause button
-		if (mousePointer.overlaps(pauseButton.getBoundingRectangle()))
+		if (mousePointer.overlaps(pauseButton.getButton().getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
 			world.setState(world.getState() == GameState.menu ? GameState.ongoing : GameState.menu);
 
 			// powerManagerButton
-		} else if (mousePointer.overlaps(powerButton.getBoundingRectangle()))
+		} else if (mousePointer.overlaps(powerButton.getButton().getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
 			world.setState(world.getState() == GameState.powermanager ? GameState.ongoing : GameState.powermanager);
 
 			// continueButton
-		} else if (mousePointer.overlaps(continueButton.getBoundingRectangle()))
+		} else if (mousePointer.overlaps(continueButton.getButton().getBoundingRectangle()))
 		{
+			pauseButton.getButton().setTexture(Assets.pauseButton);
+			continueButton.setVisible(false);
+			exitButton.setVisible(false);
 			Assets.playSound(Assets.clickSfx);
 			world.setState(GameState.ongoing);
 			// exitButton
-		} else if (mousePointer.overlaps(exitButton.getBoundingRectangle()))
+		} else if (mousePointer.overlaps(exitButton.getButton().getBoundingRectangle()))
 		{
 			Assets.playSound(Assets.clickSfx);
-			world.setState(GameState.defeat);
+			world.setState(GameState.defeat);	
+			Assets.track2.stop();
 			game.setScreen(GameStateManager.mainMenu);
 		}
 
 		// knob
 		if (!knobPressed) {
-			if (mousePointer.overlaps(knob.getBoundingRectangle())) {
-				knob.setPosition(screenX - (knob.getWidth() / 2), screenY -
-						(knob.getHeight() / 2));
+			if (mousePointer.overlaps(knob.getButton().getBoundingRectangle())) {
+				knob.getButton().setPosition(screenX - (knob.getButton().getWidth() / 2), screenY -
+						(knob.getButton().getHeight() / 2));
 				knobPressed = true;
 				knobPointer = pointer;
 				velX = (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64;
@@ -253,7 +318,7 @@ public class GameScreen implements Screen, InputProcessor {
 		// powerManager
 		if (world.getState() == GameState.powermanager) {
 
-			if (mousePointer.overlaps(upPwr.getBoundingRectangle()))
+			if (mousePointer.overlaps(upPwr.getButton().getBoundingRectangle()))
 			{
 				if (Player.powerGenerator > 0) {
 					if (hover == hull && Player.hullLvl > Player.hullPwr)
@@ -278,7 +343,7 @@ public class GameScreen implements Screen, InputProcessor {
 					}
 				}
 
-			} else if (mousePointer.overlaps(downPwr.getBoundingRectangle())) {
+			} else if (mousePointer.overlaps(downPwr.getButton().getBoundingRectangle())) {
 
 				if (hover == hull && Player.hullPwr > 0) {
 					Player.hullPwr--;
@@ -317,7 +382,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		if (knobPressed && knobPointer == pointer) {
 			knobPressed = false;
-			knob.setPosition(defKnobPos.x, defKnobPos.y);
+			knob.getButton().setPosition(defKnobPos.x, defKnobPos.y);
 			velX = 0;
 			velY = 0;
 			knobPointer = -1;
@@ -335,19 +400,19 @@ public class GameScreen implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 
 		if (knobPressed && knobPointer == pointer) {
-			if (screenX > defKnobPos.x + knob.getWidth())
-				screenX = (int) (defKnobPos.x + knob.getWidth());
+			if (screenX > defKnobPos.x + knob.getButton().getWidth())
+				screenX = (int) (defKnobPos.x + knob.getButton().getWidth());
 			else if (screenX < defKnobPos.x)
 				screenX = (int) defKnobPos.x;
 
-			if (screenY > defKnobPos.y + knob.getHeight())
-				screenY = (int) (defKnobPos.y + knob.getHeight());
+			if (screenY > defKnobPos.y + knob.getButton().getHeight())
+				screenY = (int) (defKnobPos.y + knob.getButton().getHeight());
 			else if (screenY < defKnobPos.y)
 				screenY = (int) defKnobPos.y;
 
-			knob.setPosition(screenX - (knob.getWidth() / 2), screenY - (knob.getHeight() / 2));
-			velX = (((screenX - (knob.getWidth() / 2)) - defKnobPos.x)) / 64;
-			velY = ((screenY - (knob.getHeight() / 2)) - defKnobPos.y) / 64;
+			knob.getButton().setPosition(screenX - (knob.getButton().getWidth() / 2), screenY - (knob.getButton().getHeight() / 2));
+			velX = (((screenX - (knob.getButton().getWidth() / 2)) - defKnobPos.x)) / 64;
+			velY = ((screenY - (knob.getButton().getHeight() / 2)) - defKnobPos.y) / 64;
 		}
 		return true;
 	}
@@ -416,5 +481,9 @@ public class GameScreen implements Screen, InputProcessor {
 
 	public static boolean getHit() {
 		return hit;
+	}
+
+	public static Background getBackground() {
+		return background;	
 	}
 }

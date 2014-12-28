@@ -6,17 +6,17 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Planet extends Actor {
 
-	private Sprite sprite;
+	private Sprite sprite, background;
 	private float x;
 	private float y;
 	private float count;
 	private float size;
 	private float speed;
+	private float rotationSpeed;
 	private boolean clockwise;
 	private boolean hover = false;
 	private boolean store = false;
@@ -26,11 +26,11 @@ public class Planet extends Actor {
 	private BitmapFont font;
 	private MyFont tekst;
 
-	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String name, String filename)
+	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String _name, String filename, float _rotationSpeed)
 	{
 		setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
 		getSprite().setBounds(x, y, Assets.galaxyPlanet.getWidth(), Assets.galaxyPlanet.getHeight());
-
+		
 		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		getSprite().setScale(size);
 		getSprite().setOriginCenter();
@@ -40,9 +40,12 @@ public class Planet extends Actor {
 		this.speed = speed;
 		this.clockwise = clockwise;
 		this.store = store;
-		this.name = name;
+		this.name = _name;
+		this.rotationSpeed = _rotationSpeed;
+		this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/"+name.toLowerCase()+".jpg")));
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 		tekst = new MyFont(font, portal ? "P:" + name : name, getX(), getY());
+		
 	}
 
 	public float getX()
@@ -123,5 +126,23 @@ public class Planet extends Actor {
 
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
+	}
+
+	public void setBackground(Sprite bg) {
+		this.background = bg;
+		
+	}
+
+	public Sprite getBackground() {
+		// TODO Auto-generated method stub
+		return background;
+	}
+
+	public float getRotationSpeed() {
+		return rotationSpeed;
+	}
+
+	public void setRotationSpeed(float rotationSpeed) {
+		this.rotationSpeed = rotationSpeed;
 	}
 }
