@@ -5,21 +5,22 @@ import java.util.ListIterator;
 
 import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
-import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Enemy;
 import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.enemy.Bomber;
+import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.paxcosmica.Collider;
+import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
-
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class World {
 
 	private Collider colider;
 	private Player player;
 	private ArrayList<DynamicObject> objectArray; // wszystkie ruszające się obiekty w grze, TODO: przydałoby się
-													// zamienić na hashsety bo szybsze
+	private static ListIterator<DynamicObject> objIterator;
+
+	// zamienić na hashsety bo szybsze czy coś
 
 	public static enum GameState {
 		ongoing, // gra się toczy i jest elegancko, szczelanie etc
@@ -31,8 +32,6 @@ public class World {
 	}
 
 	private GameState state;
-	private long startTime;
-	private long stageTime;
 	private float[] sleepTime = new float[6]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się
 												// pojawiać na ekranie, asteroidy etc
 
@@ -44,15 +43,12 @@ public class World {
 		for (int i = 0; i < 6; i++)
 			sleepTime[i] = 0;
 
-		startTime = TimeUtils.millis();
-		stageTime = 60000;
-
 		state = GameState.ongoing;
 	}
 
 	public void update(float delta) {
 
-		if (TimeUtils.timeSinceMillis(startTime) > stageTime)
+		if (Stats.kills > 10)
 			state = GameState.win;
 
 		// adding delta time to array
@@ -69,47 +65,24 @@ public class World {
 			state = GameState.defeat;
 	}
 
-	private void updateObjects(float delta) {
+	// w tej funkcji także spawnują się strzały wrogów!!
+	private void updateObjects(float delta) { // aktualizacja wszystkich obiektów, pozycji itd
 		player.update(delta); // update position
 
-		ListIterator<DynamicObject> itr = objectArray.listIterator();
-		while (itr.hasNext()) {
-			DynamicObject obj = itr.next();
-			if (obj instanceof Enemy)
-			{
-				Enemy e = (Enemy) obj;
-				if (e.isAlive())
-					e.update(delta);
-				else
-					itr.remove();
-			} else if (obj instanceof Asteroid)
-			{
-				Asteroid a = (Asteroid) obj;
-				if (a.isAlive())
-					a.update(delta);
-				else
-					itr.remove();
-			} else if (obj instanceof Bullet)
-			{
-				Bullet bullet = (Bullet) obj;
-				if (bullet.isAlive()) {
-					bullet.update(delta);
-				} else if (!bullet.isAlive() && bullet != null) {
-					itr.remove();
-				}
-			} else if (obj instanceof Booster)
-			{
-				Booster booster = (Booster) obj;
-				if (booster.isAlive())
-					booster.update(delta);
-				else
-					itr.remove();
-			}
+		objIterator = objectArray.listIterator();
+		while (objIterator.hasNext()) {
+			DynamicObject obj = objIterator.next();
+			// hheheheheh, wcześniej tu było 40 linijek i robiły to samo, pozdrawiam z 4 rano roku pańskiego 2014
+			if (obj.isAlive())
+				obj.update(delta);
+			else
+				objIterator.remove();
 		}
 	}
 
-	private void spawnObjects(float delta) {
+	private void spawnObjects(float delta) { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update
 
+		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
 		if (GameScreen.getHit() && sleepTime[0] > player.getShootFrequency() && player.ableToShoot()) {
 			objectArray.add(player.shoot());
 			sleepTime[0] = 0;
@@ -120,34 +93,29 @@ public class World {
 			sleepTime[1] = 0;
 		}
 
-		if (sleepTime[2] > Enemy.getSpawnTime()) {
-			objectArray.add(new Enemy());
+		if (sleepTime[2] > Fighter.SPAWN_TIME) {
+			objectArray.add(new Fighter());
 			sleepTime[2] = 0;
 		}
 
-		ListIterator<DynamicObject> iter = objectArray.listIterator();
-		while (iter.hasNext())
-		{
-			DynamicObject obj = iter.next();
-			if (obj instanceof Enemy)
-			{
-				Enemy e = (Enemy) obj;
-				e.setLastShoot(e.getLastShoot() + delta);
-				if (e.getLastShoot() > e.getShootTime()) {
-					iter.add(e.shoot());
-					e.setLastShoot(0f);
-				}
-			}
+		if (sleepTime[3] > Bomber.SPAWN_TIME) {
+			objectArray.add(new Bomber());
+			sleepTime[3] = 0;
 		}
 
 		if (sleepTime[4] > Booster.getSpawnTime()) {
-			// objectArray.add(new Booster()); // wyłączyłem dodawanie boosterów, bo tak
+			// objectArray.add(new Booster()); // wyłączyłem dodawanie boosterów, bo tak, bo ich nie potrzebuje teraz
 			sleepTime[4] = 0;
 		}
 	}
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public static ListIterator<DynamicObject> getIterator()
+	{
+		return objIterator;
 	}
 
 	public ArrayList<DynamicObject> getObjects()

@@ -13,9 +13,9 @@ public abstract class DynamicObject extends Sprite {
 	protected float impactDamage; // im wyższa tym większe obrażenia będą zadawane przy uderzeniu
 	protected float shield;
 
-	public DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String file)
+	protected DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String texture)
 	{
-		super(new Texture(Gdx.files.internal(file)));
+		super(new Texture(Gdx.files.internal(texture)));
 		setBounds(x, y, getTexture().getWidth(), getTexture().getHeight());
 		setOriginCenter();
 		live = true;
@@ -32,6 +32,7 @@ public abstract class DynamicObject extends Sprite {
 		setOriginCenter();
 	}
 
+	
 	public float getImpactDamage()
 	{
 		return impactDamage;
@@ -68,8 +69,13 @@ public abstract class DynamicObject extends Sprite {
 		if (hp <= 0)
 			kill();
 	}
-
-	public abstract void kill();
+	public abstract void update(float delta);
+	
+	public void kill()
+	{
+		live = false;
+	}
+	
 
 	public boolean isAlive() {
 		return live;

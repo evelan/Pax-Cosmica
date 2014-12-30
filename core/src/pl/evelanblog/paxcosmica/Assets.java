@@ -15,7 +15,7 @@ public class Assets {
 	public static Texture buttonA;
 	public static Texture buttonB;
 	public static Texture booster;
-	public static Texture enemy;
+	public static Texture fighter, bomber;
 	public static Texture hullBar;
 	public static Texture shieldBar;
 	public static Texture bubbleShield;
@@ -75,7 +75,8 @@ public class Assets {
 		asteroid_2 = loadTexture("asteroid_2.png");
 		asteroid_3 = loadTexture("asteroid_3.png");
 		booster = loadTexture("booster.png");
-		enemy = loadTexture("enemy.png");
+		fighter = loadTexture("enemy/fighter.png");
+		bomber = loadTexture("enemy/bomber.png");
 		hullBar = loadTexture("hull.png");
 		shieldBar = loadTexture("shield.png");
 		spaceship = loadTexture("spaceship.png");

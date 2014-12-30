@@ -72,6 +72,9 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		if (delta > 0.1f)
+			delta = 0.1f;
+
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
 			box.start();
@@ -80,12 +83,11 @@ public class GameScreen implements Screen, InputProcessor {
 			box.stop();
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 			game.setScreen(GameStateManager.galaxyMap);
-		else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
-			exitButton.draw(game.getBatch());
+		else if (world.getState() == GameState.defeat) // przegrana i wypierdlamy kolesia za bramę
+			game.setScreen(GameStateManager.mainMenu);
 
-		Gdx.app.log("czas", "Time: " + box.getNano());
 		box.log();
-		
+
 		game.getBatch().begin();
 		background.draw(game.getBatch(), delta);
 
@@ -362,6 +364,15 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+
+		if (Gdx.input.isKeyPressed(Keys.HOME)) {
+			hit = true;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.BACK)) {
+			hit = true;
+		}
+
 		if (keycode == Keys.ENTER)
 			hit = true;
 

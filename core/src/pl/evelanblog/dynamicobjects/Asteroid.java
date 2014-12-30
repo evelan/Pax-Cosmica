@@ -29,7 +29,7 @@ public class Asteroid extends DynamicObject {
 		particle = new ParticleEffect();
 		particle.load(Gdx.files.internal("data/asteroid.p"), Gdx.files.internal(""));
 		textureNum = MathUtils.random(2);
-		rotation = MathUtils.randomBoolean();
+		rotation = MathUtils.randomBoolean(); //losuje boola aby raz się kręciły w jedną a raz w druga stronę
 		radius = MathUtils.random(5, 20);
 
 		getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -76,11 +76,11 @@ public class Asteroid extends DynamicObject {
 	@Override
 	public void kill()
 	{
-		live = false;
-		Assets.playSound(Assets.explosionSfx);
-		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
-		Assets.explosionEffect.start();
 		Stats.score += 10;
 		Stats.scrap += 4;
+		live = false;
+		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.playSound(Assets.explosionSfx);
+		Assets.explosionEffect.start();
 	}
 }
