@@ -71,9 +71,8 @@ i:planet/solar-eclipse-151211.png:329983:image/png
 i:planet/solar-eclipse-459078.jpg:453864:image/jpeg
 i:planet/venus.png:129278:image/png
 d:planetbg:0:application/unknown
-i:planetbg/15685921687_9bde5e7318_o.jpg:475374:image/jpeg
 i:planetbg/5027531278_a87fe17a81_o.jpg:2976544:image/jpeg
-i:planetbg/5518988345_9ef6af4df9_o.jpg:542444:image/jpeg
+i:planetbg/cold.jpg:542444:image/jpeg
 i:planetbg/eagle-nebula-11149.jpg:932499:image/jpeg
 i:planetbg/eagle-nebula-11172.jpg:384611:image/jpeg
 i:planetbg/eagle-nebula-11173.jpg:275914:image/jpeg
@@ -82,9 +81,10 @@ i:planetbg/galaxy-575235.jpg:1569227:image/jpeg
 i:planetbg/galaxy-575236.jpg:1573111:image/jpeg
 i:planetbg/galaxy-575238.jpg:999665:image/jpeg
 i:planetbg/galaxy-575239.jpg:1330646:image/jpeg
+i:planetbg/gold.jpg:289130:image/jpeg
 i:planetbg/ice.jpg:2119718:image/jpeg
-i:planetbg/ngc-2264-11175.jpg:289130:image/jpeg
 i:planetbg/ngc-2264-11176.jpg:456690:image/jpeg
+i:planetbg/purple.jpg:475374:image/jpeg
 i:planetbg/universe-284542.jpg:503829:image/jpeg
 i:power_bar.png:2861:image/png
 i:right.png:10365:image/png

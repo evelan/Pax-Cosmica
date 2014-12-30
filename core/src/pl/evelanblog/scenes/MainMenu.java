@@ -5,6 +5,7 @@ import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.paxcosmica.control.MousePointer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -12,21 +13,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 
 public class MainMenu implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	private Button play, options, credits, exit;
 	private Sprite planet, background, paxCosmica, dim;
-	private Rectangle mousePointer;
+	private MousePointer mousePointer;
 	private float count = 360.0f;
 	private float dimValue;
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
 		dim = new Sprite(Assets.dim);
-
+		mousePointer = new MousePointer();
 	}
 
 	@Override
@@ -42,21 +42,19 @@ public class MainMenu implements Screen, InputProcessor {
 
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
-
-		game.getCam().update();
-
-		game.getSprBatch().begin();
-		background.draw(game.getSprBatch());
-		planet.draw(game.getSprBatch());
-		paxCosmica.draw(game.getSprBatch());
-		play.draw(game.getSprBatch());
-		options.draw(game.getSprBatch());
-		credits.draw(game.getSprBatch());
-		exit.draw(game.getSprBatch());
-
+		game.getMenu().act();
+		game.getMenu().draw();
+		game.getMenu().getBatch().begin();
+		background.draw(game.getMenu().getBatch());
+		planet.draw(game.getMenu().getBatch());
+		paxCosmica.draw(game.getMenu().getBatch());
+		play.draw(game.getMenu().getBatch(), 1);
+		options.draw(game.getMenu().getBatch(), 1);
+		credits.draw(game.getMenu().getBatch(), 1);
+		exit.draw(game.getMenu().getBatch(), 1);
 		dimScreen(delta);
-
-		game.getSprBatch().end();
+		game.getMenu().getBatch().end();
+		
 	}
 
 	private void dimScreen(float delta) {
@@ -64,7 +62,7 @@ public class MainMenu implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			dim.draw(game.getSprBatch(), dimValue);
+			dim.draw(game.getMenu().getBatch(), dimValue);
 	}
 
 	@Override
@@ -74,25 +72,25 @@ public class MainMenu implements Screen, InputProcessor {
 		Assets.playSound(Assets.clickSfx);
 		
 		//PLAY BUTTON
-		if (play.getBoundingRectangle().overlaps(mousePointer)) {
+		if (mousePointer.overlaps(play)) {
 			Stats.clear();
 			game.setScreen(GameStateManager.galaxyMap);
 			dispose();
 		}
 		
 		//OPTIONS BUTTON
-		else if (options.getBoundingRectangle().overlaps(mousePointer)) {
+		else if (mousePointer.overlaps(options)) {
 			Assets.track1.stop();
 			dispose();
 		}
 		
 		//CREDITS BUTTON
-		else if (credits.getBoundingRectangle().overlaps(mousePointer)) {
+		else if (mousePointer.overlaps(credits)) {
 			game.setScreen(new CreditsScreen(game));
 		}
 		
 		//EXIT BUTTON
-		else if (exit.getBoundingRectangle().overlaps(mousePointer))
+		else if (mousePointer.overlaps(exit))
 			Gdx.app.exit();
 
 		return true;
@@ -104,8 +102,6 @@ public class MainMenu implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		mousePointer = new Rectangle();
-		mousePointer.setSize(1);
 		dimValue = 1f;
 
 		background = new Sprite(Assets.mainmenu);

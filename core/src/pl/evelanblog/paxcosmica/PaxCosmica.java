@@ -10,9 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class PaxCosmica extends Game {
 
-	private Stage mapScene, mapHud;
+	private Stage mapScene, mapHud, gameHud, menu;
 	private static Stage gameScene;
-	private Stage gameHud;
 	private GameStateManager gsm;
 	private MousePointer mousePointer;
 	private Planet activePlanet;
@@ -22,6 +21,7 @@ public class PaxCosmica extends Game {
 	@Override
 	public void create() {
 		Assets.load();
+		menu = new Stage();
 		mapScene = new Stage();
 		mapHud = new Stage();
 		gameScene = new Stage();
@@ -48,6 +48,10 @@ public class PaxCosmica extends Game {
 
 	public Stage getMapScene() {
 		return mapScene;
+	}
+	public Stage getMenu()
+	{
+		return menu;
 	}
 	
 	public static Stage getGameScene() {

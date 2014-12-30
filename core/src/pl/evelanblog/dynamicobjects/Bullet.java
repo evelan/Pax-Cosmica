@@ -1,8 +1,6 @@
 package pl.evelanblog.dynamicobjects;
 
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.scenes.GameScreen;
 
 import com.badlogic.gdx.Gdx;
 
@@ -15,26 +13,33 @@ public class Bullet extends DynamicObject {
 	}
 
 	public void update(float deltaTime) {
-		if (direction)
-			getSprite().setX(getSprite().getX() + speed * deltaTime);
+		if (direction) // w którą stronę latajo szczały
+			setX(getX() + speed * deltaTime);
 		else
-			getSprite().setX(getSprite().getX() - speed * deltaTime);
-
-		if (getSprite().getX() < 0 || getSprite().getX() > Gdx.graphics.getWidth())
+			setX(getX() - speed * deltaTime);
+		if (getX() < 0 || getX() > Gdx.graphics.getWidth()) // jak wyleci za ekran to umieramy szczała żeby się już nie renderował
 			live = false;
 	}
 
+	/**
+	 * zwraca kierunek w którą stronę leci pocisk, true - strzały gracza, false - strzały wroga
+	 *
+	 * @return
+	 */
 	public boolean getDirection()
 	{
 		return direction;
 	}
+
+
 
 	@Override
 	public void kill()
 	{
 		live = false;
 		Assets.playSound(Assets.hitSfx);
-		Assets.hitEffect.setPosition(getSprite().getX(), getSprite().getY() + (getSprite().getHeight() / 2));
+		Assets.hitEffect.setPosition(getX(), getY() + (getHeight() / 2));
 		Assets.hitEffect.start();
+		this.remove();
 	}
 }

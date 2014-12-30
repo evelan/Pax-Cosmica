@@ -2,9 +2,9 @@ package pl.evelanblog.paxcosmica;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Button extends Sprite {
+public class Button extends Image {
 
 	public Button(float x, float y, String file)
 	{
@@ -15,13 +15,16 @@ public class Button extends Sprite {
 	public Button(String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
-		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
 	}
 
 	public Button(Texture texture)
 	{
 		super(texture);
-		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
+	}
+	public Button(Texture texture, float x, float y)
+	{
+		super(texture);
+		super.setPosition(x, y);
 	}
 	/** 
 	 * Konstruktor. Skaluje argumenty metody do danej rodzielczości, aby były dopasowane do całości ekranu niezależnie od rozdzielczości.

@@ -58,6 +58,7 @@ public class Assets {
 	public static Texture playButton;
 	public static Texture optionsButton;
 	public static Texture creditsButton;
+	public static Texture attackButton;
 	public static Texture exitButton;
 	public static Texture discardButton;
 	public static Texture applyButton;
@@ -107,6 +108,9 @@ public class Assets {
 		
 		firePlanet = loadTexture("planet/fire.png");
 		icePlanet = loadTexture("planet/ice.png");
+		coldPlanet = loadTexture("planet/cold.png");
+		goldPlanet = loadTexture("planet/gold.png");
+		purplePlanet = loadTexture("planet/purple.png");
 		galaxyPlanet = loadTexture("planet/galaxy_planet.png");
 		upgradeBar = loadTexture("power_bar.png");
 		down = loadTexture("down.png");
@@ -123,6 +127,7 @@ public class Assets {
 		playButton = loadTexture("buttons/playButton.png");
 		optionsButton = loadTexture("buttons/optionsButton.png");
 		creditsButton = loadTexture("buttons/creditsButton.png");
+		attackButton = loadTexture("buttons/attackButton.png");
 		exitButton = loadTexture("buttons/exitButton.png");
 		continueButton = loadTexture("buttons/continueButton.png");
 		discardButton = loadTexture("buttons/discardButton.png");

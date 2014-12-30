@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class DynamicObject extends Actor {
@@ -20,7 +20,8 @@ public abstract class DynamicObject extends Actor {
 		sprite = new Sprite(new Texture(Gdx.files.internal(file)));
 		sprite.setBounds(x, y, sprite.getWidth(), sprite.getHeight());
 		sprite.setOriginCenter();
-		live = true;
+		
+		this.live = true;
 		this.speed = speed;
 		this.impactDamage = impactDamage;
 		this.shield = shield;
@@ -66,7 +67,15 @@ public abstract class DynamicObject extends Actor {
 	}
 
 	public abstract void kill();
-
+	
+	public boolean overlaps(Actor actor) {
+		Rectangle r = new Rectangle(actor.getX(),actor.getY(),actor.getWidth(),actor.getHeight());
+		if (this.getSprite().getBoundingRectangle().overlaps(r))
+			return true;
+		else
+			return false;
+	}
+	
 	public boolean isAlive() {
 		return live;
 	}
@@ -77,11 +86,38 @@ public abstract class DynamicObject extends Actor {
 
 	@Override
 	public void draw(Batch batch, float alpha){
-	    batch.draw(sprite.getTexture(), sprite.getX(),sprite.getY());
-	}
-	
-	public void draw(SpriteBatch batch, float delta) {
-		batch.draw(this.sprite.getTexture(),this.sprite.getX(),this.sprite.getY(), this.sprite.getWidth(), this.sprite.getHeight());
+		batch.draw(sprite, getX(),getY());
 	}
 
+	@Override
+	public void setX(float foo)
+	{
+		sprite.setX(foo);
+	}
+	@Override
+	public void setY(float foo)
+	{
+		sprite.setY(foo);
+	}
+	@Override
+	public float getX()
+	{
+		return sprite.getX();
+	}
+	@Override
+	public float getY()
+	{
+		return sprite.getY();
+	}
+	@Override
+	public float getWidth()
+	{
+		return sprite.getWidth();
+	}
+	@Override
+	public float getHeight()
+	{
+		return sprite.getHeight();
+	}
+	
 }

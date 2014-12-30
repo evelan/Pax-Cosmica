@@ -46,10 +46,10 @@ public class Asteroid extends DynamicObject {
 	public void update() {
 		radians += (Gdx.graphics.getDeltaTime());
 		
-		getSprite().setX(getSprite().getX() - speed * Gdx.graphics.getDeltaTime());
-		getSprite().setY((MathUtils.sin(radians) * radius) + 50 + startY);
+		this.setX(this.getX() - speed * Gdx.graphics.getDeltaTime());
+		this.setY((MathUtils.sin(radians) * radius) + 50 + startY);
 		
-		particle.setPosition(getSprite().getX() + getSprite().getWidth() - 20, getSprite().getY() + (getSprite().getHeight() / 2));
+		particle.setPosition(this.getX() + this.getWidth() - 20, this.getY() + (this.getHeight() / 2));
 		if (count < 0.0f)
 			count = 360.0f;
 		else
@@ -58,16 +58,15 @@ public class Asteroid extends DynamicObject {
 				count -= (speed / 70);
 			else
 				count += (speed / 70);
-		}
-		getSprite().setRotation(count);
-		
+		}		
 	}
+	
 	
 	@Override
 	public void draw(Batch batch, float alpha)
 	{
 		particle.draw(batch, Gdx.graphics.getDeltaTime());
-		batch.draw(getSprite().getTexture(),getSprite().getX(),getSprite().getY());
+		batch.draw(getSprite(),this.getX(),this.getY(), this.getWidth()/2, this.getHeight()/2, this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), count);
 	}
 
 	public static float getSpawnTime()
@@ -80,7 +79,7 @@ public class Asteroid extends DynamicObject {
 	{
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
-		Assets.explosionEffect.setPosition(getSprite().getX() + (getSprite().getWidth() / 2), getSprite().getY() + (getSprite().getHeight() / 2));
+		Assets.explosionEffect.setPosition(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2));
 		Assets.explosionEffect.start();
 		Stats.score += 10;
 		Stats.scrap += 4;

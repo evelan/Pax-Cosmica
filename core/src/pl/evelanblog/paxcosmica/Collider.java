@@ -1,6 +1,7 @@
 package pl.evelanblog.paxcosmica;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 
 import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
@@ -18,51 +19,61 @@ public class Collider {
 		this.player = player;
 	}
 
-	public void checkPlayerCollision(ArrayList<DynamicObject> array) {
+	public void checkPlayerCollision(Group objects) {
 
-		for (DynamicObject obj : array)
+		for(Actor obj: objects.getChildren())
 		{
-			if (obj.getSprite().getBoundingRectangle().overlaps(player.getSprite().getBoundingRectangle()))
+			if (player.overlaps(obj))
 			{
 				if (obj instanceof Enemy || obj instanceof Asteroid) {
 					player.kill();
-				} else if (obj instanceof Booster) {
-					obj.kill();
+				} 
+
+				//Co to?
+				else if (obj instanceof Booster) {
+					Booster booster = (Booster) obj;
+					booster.kill();
 					Assets.playSound(Assets.powerupSfx);
+
 				} else if (obj instanceof Bullet) {
 					Bullet bullet = (Bullet) obj;
 					if (!bullet.getDirection())
 					{
 						player.hurt(bullet.getImpactDamage());
-						obj.kill();
+						bullet.kill();
 					}
 				}
 			}
 		}
 	}
 
-	public void checkBulletCollision(ArrayList<DynamicObject> array) {
-		for (DynamicObject dynamicObject : array)
+	/**
+	 * Sprawdza czy strzały przeciwnika lub gracza kolidują z czymś
+	 * @param array
+	 */
+	public void checkBulletCollision(Group objects) {
+		
+		for(int i = 0; i<objects.getChildren().size;i++)
 		{
-			if (dynamicObject instanceof Bullet)
+			Actor obj = objects.getChildren().get(i);
+			if (obj instanceof Bullet)
 			{
-				Bullet bullet = (Bullet) dynamicObject;
-				for (DynamicObject asteroid : array)
+				Bullet bullet = (Bullet) obj;
+				for (Actor actor2 : objects.getChildren())
 				{
-					if (asteroid instanceof Asteroid)
+					
+					if (actor2 instanceof Asteroid)
 					{
-						// kolizja asteroidiy i pocisku
+						Asteroid asteroid = (Asteroid) actor2;
+						// kolizja asteroidy i pocisku
 						if (asteroid.getSprite().getBoundingRectangle().overlaps(bullet.getSprite().getBoundingRectangle())) {
 							asteroid.hurt(bullet.getImpactDamage());
 							bullet.kill();
 						}
 					}
-				}
-
-				for (DynamicObject enemy : array)
-				{
-					if (enemy instanceof Enemy)
+					if (actor2 instanceof Enemy)
 					{
+						Enemy enemy = (Enemy) actor2;
 						// kolizja wroga i pocisku
 						if (enemy.getSprite().getBoundingRectangle().overlaps(bullet.getSprite().getBoundingRectangle()) && bullet.getDirection()) {
 							enemy.hurt(bullet.getImpactDamage());
