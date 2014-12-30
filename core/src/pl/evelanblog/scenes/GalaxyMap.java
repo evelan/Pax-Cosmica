@@ -86,10 +86,10 @@ public class GalaxyMap implements Screen, InputProcessor {
 		game.getMapHud().addActor(scrap);
 		game.getMapHud().addActor(fuel);
 		// tworzenie planet
-		planets.add(new Planet(200, 200, 4, 0.10f, true, false, "Ice", "planet/ice.png", 0.05f));
-		planets.add(new Planet(600, 540, 4, 0.01f, false, false, "Fire", "planet/fire.png", 0.01f));
-		planets.add(new Planet(-500, 540, 4, 0.02f, false, false, "Gold", "planet/gold.png", 0.01f));
-		planets.add(new Planet(2200, 540, 4, 0.05f, true, false, "Purple", "planet/purple.png", 0.01f));
+		planets.add(new Planet(200, 200, 1, 0.10f, true, false, "Ice", "planet/ice.png", 0.05f));
+		planets.add(new Planet(600, 540, 1, 0.01f, false, false, "Fire", "planet/fire.png", 0.01f));
+		planets.add(new Planet(-500, 540, 1, 0.02f, false, false, "Gold", "planet/gold.png", 0.01f));
+		planets.add(new Planet(2200, 540, 1, 0.05f, true, false, "Purple", "planet/purple.png", 0.01f));
 		for(Planet obj: planets)
 		game.getMapScene().addActor(obj);
 		
@@ -183,11 +183,11 @@ public class GalaxyMap implements Screen, InputProcessor {
 			game.setScreen(GameStateManager.gameScreen);
 
 		}else if(game.getMouse().overlaps(left)){
-			game.getMapScene().getCamera().position.x-=1920;
+			game.getMapScene().getCamera().position.x-=Gdx.graphics.getWidth();
 			moveValue--;
 		}
 		else if(game.getMouse().overlaps(right)){
-			game.getMapScene().getCamera().position.x+=1920;
+			game.getMapScene().getCamera().position.x+=Gdx.graphics.getWidth();
 			moveValue++;
 		}
 		
@@ -213,9 +213,9 @@ public class GalaxyMap implements Screen, InputProcessor {
 		for (Planet obj : planets)
 		{ 	
 			obj.reset();
-			if (game.getMouse().overlaps(obj,moveValue, screenX, screenY))
+			if (game.getMouse().overlaps(obj, moveValue, screenX, screenY))
 			{
-				attack.setPosition(obj.getX()-obj.getSprite().getWidth(), obj.getY());
+				attack.setCenterPosition(obj.getCenterX(), obj.getCenterY());
 				attack.setVisible(true);
 				obj.setHover();
 				game.setActivePlanet(obj);

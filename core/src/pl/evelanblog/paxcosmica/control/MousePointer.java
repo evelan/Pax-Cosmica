@@ -60,7 +60,7 @@ public class MousePointer extends Rectangle {
 	public boolean overlaps(Planet planet, float moveValue, float x, float y) {
 		if(planet.isVisible())
 		{
-			setPosition(x+moveValue*1920,y);
+			setPosition(x+moveValue*Gdx.graphics.getWidth(),y);
 			if (this.overlaps(planet.getSprite().getBoundingRectangle()))
 			{
 				setPosition(x,y);
@@ -78,7 +78,7 @@ public class MousePointer extends Rectangle {
 	public boolean overlaps(Button button, float moveValue, float x, float y) {
 		if(button.isVisible())
 		{
-			setPosition(x+moveValue*1920, y);
+			setPosition(x+moveValue*Gdx.graphics.getWidth(), y);
 			Rectangle r = new Rectangle(button.getX(),button.getY(),button.getWidth(),button.getHeight());
 			if (this.overlaps(r))
 			{

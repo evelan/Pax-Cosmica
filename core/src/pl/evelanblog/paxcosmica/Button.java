@@ -9,17 +9,21 @@ public class Button extends Image {
 	public Button(float x, float y, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
-		setPosition(x,y);
+		x=Gdx.graphics.getWidth()*x/1920;
+		y=Gdx.graphics.getHeight()*y/1080;
+		setBounds(x, y, Gdx.graphics.getWidth()*getWidth()/1920, Gdx.graphics.getHeight()*getHeight()/1080);
 	}
 
 	public Button(String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
+		setBounds(Gdx.graphics.getWidth()*super.getX()/1920, Gdx.graphics.getHeight()*super.getX()/1080, Gdx.graphics.getWidth()*getWidth()/1920, Gdx.graphics.getHeight()*getHeight()/1080);
 	}
 
 	public Button(Texture texture)
 	{
 		super(texture);
+		setBounds(Gdx.graphics.getWidth()*super.getX()/1920, Gdx.graphics.getHeight()*super.getX()/1080, Gdx.graphics.getWidth()*getWidth()/1920, Gdx.graphics.getHeight()*getHeight()/1080);
 	}
 	public Button(Texture texture, float x, float y)
 	{
@@ -27,7 +31,7 @@ public class Button extends Image {
 		super.setPosition(x, y);
 	}
 	/** 
-	 * Konstruktor. Skaluje argumenty metody do danej rodzielczości, aby były dopasowane do całości ekranu niezależnie od rozdzielczości.
+	 * Konstruktor. Skaluje argumenty metody do danej rodzielczości, aby były dopasowane do każdej.
 	 * @author Dave
 	 * @version 1.0
 	 * @param x pozycja x
@@ -55,5 +59,13 @@ public class Button extends Image {
 		y=Gdx.graphics.getHeight()*y/1080;
 		z=Gdx.graphics.getHeight()*z/1080;
 		setBounds(x,y,z,z);
+	}
+	public float getWidth()
+	{
+		return super.getWidth()*Gdx.graphics.getWidth()/1920;
+	}
+	public float getHeight()
+	{
+		return super.getHeight()*Gdx.graphics.getHeight()/1080;
 	}
 }

@@ -76,13 +76,13 @@ i:planetbg/cold.jpg:542444:image/jpeg
 i:planetbg/eagle-nebula-11149.jpg:932499:image/jpeg
 i:planetbg/eagle-nebula-11172.jpg:384611:image/jpeg
 i:planetbg/eagle-nebula-11173.jpg:275914:image/jpeg
-i:planetbg/fire.jpg:2639437:image/jpeg
+i:planetbg/fire.jpg:2359169:image/jpeg
 i:planetbg/galaxy-575235.jpg:1569227:image/jpeg
 i:planetbg/galaxy-575236.jpg:1573111:image/jpeg
 i:planetbg/galaxy-575238.jpg:999665:image/jpeg
 i:planetbg/galaxy-575239.jpg:1330646:image/jpeg
 i:planetbg/gold.jpg:289130:image/jpeg
-i:planetbg/ice.jpg:2119718:image/jpeg
+i:planetbg/ice.jpg:2516546:image/jpeg
 i:planetbg/ngc-2264-11176.jpg:456690:image/jpeg
 i:planetbg/purple.jpg:475374:image/jpeg
 i:planetbg/universe-284542.jpg:503829:image/jpeg
