@@ -23,7 +23,7 @@ public class Asteroid extends DynamicObject {
 
 	public Asteroid() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(Gdx.graphics.getWidth(), 0f, 40f + (MathUtils.random(10) * 10), 2f, 0f, 200f, "asteroid_1.png");
+		super(Gdx.graphics.getWidth(), 0f, 40f + (MathUtils.random(10) * 10), 2f, 0f, 200f, "asteroid/asteroid_1.png");
 
 		startY = (MathUtils.random(0, Gdx.graphics.getHeight() - 64));
 
@@ -36,11 +36,11 @@ public class Asteroid extends DynamicObject {
 		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		if (textureNum == 0)
-			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_1.png")));
+			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid/asteroid_1.png")));
 		else if (textureNum == 1)
-			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_2.png")));
+			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid/asteroid_2.png")));
 		else if (textureNum == 2)
-			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_3.png")));
+			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid/asteroid_3.png")));
 	}
 
 	@Override

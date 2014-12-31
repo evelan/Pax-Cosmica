@@ -20,7 +20,6 @@ import pl.evelanblog.world.World.GameState;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -49,7 +48,6 @@ public class GameScreen implements Screen, InputProcessor {
 	private static float velY = 0;
 	private static boolean hit = false;
 	private boolean knobPressed = false;
-	private int i = 3;
 
 	private int knobPointer = -1;
 	private int hitPointer = -1;
@@ -71,22 +69,22 @@ public class GameScreen implements Screen, InputProcessor {
 		shieldLevel.add(new Button(Assets.shieldBar, 60f, 1000));
 		shieldLevel.add(new Button(Assets.shieldBar, 75f, 1000));
 
-		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "knob.png");
-		buttonA = new Button(true, 1600, 256, 256, 256, "buttonA.png");
-		buttonB = new Button(true, 1472, 0, 256, 256, "buttonB.png");
+		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "buttons/knob.png");
+		buttonA = new Button(true, 1600, 256, 256, 256, "buttons/buttonA.png");
+		buttonB = new Button(true, 1472, 0, 256, 256, "buttons/buttonB.png");
 		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
 		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/pauseButton.png");
 		resumeButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/unpauseButton.png");
 		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
 		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
 
-		upPwr = new Button("up.png");
-		downPwr = new Button("down.png");
+		upPwr = new Button("buttons/up.png");
+		downPwr = new Button("buttons/down.png");
 
 		dimScreen = new MySprite(Assets.dim);
 
 		mousePointer = game.getMouse();
-		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		box = new MeasureBox();
 
 		score = new MyFont(font, "Score: " + Stats.score, 100, 1000);
@@ -238,7 +236,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		PaxCosmica.getGameScene().addActor(hitEff);
 		PaxCosmica.getGameScene().addActor(explodeEff);
-		PaxCosmica.getGameScene().addActor(world.getObjects());
+		PaxCosmica.getGameScene().addActor(World.getObjects());
 
 		// ADD HUD ACTORS
 		if (Gdx.app.getType() == ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
@@ -264,14 +262,13 @@ public class GameScreen implements Screen, InputProcessor {
 		game.getGameHud().addActor(shieldLevel.get(0));
 		game.getGameHud().addActor(shieldLevel.get(1));
 		game.getGameHud().addActor(shieldLevel.get(2));
-		// //////////////////////////////////////
 
 		exitButton.setVisible(false);
 		continueButton.setVisible(false);
 		hitEff.setVisible(false);
 		explodeEff.setVisible(false);
 
-		i = (int) world.getPlayer().getHealth();
+		// i = (int) world.getPlayer().getHealth();
 
 		background.setBackground(game.getActivePlanet().getBackground());
 

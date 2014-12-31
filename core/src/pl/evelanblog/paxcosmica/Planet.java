@@ -11,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Planet extends Actor {
 
 	private Sprite sprite, background;
-	private float x;
-	private float y;
 	private float count;
 	private float size;
 	private float speed;
@@ -43,7 +41,7 @@ public class Planet extends Actor {
 		this.name = _name;
 		this.rotationSpeed = _rotationSpeed;
 		this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/"+name.toLowerCase()+".jpg")));
-		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		tekst = new MyFont(font, portal ? "P:" + name : name, getX(), getY());
 		
 	}

@@ -1,9 +1,5 @@
 package pl.evelanblog.enemy;
 
-import pl.evelanblog.dynamicobjects.Bullet;
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.world.World;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 

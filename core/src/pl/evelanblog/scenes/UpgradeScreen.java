@@ -47,8 +47,6 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
 		createBar(engine, engineLvl, "Engine: " + engineLvl);
 
-		// apply.draw(game.getSprBatch());
-		// discard.draw(game.getSprBatch());
 		font.draw(game.getSprBatch(), "Scrap: " + scrap, 10, 710);
 		game.getSprBatch().end();
 

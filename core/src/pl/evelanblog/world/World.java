@@ -15,9 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class World {
 
+	private static Group objects;
 	private Collider colider;
 	private Player player;
-	private static Group objects;
 
 	// zamienić na hashsety bo szybsze czy coś
 

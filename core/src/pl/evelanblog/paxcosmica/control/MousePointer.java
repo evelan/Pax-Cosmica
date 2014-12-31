@@ -5,7 +5,6 @@ import pl.evelanblog.paxcosmica.Planet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MousePointer extends Rectangle {
 	private static final long serialVersionUID = 3373269279037859745L;
@@ -32,7 +31,6 @@ public class MousePointer extends Rectangle {
 		{
 			//y = Gdx.graphics.getHeight() - y;
 			setPosition(x, y);
-			setSize(1);
 
 			Rectangle r = new Rectangle(button.getX(),button.getY(),button.getWidth(),button.getHeight());
 

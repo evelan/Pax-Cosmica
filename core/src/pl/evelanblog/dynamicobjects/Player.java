@@ -8,8 +8,6 @@ import pl.evelanblog.scenes.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Player extends DynamicObject {
 	private float bulletSpeed = 1000f;
@@ -32,7 +30,7 @@ public class Player extends DynamicObject {
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(100, 300, 180f, 3f, 0f, 100f, "spaceship.png");
+		super(100, 300, 180f, 3f, 0f, 100f, "player/spaceship.png");
 		shieldSprite = new Sprite(Assets.bubbleShield);
 		shieldSprite.setOriginCenter();
 	}
@@ -45,7 +43,7 @@ public class Player extends DynamicObject {
 	 */
 	public Player(float x, float y)
 	{
-		super(x, y, 0, 0, 0, 0, "spaceship.png");
+		super(x, y, 0, 0, 0, 0, "player/spaceship.png");
 		setScale(0.7f);
 	}
 

@@ -88,24 +88,24 @@ public class Assets {
 		enemyEngineEffect = new ParticleEffect();
 		enemyEngineEffect.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 
-		galaxy = loadTexture("galaxy.png");
-		stars = loadTexture("stars-pow2.png");
-		stars2 = loadTexture("stars-pow2.png");
-		knob = loadTexture("knob.png");
-		bullet = loadTexture("bullet.png");
-		buttonA = loadTexture("buttonA.png");
-		buttonB = loadTexture("buttonB.png");
-		asteroid_1 = loadTexture("asteroid_1.png");
-		asteroid_2 = loadTexture("asteroid_2.png");
-		asteroid_3 = loadTexture("asteroid_3.png");
-		booster = loadTexture("booster.png");
+		galaxy = loadTexture("background/galaxy.png");
+		stars = loadTexture("background/stars-pow2.png");
+		stars2 = loadTexture("background/stars-pow2.png");
+		knob = loadTexture("buttons/knob.png");
+		bullet = loadTexture("enemy/bullet.png");
+		buttonA = loadTexture("buttons/buttonA.png");
+		buttonB = loadTexture("buttons/buttonB.png");
+		asteroid_1 = loadTexture("asteroid/asteroid_1.png");
+		asteroid_2 = loadTexture("asteroid/asteroid_2.png");
+		asteroid_3 = loadTexture("asteroid/asteroid_3.png");
+		booster = loadTexture("booster/booster.png");
 		fighter = loadTexture("enemy/fighter.png");
 		bomber = loadTexture("enemy/bomber.png");
-		hullBar = loadTexture("hull.png");
-		shieldBar = loadTexture("shield.png");
-		spaceship = loadTexture("spaceship.png");
-		bubbleShield = loadTexture("bubble_shield.png");
-		dim = loadTexture("dim.png");
+		hullBar = loadTexture("player/hull.png");
+		shieldBar = loadTexture("player/shield.png");
+		spaceship = loadTexture("player/spaceship.png");
+		bubbleShield = loadTexture("player/bubble_shield.png");
+		dim = loadTexture("other/dim.png");
 		
 		firePlanet = loadTexture("planet/fire.png");
 		icePlanet = loadTexture("planet/ice.png");
@@ -113,14 +113,14 @@ public class Assets {
 		goldPlanet = loadTexture("planet/gold.png");
 		purplePlanet = loadTexture("planet/purple.png");
 		galaxyPlanet = loadTexture("planet/galaxy_planet.png");
-		upgradeBar = loadTexture("power_bar.png");
-		down = loadTexture("down.png");
-		up = loadTexture("up.png");
+		upgradeBar = loadTexture("other/power_bar.png");
+		down = loadTexture("buttons/down.png");
+		up = loadTexture("buttons/up.png");
 		upgradeBtn = loadTexture("buttons/upgrade_button.png");
 
 		planet = loadTexture("planet/planet_1.png");
-		mainmenu = loadTexture("mainmenu.png");
-		paxCosmica = loadTexture("pax_cosmica.png");
+		mainmenu = loadTexture("background/mainmenu.png");
+		paxCosmica = loadTexture("other/pax_cosmica.png");
 
 		pauseButton = loadTexture("buttons/pauseButton.png");
 		unpauseButton = loadTexture("buttons/unpauseButton.png");
