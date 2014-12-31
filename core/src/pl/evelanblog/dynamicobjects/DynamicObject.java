@@ -34,6 +34,7 @@ public abstract class DynamicObject extends Actor {
 		sprite.setOriginCenter();
 	}
 
+	
 	public float getImpactDamage() {
 		return impactDamage;
 	}
@@ -68,8 +69,13 @@ public abstract class DynamicObject extends Actor {
 		if (hp <= 0)
 			kill();
 	}
-
-	public abstract void kill();
+	public abstract void update(float delta);
+	
+	public void kill()
+	{
+		live = false;
+	}
+	
 
 	public boolean overlaps(Actor actor) {
 		Rectangle r = new Rectangle(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());

@@ -1,14 +1,14 @@
 package pl.evelanblog.paxcosmica;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-
 import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.Bullet;
-import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Enemy;
 import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.enemy.Enemy;
+import pl.evelanblog.enemy.Fighter;
+
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
  * bardzo brzydkie sprawdzanie kolizji, szkoda czasu na zagłębianie się w to skoro działa 
@@ -33,7 +33,7 @@ public class Collider {
 		{
 			if (player.overlaps(obj))
 			{
-				if (obj instanceof Enemy || obj instanceof Asteroid) {
+				if (obj instanceof Fighter || obj instanceof Asteroid) {
 					player.kill();
 				} 
 

@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Asteroid extends DynamicObject {
 
-	private static float spawnTime = 6f; 
+	private static float spawnTime = 6f;
 	private ParticleEffect particle;
 	private boolean rotation;
 	private float count = 360.0f;
@@ -30,7 +30,7 @@ public class Asteroid extends DynamicObject {
 		particle = new ParticleEffect();
 		particle.load(Gdx.files.internal("data/asteroid.p"), Gdx.files.internal(""));
 		textureNum = MathUtils.random(2);
-		rotation = MathUtils.randomBoolean();
+		rotation = MathUtils.randomBoolean(); // losuje boola aby raz się kręciły w jedną a raz w druga stronę
 		radius = MathUtils.random(5, 20);
 
 		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -43,30 +43,12 @@ public class Asteroid extends DynamicObject {
 			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_3.png")));
 	}
 
-	public void update() {
-		radians += (Gdx.graphics.getDeltaTime());
-		
-		this.setX(this.getX() - speed * Gdx.graphics.getDeltaTime());
-		this.setY((MathUtils.sin(radians) * radius) + 50 + startY);
-		
-		particle.setPosition(this.getX() + this.getWidth() - 20, this.getY() + (this.getHeight() / 2));
-		if (count < 0.0f)
-			count = 360.0f;
-		else
-		{
-			if (rotation)
-				count -= (speed / 70);
-			else
-				count += (speed / 70);
-		}		
-	}
-	
-	
 	@Override
 	public void draw(Batch batch, float alpha)
 	{
 		particle.draw(batch, Gdx.graphics.getDeltaTime());
-		batch.draw(getSprite(),this.getX(),this.getY(), this.getWidth()/2, this.getHeight()/2, this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), count);
+		batch.draw(getSprite(), this.getX(), this.getY(), this.getWidth() / 2, this.getHeight() / 2, this.getWidth(), this.getHeight(), this.getScaleX(),
+				this.getScaleY(), count);
 	}
 
 	public static float getSpawnTime()
@@ -77,11 +59,32 @@ public class Asteroid extends DynamicObject {
 	@Override
 	public void kill()
 	{
+		Stats.score += 10;
+		Stats.scrap += 4;
 		live = false;
+		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2));
 		Assets.explosionEffect.start();
-		Stats.score += 10;
-		Stats.scrap += 4;
+	}
+
+	@Override
+	public void update(float delta) {
+		radians += (Gdx.graphics.getDeltaTime());
+
+		this.setX(this.getX() - speed * Gdx.graphics.getDeltaTime());
+		this.setY((MathUtils.sin(radians) * radius) + 50 + startY);
+
+		particle.setPosition(this.getX() + this.getWidth() - 20, this.getY() + (this.getHeight() / 2));
+		if (count < 0.0f)
+			count = 360.0f;
+		else
+		{
+			if (rotation)
+				count -= (speed / 70);
+			else
+				count += (speed / 70);
+		}
+
 	}
 }

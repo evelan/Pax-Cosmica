@@ -17,8 +17,10 @@ import pl.evelanblog.utilities.MeasureBox;
 import pl.evelanblog.world.World;
 import pl.evelanblog.world.World.GameState;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -128,10 +130,7 @@ public class GameScreen implements Screen, InputProcessor {
 			player.setVisible(false);
 		}
 
-		Gdx.app.log("czas", "Time: " + box.getNano());
 		box.log();
-
-		//background.draw(game.getSprBatch(), delta);
 
 		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
 		// for (DynamicObject obj : world.getObjects())
@@ -240,12 +239,13 @@ public class GameScreen implements Screen, InputProcessor {
 		PaxCosmica.getGameScene().addActor(hitEff);
 		PaxCosmica.getGameScene().addActor(explodeEff);
 		PaxCosmica.getGameScene().addActor(world.getObjects());
-		// ///////////////////////////////////////////////////////
 
 		// ADD HUD ACTORS
-		game.getGameHud().addActor(knob);
-		game.getGameHud().addActor(buttonA);
-		game.getGameHud().addActor(buttonB);
+		if (Gdx.app.getType() == ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
+			game.getGameHud().addActor(knob);
+			game.getGameHud().addActor(buttonA);
+			game.getGameHud().addActor(buttonB);
+		}
 		game.getGameHud().addActor(powerButton);
 		game.getGameHud().addActor(pauseButton);
 		game.getGameHud().addActor(resumeButton);
@@ -475,6 +475,15 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+
+		if (Gdx.input.isKeyPressed(Keys.HOME)) {
+			hit = true;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.BACK)) {
+			hit = true;
+		}
+
 		if (keycode == Keys.ENTER)
 			hit = true;
 

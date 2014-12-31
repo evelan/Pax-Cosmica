@@ -1,5 +1,6 @@
 package pl.evelanblog.utilities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 
 /**
@@ -9,7 +10,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
  * Dodany fpslogger żeby spełniało to od razu kilka funkcji ;)
  * 
  * @author Evelan
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -17,9 +18,13 @@ public class MeasureBox extends FPSLogger {
 
 	private long startTime;
 	private long elapsedTime; // w nanosekundach
+	private long avgTime;
+	private long counter;
 
 	public MeasureBox()
 	{
+		counter = 0;
+		avgTime = 0;
 		startTime = 0;
 		elapsedTime = -1;
 	}
@@ -39,6 +44,7 @@ public class MeasureBox extends FPSLogger {
 	public void stop()
 	{
 		elapsedTime = System.nanoTime() - startTime;
+		avgTime += (elapsedTime / (++counter));
 	}
 
 	/**
@@ -61,6 +67,12 @@ public class MeasureBox extends FPSLogger {
 			return elapsedTime;
 		else
 			return (System.nanoTime() - startTime) / 1000000000;
+	}
+
+	public void logAvg(long counts)
+	{
+		if (counter % counts == 0)
+			Gdx.app.log("MeasueBox", "AvgTime" + avgTime);
 	}
 
 }
