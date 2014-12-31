@@ -17,7 +17,7 @@ public class Bullet extends DynamicObject {
 			setX(getX() + speed * deltaTime);
 		else
 			setX(getX() - speed * deltaTime);
-
+ 
 		if (getX() < 0 || getX() > Gdx.graphics.getWidth()) // jak wyleci za ekran to umieramy szczała żeby się już nie renderował
 			live = false;
 	}
@@ -39,5 +39,7 @@ public class Bullet extends DynamicObject {
 		Assets.playSound(Assets.hitSfx);
 		Assets.hitEffect.setPosition(getX(), getY() + (getHeight() / 2));
 		Assets.hitEffect.start();
+
+		this.remove();
 	}
 }

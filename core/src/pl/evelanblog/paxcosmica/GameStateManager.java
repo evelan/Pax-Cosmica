@@ -15,8 +15,8 @@ public class GameStateManager {
 	public GameStateManager(final PaxCosmica game)
 	{
 		mainMenu = new MainMenu(game);
-		gameScreen = new GameScreen(game);
 		galaxyMap = new GalaxyMap(game);
+		gameScreen = new GameScreen(game);
 		upgradeScreen = new UpgradeScreen(game);
 	}
 

@@ -2,31 +2,41 @@ package pl.evelanblog.paxcosmica;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Button extends Sprite {
+public class Button extends Image {
 
-	public Button(int x, int y, String file)
+	public Button(float x, float y, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
-		setBounds(x, y, getTexture().getWidth(), getTexture().getHeight());
+		x = Gdx.graphics.getWidth() * x / 1920;
+		y = Gdx.graphics.getHeight() * y / 1080;
+		setBounds(x, y, Gdx.graphics.getWidth() * getWidth() / 1920, Gdx.graphics.getHeight() * getHeight() / 1080);
 	}
 
 	public Button(String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
-		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
+		setBounds(Gdx.graphics.getWidth() * super.getX() / 1920, Gdx.graphics.getHeight() * super.getX() / 1080, Gdx.graphics.getWidth() * getWidth() / 1920,
+				Gdx.graphics.getHeight() * getHeight() / 1080);
 	}
 
 	public Button(Texture texture)
 	{
 		super(texture);
-		setBounds(0, 0, getTexture().getWidth(), getTexture().getHeight());
+		setBounds(Gdx.graphics.getWidth() * super.getX() / 1920, Gdx.graphics.getHeight() * super.getX() / 1080, Gdx.graphics.getWidth() * getWidth() / 1920,
+				Gdx.graphics.getHeight() * getHeight() / 1080);
+	}
+
+	public Button(Texture texture, float x, float y)
+	{
+		super(texture);
+		super.setPosition(x, y);
 	}
 
 	/**
-	 * Konstruktor. Skaluje argumenty metody do danej rodzielczości, aby były dopasowane do całości ekranu
-	 * niezależnie od rozdzielczości.
+	 * Konstruktor. Skaluje argumenty metody do danej rodzielczości, aby były dopasowane do całości ekranu niezależnie
+	 * od rozdzielczości.
 	 * 
 	 * @author Dave
 	 * @version 1.0
@@ -58,5 +68,30 @@ public class Button extends Sprite {
 		}
 
 		setBounds(x, y, z, v);
+		x = Gdx.graphics.getWidth() * x / 1920;
+		y = Gdx.graphics.getHeight() * y / 1080;
+		z = Gdx.graphics.getWidth() * z / 1920;
+		v = Gdx.graphics.getHeight() * v / 1080;
+
+		setBounds(x, y, z, v);
+	}
+
+	public Button(float x, float y, float z, String file)
+	{
+		super(new Texture(Gdx.files.internal(file)));
+		x = Gdx.graphics.getWidth() * x / 1920;
+		y = Gdx.graphics.getHeight() * y / 1080;
+		z = Gdx.graphics.getHeight() * z / 1080;
+		setBounds(x, y, z, z);
+	}
+
+	public float getWidth()
+	{
+		return super.getWidth() * Gdx.graphics.getWidth() / 1920;
+	}
+
+	public float getHeight()
+	{
+		return super.getHeight() * Gdx.graphics.getHeight() / 1080;
 	}
 }

@@ -5,6 +5,7 @@ import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.paxcosmica.control.MousePointer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -12,21 +13,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 
 public class MainMenu implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	private Button play, options, credits, exit;
 	private Sprite planet, background, paxCosmica, dim;
-	private Rectangle mousePointer;
+	private MousePointer mousePointer;
 	private float count = 360.0f;
 	private float dimValue;
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
 		dim = new Sprite(Assets.dim);
-
+		mousePointer = new MousePointer();
 	}
 
 	@Override
@@ -42,21 +42,19 @@ public class MainMenu implements Screen, InputProcessor {
 
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
-
-		game.getCamera().update();
-
-		game.getBatch().begin();
-		background.draw(game.getBatch());
-		planet.draw(game.getBatch());
-		paxCosmica.draw(game.getBatch());
-		play.draw(game.getBatch());
-		options.draw(game.getBatch());
-		credits.draw(game.getBatch());
-		exit.draw(game.getBatch());
-
+		game.getMenu().act();
+		game.getMenu().draw();
+		game.getMenu().getBatch().begin();
+		background.draw(game.getMenu().getBatch());
+		planet.draw(game.getMenu().getBatch());
+		paxCosmica.draw(game.getMenu().getBatch());
+		play.draw(game.getMenu().getBatch(), 1);
+		options.draw(game.getMenu().getBatch(), 1);
+		credits.draw(game.getMenu().getBatch(), 1);
+		exit.draw(game.getMenu().getBatch(), 1);
 		dimScreen(delta);
+		game.getMenu().getBatch().end();
 
-		game.getBatch().end();
 	}
 
 	private void dimScreen(float delta) {
@@ -64,7 +62,7 @@ public class MainMenu implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			dim.draw(game.getBatch(), dimValue);
+			dim.draw(game.getMenu().getBatch(), dimValue);
 	}
 
 	@Override
@@ -72,28 +70,27 @@ public class MainMenu implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 		mousePointer.setPosition(screenX, screenY);
 		Assets.playSound(Assets.clickSfx);
-		
-		//PLAY BUTTON
-		if (play.getBoundingRectangle().overlaps(mousePointer)) {
+
+		// PLAY BUTTON
+		if (mousePointer.overlaps(play)) {
 			Stats.clear();
-			Assets.track1.stop();
-			game.setScreen(GameStateManager.gameScreen);
+			game.setScreen(GameStateManager.galaxyMap);
 			dispose();
 		}
-		
-		//OPTIONS BUTTON
-		else if (options.getBoundingRectangle().overlaps(mousePointer)) {
+
+		// OPTIONS BUTTON
+		else if (mousePointer.overlaps(options)) {
 			Assets.track1.stop();
 			dispose();
 		}
-		
-		//CREDITS BUTTON
-		else if (credits.getBoundingRectangle().overlaps(mousePointer)) {
+
+		// CREDITS BUTTON
+		else if (mousePointer.overlaps(credits)) {
 			game.setScreen(new CreditsScreen(game));
 		}
-		
-		//EXIT BUTTON
-		else if (exit.getBoundingRectangle().overlaps(mousePointer))
+
+		// EXIT BUTTON
+		else if (mousePointer.overlaps(exit))
 			Gdx.app.exit();
 
 		return true;
@@ -105,8 +102,6 @@ public class MainMenu implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		mousePointer = new Rectangle();
-		mousePointer.setSize(1);
 		dimValue = 1f;
 
 		background = new Sprite(Assets.mainmenu);
@@ -121,7 +116,7 @@ public class MainMenu implements Screen, InputProcessor {
 
 		paxCosmica = new Sprite(Assets.paxCosmica);
 		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
-		
+
 		play = new Button(false, 1440, 602, 480, 144, "buttons/playButton.png");
 		options = new Button(false, 1440, 458, 480, 144, "buttons/optionsButton.png");
 		credits = new Button(false, 1440, 314, 480, 144, "buttons/creditsButton.png");

@@ -45,7 +45,7 @@ public class Fighter extends DynamicObject {
 	public void draw(SpriteBatch batch, float delta)
 	{
 		engine.draw(batch, delta);
-		draw(batch);
+		getSprite().draw(batch);
 	}
 
 	public Bullet shoot() {

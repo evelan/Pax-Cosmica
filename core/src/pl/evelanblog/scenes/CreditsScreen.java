@@ -22,7 +22,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 	public CreditsScreen(final PaxCosmica game)
 	{
 		this.game = game;
-		exit = new Button(1060, 20, "buttons/exitButton.png");
+		exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
 		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
 
 	}
@@ -39,12 +39,12 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 		scroll += speed * delta;
 
-		game.getBatch().begin();
-		font.draw(game.getBatch(), "Pax Cosmica", 200, scroll + 80);
-		font.draw(game.getBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
-		font.draw(game.getBatch(), "Code destroyer: Dave", 200, scroll + 20);
-		exit.draw(game.getBatch());
-		game.getBatch().end();
+//		game.getSprBatch().begin();
+//		font.draw(game.getSprBatch(), "Pax Cosmica", 200, scroll + 80);
+//		font.draw(game.getSprBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
+//		font.draw(game.getSprBatch(), "Code destroyer: Dave", 200, scroll + 20);
+//		exit.draw(game.getSprBatch());
+//		game.getSprBatch().end();
 	}
 
 	@Override

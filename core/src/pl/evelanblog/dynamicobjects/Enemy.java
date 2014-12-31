@@ -4,8 +4,8 @@ import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Enemy extends DynamicObject {
@@ -21,27 +21,16 @@ public class Enemy extends DynamicObject {
 
 	public Enemy() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(Gdx.graphics.getWidth(), 0, 80f + (MathUtils.random(6) * 10), 3f, 0f, 150f, "enemy.png");
+		super(1920, 0, 80f + (MathUtils.random(6) * 10), 3f, 0f, 150f, "enemy.png");
 		shootTime += ((MathUtils.random(20)) / 10);
 		radius = MathUtils.random(30, 100); // amplituda, maks wychylenie
-		
+
 		startY = MathUtils.random(0, Gdx.graphics.getHeight() - radius); // pozycja w Y
-		// TODO maks apmlituda + pozycja Y nie moze byæ wiêksz/ mniejsza ni¿ pozycja ekrnu.
+		// TODO maks apmlituda + pozycja Y nie moze byï¿½ wiï¿½ksz/ mniejsza niï¿½ pozycja ekrnu.
 
 		engine = new ParticleEffect();
 		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 	}
-
-	//do dziedziczenia, to ja napisa³em? ~Kuba
-//	public Enemy(float y, float speed, float hp, float shield, float impactDamage, String texture) {
-//		// pos x, pos y, speed , hp, shield, impactDamage, texture
-//		super(Gdx.graphics.getWidth(), y, speed, hp, shield, impactDamage, texture);
-//		shootTime += ((MathUtils.random(20)) / 10);
-//		startY = MathUtils.random(0, 720);
-//		radius = MathUtils.random(30, 100);
-//		engine = new ParticleEffect();
-//		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
-//	}
 
 	public void update(float deltaTime) {
 		if (deltaTime > 0.1f)
@@ -49,20 +38,27 @@ public class Enemy extends DynamicObject {
 
 		radians += (deltaTime);
 
-		setX(getX() - speed * deltaTime);
-		setY((MathUtils.sin(radians) * radius) + 50 + startY);
+	this.setX(getX() - speed * deltaTime);
+		this.setY((MathUtils.sin(radians) * radius) + 50 + startY);
+		Assets.enemyEngineEffect.setPosition(this.getX() + this.getWidth() - 20, this.getY() + (this.getHeight() / 2));
 
-		engine.setPosition(getX() + getWidth() - 20, getY() + (getHeight() / 2));
-
-		if (getX() + getWidth() < 0)
+		if (this.getX() + this.getWidth() < 0)
 			live = false;
 	}
-
-	public void draw(SpriteBatch batch, float delta)
+	
+	@Override
+	public void draw(Batch batch, float alpha)
 	{
-		engine.draw(batch, delta);
-		draw(batch);
+		Assets.enemyEngineEffect.draw(batch, Gdx.graphics.getDeltaTime());
+		batch.draw(getSprite(), getX(), getY());
 	}
+
+//	@Override
+//	public void draw(SpriteBatch batch, float delta)
+//	{
+//		engine.draw(batch, delta);
+//		draw(batch);
+//	}
 
 	public Bullet shoot() {
 		Assets.playSound(Assets.shootSfx);
@@ -87,12 +83,13 @@ public class Enemy extends DynamicObject {
 		return spawnTime;
 	}
 
+	
 	@Override
 	public void kill()
 	{
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
-		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.explosionEffect.setPosition(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2));
 		Assets.explosionEffect.start();
 		Stats.score += 10;
 		Stats.scrap += 4;

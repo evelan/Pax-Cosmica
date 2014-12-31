@@ -19,8 +19,28 @@ public class Assets {
 	public static Texture hullBar;
 	public static Texture shieldBar;
 	public static Texture bubbleShield;
+	public static Texture leftArrow;
+	public static Texture rightArrow;
 	
 	public static Texture galaxyPlanet;
+	public static Texture firePlanet;
+	public static Texture icePlanet;
+	public static Texture goldPlanet;
+	public static Texture purplePlanet;
+	public static Texture marsPlanet;
+	public static Texture mars2Planet;
+	public static Texture mars3Planet;
+	public static Texture fire2Planet;
+	public static Texture fire3Planet;
+	public static Texture coldPlanet;
+	public static Texture cold2Planet;
+	public static Texture neptunePlanet;
+	public static Texture staturnPlanet;
+	public static Texture venusPlanet;
+	public static Texture rockPlanet;
+	public static Texture snowPlanet;
+	
+	
 
 	public static Texture planet;
 	public static Texture mainmenu;
@@ -38,6 +58,7 @@ public class Assets {
 	public static Texture playButton;
 	public static Texture optionsButton;
 	public static Texture creditsButton;
+	public static Texture attackButton;
 	public static Texture exitButton;
 	public static Texture discardButton;
 	public static Texture applyButton;
@@ -47,6 +68,7 @@ public class Assets {
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
 	public static ParticleEffect playerEngineEffect;
+	public static ParticleEffect enemyEngineEffect;
 	public static Texture dim;
 
 	public static Texture loadTexture(String file) {
@@ -63,6 +85,8 @@ public class Assets {
 
 		playerEngineEffect = new ParticleEffect();
 		playerEngineEffect.load(Gdx.files.internal("data/engine.p"), Gdx.files.internal(""));
+		enemyEngineEffect = new ParticleEffect();
+		enemyEngineEffect.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 
 		galaxy = loadTexture("galaxy.png");
 		stars = loadTexture("stars-pow2.png");
@@ -82,13 +106,18 @@ public class Assets {
 		bubbleShield = loadTexture("bubble_shield.png");
 		dim = loadTexture("dim.png");
 		
-		galaxyPlanet = loadTexture("galaxy_planet.png");
+		firePlanet = loadTexture("planet/fire.png");
+		icePlanet = loadTexture("planet/ice.png");
+		coldPlanet = loadTexture("planet/cold.png");
+		goldPlanet = loadTexture("planet/gold.png");
+		purplePlanet = loadTexture("planet/purple.png");
+		galaxyPlanet = loadTexture("planet/galaxy_planet.png");
 		upgradeBar = loadTexture("power_bar.png");
 		down = loadTexture("down.png");
 		up = loadTexture("up.png");
 		upgradeBtn = loadTexture("buttons/upgrade_button.png");
 
-		planet = loadTexture("planet_1.png");
+		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("mainmenu.png");
 		paxCosmica = loadTexture("pax_cosmica.png");
 
@@ -98,6 +127,7 @@ public class Assets {
 		playButton = loadTexture("buttons/playButton.png");
 		optionsButton = loadTexture("buttons/optionsButton.png");
 		creditsButton = loadTexture("buttons/creditsButton.png");
+		attackButton = loadTexture("buttons/attackButton.png");
 		exitButton = loadTexture("buttons/exitButton.png");
 		continueButton = loadTexture("buttons/continueButton.png");
 		discardButton = loadTexture("buttons/discardButton.png");

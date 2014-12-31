@@ -4,9 +4,10 @@ import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Asteroid extends DynamicObject {
@@ -32,24 +33,23 @@ public class Asteroid extends DynamicObject {
 		rotation = MathUtils.randomBoolean();
 		radius = MathUtils.random(5, 20);
 
-		getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		if (textureNum == 0)
-			setTexture("asteroid_1.png");
+			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_1.png")));
 		else if (textureNum == 1)
-			setTexture("asteroid_2.png");
+			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_2.png")));
 		else if (textureNum == 2)
-			setTexture("asteroid_3.png");
+			getSprite().setTexture(new Texture(Gdx.files.internal("asteroid_3.png")));
 	}
 
-	public void update(float deltaTime) {
-		radians += (deltaTime);
+	public void update() {
+		radians += (Gdx.graphics.getDeltaTime());
 		
-		setX(getX() - speed * deltaTime);
-		setY((MathUtils.sin(radians) * radius) + 50 + startY);
+		this.setX(this.getX() - speed * Gdx.graphics.getDeltaTime());
+		this.setY((MathUtils.sin(radians) * radius) + 50 + startY);
 		
-		particle.setPosition(getX() + getWidth() - 20, getY() + (getHeight() / 2));
-
+		particle.setPosition(this.getX() + this.getWidth() - 20, this.getY() + (this.getHeight() / 2));
 		if (count < 0.0f)
 			count = 360.0f;
 		else
@@ -58,14 +58,15 @@ public class Asteroid extends DynamicObject {
 				count -= (speed / 70);
 			else
 				count += (speed / 70);
-		}
-		setRotation(count);
+		}		
 	}
-
-	public void draw(SpriteBatch batch, float delta)
+	
+	
+	@Override
+	public void draw(Batch batch, float alpha)
 	{
-		particle.draw(batch, delta);
-		draw(batch);
+		particle.draw(batch, Gdx.graphics.getDeltaTime());
+		batch.draw(getSprite(),this.getX(),this.getY(), this.getWidth()/2, this.getHeight()/2, this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), count);
 	}
 
 	public static float getSpawnTime()
@@ -78,7 +79,7 @@ public class Asteroid extends DynamicObject {
 	{
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
-		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
+		Assets.explosionEffect.setPosition(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2));
 		Assets.explosionEffect.start();
 		Stats.score += 10;
 		Stats.scrap += 4;

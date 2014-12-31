@@ -1,12 +1,15 @@
 package pl.evelanblog.dynamicobjects;
 
 import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.scenes.GalaxyMap;
 import pl.evelanblog.scenes.GameScreen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Player extends DynamicObject {
 	private float bulletSpeed = 1000f;
@@ -14,7 +17,7 @@ public class Player extends DynamicObject {
 	private Sprite shieldSprite;
 	public float shieldReloadLvl = 0;
 	private float temp_x, temp_y;
-	
+
 	public static float powerLvl = 4;
 	public static float shieldLvl = 1;
 	public static float hullLvl = 1;
@@ -43,20 +46,7 @@ public class Player extends DynamicObject {
 	public Player(float x, float y)
 	{
 		super(x, y, 0, 0, 0, 0, "spaceship.png");
-		setSpaceshipPosition(x, y);
 		setScale(0.7f);
-	}
-
-	/** 
-	 * @deprecated
-	 * Ustawianie malego statku na mapie galaktyki {@link GalaxyMap}
-	 * @param x pozycja x
-	 * @param y pozycja y
-	 */
-	public void setSpaceshipPosition(float x, float y)
-	{   
-		setPosition(x, y);
-		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 	}
 
 	public void update(float deltaTime) {
@@ -78,14 +68,18 @@ public class Player extends DynamicObject {
 
 		bulletSpeed = 600f + (weaponPwr * 80); //standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomem weaponPwr bedzie on przyspieszac razy 80
 
-		temp_y = getY() + (GameScreen.getVelY() * deltaTime * speed);
+		temp_y = PaxCosmica.getGameScene().getCamera().position.y + (GameScreen.getVelY() * deltaTime * speed);
 		if(temp_y > 0 && temp_y < Gdx.graphics.getHeight() - getHeight())
-			setY(temp_y);
-		
+		{
+			PaxCosmica.getGameScene().getCamera().position.y=temp_y;
+			setY(PaxCosmica.getGameScene().getCamera().position.y);
+		}
+
+
 		temp_x = getX() + (GameScreen.getVelX() * deltaTime * speed);
 		if(temp_x > 0 && temp_x < Gdx.graphics.getWidth() - getWidth())
 			setX(temp_x);
-		
+
 		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		shieldSprite.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
 	}
@@ -95,11 +89,12 @@ public class Player extends DynamicObject {
 	 * @param batch SpriteBatch, wiadomo
 	 * @param delta be kwadrat minus cztery ace
 	 */
-	public void draw(SpriteBatch batch, float delta)
-	{
+
+	@Override
+	public void draw(Batch batch, float alpha){
 		if (enginePwr > 0)
-			Assets.playerEngineEffect.draw(batch, delta);
-		draw(batch);
+			Assets.playerEngineEffect.draw(batch, Gdx.graphics.getDeltaTime());
+		batch.draw(getSprite(), getX(), getY());
 		if (shield > 0)
 			shieldSprite.draw(batch);
 	}
@@ -116,7 +111,7 @@ public class Player extends DynamicObject {
 	public float getShootFrequency() {
 		return shootFrequency;
 	}
-	
+
 	/**
 	 * Sprawdza czy gracz ma mozlowosc strzelania
 	 * @param weaponPwr poziom energii  broni
@@ -126,7 +121,7 @@ public class Player extends DynamicObject {
 	{
 		return (weaponPwr > 0 && live == true);
 	}
-	
+
 	@Override
 	public void kill()
 	{
