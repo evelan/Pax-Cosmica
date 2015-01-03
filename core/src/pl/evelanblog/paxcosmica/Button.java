@@ -2,10 +2,14 @@ package pl.evelanblog.paxcosmica;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Button extends Image {
 
+	// pisałem długi komentarz próbujący wyrazić moją ciekawość na temat tych konstruktorów ale zapytam wprost:
+	// Co tu sie odpierdala? :v
+	// to krótko
 	public Button(float x, float y, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
@@ -93,5 +97,10 @@ public class Button extends Image {
 	public float getHeight()
 	{
 		return super.getHeight() * Gdx.graphics.getHeight() / 1080;
+	}
+
+	public Rectangle getBoundingRectangle()
+	{
+		return (new Rectangle(getX(), getY(), getWidth(), getHeight()));
 	}
 }

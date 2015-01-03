@@ -22,7 +22,7 @@ public class Planet extends Actor {
 	private String name;
 	private boolean discovered = false;
 	private BitmapFont font;
-	private MyFont tekst;
+	private MyText tekst;
 
 	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String _name, String filename, float _rotationSpeed)
 	{
@@ -42,7 +42,7 @@ public class Planet extends Actor {
 		this.rotationSpeed = _rotationSpeed;
 		this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/"+name.toLowerCase()+".jpg")));
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-		tekst = new MyFont(font, portal ? "P:" + name : name, getX(), getY());
+		tekst = new MyText(font, portal ? "P:" + name : name, getX(), getY());
 		
 	}
 

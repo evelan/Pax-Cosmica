@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Booster extends DynamicObject {
 
-	private static final float spawnTime = 10f;
+	public static final float SPAWN_TIME = 10f;
 
 	public enum BoostType {
 		shootBoost, speedBoost, healthBoost;
@@ -18,15 +18,12 @@ public class Booster extends DynamicObject {
 	}
 
 	public void update(float deltaTime) {
+		super.update(deltaTime);
 		setX(getX() - speed * deltaTime);
 	}
 
 	public void dispose() {
 		live = false;
-	}
-
-	public static float getSpawnTime() {
-		return spawnTime;
 	}
 
 	@Override

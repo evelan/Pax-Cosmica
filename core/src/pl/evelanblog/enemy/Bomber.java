@@ -21,8 +21,6 @@ public class Bomber extends Enemy {
 		shootTime += ((MathUtils.random(20)) / 10); // aby nie strzelały w takim samym odstępie czasu, małe urozmaicenie
 		radius = MathUtils.random(5, 20);
 		startY = MathUtils.random(0, Gdx.graphics.getHeight() - radius);
-
-		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 	}
 
 	@Override

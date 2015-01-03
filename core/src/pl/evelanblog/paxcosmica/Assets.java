@@ -116,7 +116,7 @@ public class Assets {
 		upgradeBar = loadTexture("other/power_bar.png");
 		down = loadTexture("buttons/down.png");
 		up = loadTexture("buttons/up.png");
-		upgradeBtn = loadTexture("buttons/upgrade_button.png");
+		upgradeBtn = loadTexture("buttons/upgrade.png");
 
 		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("background/mainmenu.png");

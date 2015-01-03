@@ -1,5 +1,7 @@
 package pl.evelanblog.dynamicobjects;
 
+import pl.evelanblog.world.World;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -34,7 +36,11 @@ public abstract class DynamicObject extends Actor {
 		sprite.setOriginCenter();
 	}
 
-	
+	@Override
+	public void draw(Batch batch, float alpha) {
+		batch.draw(sprite, getX(), getY());
+	}
+
 	public float getImpactDamage() {
 		return impactDamage;
 	}
@@ -69,13 +75,20 @@ public abstract class DynamicObject extends Actor {
 		if (hp <= 0)
 			kill();
 	}
-	public abstract void update(float delta);
-	
-	public void kill()
+
+	public void update(float delta)
+	{
+		if (getX() + getWidth() < 0)
+			dispose();
+	}
+
+	protected void dispose() // usuwanie obiektu który jest poza sceną
 	{
 		live = false;
+		World.getObjects().removeActor(this);
 	}
-	
+
+	public abstract void kill();
 
 	public boolean overlaps(Actor actor) {
 		Rectangle r = new Rectangle(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
@@ -91,11 +104,6 @@ public abstract class DynamicObject extends Actor {
 
 	public Sprite getSprite() {
 		return sprite;
-	}
-
-	@Override
-	public void draw(Batch batch, float alpha) {
-		batch.draw(sprite, getX(), getY());
 	}
 
 	@Override

@@ -1,9 +1,6 @@
-package pl.evelanblog.paxcosmica;
+package pl.evelanblog.scenes;
 
-import pl.evelanblog.scenes.GalaxyMap;
-import pl.evelanblog.scenes.GameScreen;
-import pl.evelanblog.scenes.MainMenu;
-import pl.evelanblog.scenes.UpgradeScreen;
+import pl.evelanblog.paxcosmica.PaxCosmica;
 
 public class GameStateManager {
 

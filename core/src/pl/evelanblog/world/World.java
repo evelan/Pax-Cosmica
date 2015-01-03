@@ -2,14 +2,14 @@ package pl.evelanblog.world;
 
 import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
-import pl.evelanblog.dynamicobjects.Bullet;
+import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Player;
-import pl.evelanblog.enemy.Enemy;
 import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
@@ -18,8 +18,6 @@ public class World {
 	private static Group objects;
 	private Collider colider;
 	private Player player;
-
-	// zamienić na hashsety bo szybsze czy coś
 
 	public static enum GameState {
 		ongoing, // gra się toczy i jest elegancko, szczelanie etc
@@ -68,51 +66,19 @@ public class World {
 		player.update(delta); // update position
 
 		for (Actor obj : objects.getChildren())
-		{
-			if (obj instanceof Enemy)
-			{
-				Enemy enemy = (Enemy) obj;
-				if (enemy.isAlive())
-					enemy.update(delta);
-				else
-					enemy.remove();
+			((DynamicObject) obj).update(delta);
 
-			} else if (obj instanceof Asteroid)
-			{
-				Asteroid a = (Asteroid) obj;
-				if (a.isAlive())
-					a.update(delta);
-				else
-					a.remove();
-
-			} else if (obj instanceof Bullet)
-			{
-				Bullet bullet = (Bullet) obj;
-				if (bullet.isAlive()) {
-					bullet.update(delta);
-				} else if (!bullet.isAlive() && bullet != null)
-					bullet.remove();
-
-			} else if (obj instanceof Booster)
-			{
-				Booster booster = (Booster) obj;
-				if (booster.isAlive())
-					booster.update(delta);
-				else
-					booster.remove();
-			}
-		}
+		Gdx.app.log("LICZBA OBIEKTÓW NA SCENIE: ", "" + objects.getChildren().size);
 	}
 
 	private void spawnObjects(float delta) { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update
 		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
-		if (GameScreen.getHit() && sleepTime[0] > player.getShootFrequency() && player.ableToShoot()) {
+		if (sleepTime[0] > player.getShootFrequency() && player.ableToShoot() && GameScreen.getHit()) {
 			objects.addActor(player.shoot());
 			sleepTime[0] = 0;
-
 		}
 
-		if (sleepTime[1] > Asteroid.getSpawnTime()) {
+		if (sleepTime[1] > Asteroid.SPAWN_TIME) {
 			objects.addActor(new Asteroid());
 			sleepTime[1] = 0;
 
@@ -123,22 +89,7 @@ public class World {
 			sleepTime[2] = 0;
 		}
 
-//		for (Actor obj : objects.getChildren())
-//		{
-//			if (obj instanceof Enemy)
-//			{
-//				Enemy e = (Enemy) obj;
-//				e.setLastShoot(e.getLastShoot() + delta);
-//				if (e.getLastShoot() > e.getShootTime()) {
-//
-//					objects.addActor(e.shoot());
-//					e.setLastShoot(0f);
-//				}
-//			}
-//		}
-		if (sleepTime[4] > Booster.getSpawnTime()) {
-			// objectArray.add(new Booster()); // wyłączyłem dodawanie boosterów, bo tak, bo ich nie potrzebuje teraz
-			// objects.add(new Booster());
+		if (sleepTime[4] > Booster.SPAWN_TIME) {
 			sleepTime[4] = 0;
 			// wasCreated=true;
 		}

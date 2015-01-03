@@ -2,7 +2,6 @@ package pl.evelanblog.scenes;
 
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.paxcosmica.control.MousePointer;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MainMenu implements Screen, InputProcessor {
 
@@ -22,9 +22,11 @@ public class MainMenu implements Screen, InputProcessor {
 	private MousePointer mousePointer;
 	private float count = 360.0f;
 	private float dimValue;
+	private Stage menuStage;
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
+		menuStage = new Stage();
 		dim = new Sprite(Assets.dim);
 		mousePointer = new MousePointer();
 	}
@@ -42,18 +44,18 @@ public class MainMenu implements Screen, InputProcessor {
 
 		planet.setPosition(planet.getX() - 0.005f, planet.getY() - 0.05f);
 		planet.setRotation(count);
-		game.getMenu().act();
-		game.getMenu().draw();
-		game.getMenu().getBatch().begin();
-		background.draw(game.getMenu().getBatch());
-		planet.draw(game.getMenu().getBatch());
-		paxCosmica.draw(game.getMenu().getBatch());
-		play.draw(game.getMenu().getBatch(), 1);
-		options.draw(game.getMenu().getBatch(), 1);
-		credits.draw(game.getMenu().getBatch(), 1);
-		exit.draw(game.getMenu().getBatch(), 1);
+		menuStage.act();
+		menuStage.draw();
+		menuStage.getBatch().begin();
+		background.draw(menuStage.getBatch());
+		planet.draw(menuStage.getBatch());
+		paxCosmica.draw(menuStage.getBatch());
+		play.draw(menuStage.getBatch(), 1);
+		options.draw(menuStage.getBatch(), 1);
+		credits.draw(menuStage.getBatch(), 1);
+		exit.draw(menuStage.getBatch(), 1);
 		dimScreen(delta);
-		game.getMenu().getBatch().end();
+		menuStage.getBatch().end();
 
 	}
 
@@ -62,7 +64,7 @@ public class MainMenu implements Screen, InputProcessor {
 			dimValue -= delta;
 
 		if (dimValue > 0)
-			dim.draw(game.getMenu().getBatch(), dimValue);
+			dim.draw(menuStage.getBatch(), dimValue);
 	}
 
 	@Override

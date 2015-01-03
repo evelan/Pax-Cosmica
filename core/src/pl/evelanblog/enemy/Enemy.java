@@ -5,13 +5,13 @@ import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Stats;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public abstract class Enemy extends DynamicObject {
 
-	protected float time = 0;
+	protected float time = 0; // zmienna pomocnicza
 	protected ParticleEffect engine; // efekt cząsteczkowy silnika
 	protected float bulletSpeed; // prędkość pocisku
 	protected float shootTime; // częstotliwość strzelania
@@ -24,28 +24,28 @@ public abstract class Enemy extends DynamicObject {
 		super(Gdx.graphics.getWidth(), 0, speed, hp, shield, impactDamage, texture);
 
 		engine = new ParticleEffect();
+		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 		this.bulletSpeed = bulletSpeed;
 		this.shootTime = shootTime;
 	}
 
+	@Override
 	public void update(float deltaTime) {
+		super.update(deltaTime); // usuwanie obiektu jak jest poza sceną
 		radians += deltaTime;
 		setX(getX() - speed * deltaTime);
 		setY((MathUtils.sin(radians) * radius) + startY);
-
 		engine.setPosition(getX() + getWidth() - 20, getY() + (getHeight() / 2));
-
-		if (getX() + getWidth() < 0)
-			live = false;
 
 		if ((time += deltaTime) > shootTime)
 			shoot();
 	}
 
-	public void draw(SpriteBatch batch, float delta)
+	@Override
+	public void draw(Batch batch, float alpha)
 	{
-		engine.draw(batch, delta); // najpierw rysujemey silnik
-		super.draw(batch, delta); // a potem zasłąniamy jego część texturą statku
+		engine.draw(batch, Gdx.graphics.getDeltaTime()); // najpierw rysujemey silnik
+		super.draw(batch, alpha); // a potem zasłąniamy jego część texturą statku
 	}
 
 	/**
@@ -56,7 +56,7 @@ public abstract class Enemy extends DynamicObject {
 	@Override
 	public void kill()
 	{
-		super.kill();
+		dispose();
 		Stats.score += 10;
 		Stats.scrap += 4;
 		Stats.kills++;

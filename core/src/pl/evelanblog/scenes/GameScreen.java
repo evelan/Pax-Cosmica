@@ -6,14 +6,12 @@ import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Background;
 import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.MyEffect;
-import pl.evelanblog.paxcosmica.MyFont;
 import pl.evelanblog.paxcosmica.MySprite;
+import pl.evelanblog.paxcosmica.MyText;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.paxcosmica.control.MousePointer;
-import pl.evelanblog.utilities.MeasureBox;
 import pl.evelanblog.world.World;
 import pl.evelanblog.world.World.GameState;
 
@@ -23,24 +21,24 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class GameScreen implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
+	public static Stage gameStage;
+	private Stage hudStage;
 	private World world;
-	private BitmapFont font;
 
 	private static Background background;
 	private Vector2 defKnobPos = new Vector2(96, 96);
-	private MeasureBox box;
 
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
 	private ArrayList<Button> hp, shieldLevel;
 	private MousePointer mousePointer;
 	private MySprite dimScreen;
-	private MyFont scrap, score;
+	private MyText scrap, score;
 	private Player player;
 	private static MyEffect explodeEff;
 	private static MyEffect hitEff;
@@ -57,6 +55,8 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
+		gameStage = new Stage();
+		hudStage = new Stage();
 		background = new Background(game.getActivePlanet().getBackground());
 
 		hp = new ArrayList<Button>();
@@ -84,11 +84,8 @@ public class GameScreen implements Screen, InputProcessor {
 		dimScreen = new MySprite(Assets.dim);
 
 		mousePointer = game.getMouse();
-		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-		box = new MeasureBox();
-
-		score = new MyFont(font, "Score: " + Stats.score, 100, 1000);
-		scrap = new MyFont(font, "Scrap: " + Stats.scrap, 300, 1000);
+		score = new MyText("Score: " + Stats.score, 100, 1000);
+		scrap = new MyText("Scrap: " + Stats.scrap, 300, 1000);
 
 		hitEff = new MyEffect(Assets.hitEffect);
 		explodeEff = new MyEffect(Assets.explosionEffect);
@@ -104,18 +101,16 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// ustawienie backgroundu zawsze na środku
-		background.getBackground().setY(PaxCosmica.getGameScene().getCamera().position.y - PaxCosmica.getGameScene().getHeight() / 2);
+		background.getBackground().setY(gameStage.getCamera().position.y - gameStage.getHeight() / 2);
 
 		// rysowanie stage'y
-		PaxCosmica.getGameScene().draw();
-		game.getGameHud().draw();
+		gameStage.draw();
+		hudStage.draw();
 
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
-			box.start();
 			background.update(game.getActivePlanet().getRotationSpeed());
 			world.update(delta);
-			box.stop();
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 		{
 			Assets.track2.stop();
@@ -127,8 +122,6 @@ public class GameScreen implements Screen, InputProcessor {
 			exitButton.setVisible(true);
 			player.setVisible(false);
 		}
-
-		box.log();
 
 		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
 		// for (DynamicObject obj : world.getObjects())
@@ -153,7 +146,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		if (world.getState() == GameState.powermanager || world.getState() == GameState.menu)
 		{
-			// dimScreen.draw(game.getGameScene().getBatch(), 0.6f);
+			// dimScreen.draw(hudStage.getBatch(), 0.6f);
 			pauseButton.setVisible(false);
 			resumeButton.setVisible(true);
 			if (world.getState() == GameState.menu)
@@ -162,17 +155,21 @@ public class GameScreen implements Screen, InputProcessor {
 				exitButton.setVisible(true);
 			} else if (world.getState() == GameState.powermanager)
 			{
+				// TODO: to trzeba zmienić, bez tych getbatch
+				hudStage.getBatch().begin();
 				drawPwrManager();
-				powerButton.draw(game.getGameHud().getBatch(), 0.9f);
+				powerButton.draw(hudStage.getBatch(), 0.9f);
+				hudStage.getBatch().end();
 			}
 		} else
 		{
-
 			pauseButton.setVisible(true);
 			resumeButton.setVisible(false);
 			exitButton.setVisible(false);
 			continueButton.setVisible(false);
 			powerButton.setVisible(true);
+			downPwr.setVisible(false);
+			upPwr.setVisible(false);
 		}
 	}
 
@@ -204,7 +201,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++)
-			game.getGameHud().getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
+			hudStage.getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
 
 		if (hover != -1) {
 			downPwr.setPosition(hover, 100);
@@ -213,7 +210,8 @@ public class GameScreen implements Screen, InputProcessor {
 			upPwr.setVisible(true);
 		}
 
-		// font.draw(game.getGameHud().getBatch(), name, x + 10, 190);
+		new MyText(name, x + 10, 190).draw(hudStage.getBatch(), 1);
+		// font.draw(hudStage.getBatch(), name, );
 	}
 
 	@Override
@@ -226,42 +224,42 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		PaxCosmica.getGameScene().getActors().clear();
+		gameStage.getActors().clear();
 		world = new World();
 		player = world.getPlayer();
 
 		// ADD SCENE ACTORS
-		PaxCosmica.getGameScene().addActor(background);
-		PaxCosmica.getGameScene().addActor(player);
+		gameStage.addActor(background);
+		gameStage.addActor(player);
 
-		PaxCosmica.getGameScene().addActor(hitEff);
-		PaxCosmica.getGameScene().addActor(explodeEff);
-		PaxCosmica.getGameScene().addActor(World.getObjects());
+		gameStage.addActor(hitEff);
+		gameStage.addActor(explodeEff);
+		gameStage.addActor(World.getObjects());
 
 		// ADD HUD ACTORS
 		if (Gdx.app.getType() == ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
-			game.getGameHud().addActor(knob);
-			game.getGameHud().addActor(buttonA);
-			game.getGameHud().addActor(buttonB);
+			hudStage.addActor(knob);
+			hudStage.addActor(buttonA);
+			hudStage.addActor(buttonB);
 		}
-		game.getGameHud().addActor(powerButton);
-		game.getGameHud().addActor(pauseButton);
-		game.getGameHud().addActor(resumeButton);
-		game.getGameHud().addActor(continueButton);
-		game.getGameHud().addActor(exitButton);
-		game.getGameHud().addActor(upPwr);
-		game.getGameHud().addActor(downPwr);
+		hudStage.addActor(powerButton);
+		hudStage.addActor(pauseButton);
+		hudStage.addActor(resumeButton);
+		hudStage.addActor(continueButton);
+		hudStage.addActor(exitButton);
+		hudStage.addActor(upPwr);
+		hudStage.addActor(downPwr);
 
-		// game.getGameHud().addActor(dimScreen);
+		// hudStage.addActor(dimScreen);
 
-		game.getGameHud().addActor(score);
-		game.getGameHud().addActor(scrap);
-		game.getGameHud().addActor(hp.get(0));
-		game.getGameHud().addActor(hp.get(1));
-		game.getGameHud().addActor(hp.get(2));
-		game.getGameHud().addActor(shieldLevel.get(0));
-		game.getGameHud().addActor(shieldLevel.get(1));
-		game.getGameHud().addActor(shieldLevel.get(2));
+		hudStage.addActor(score);
+		hudStage.addActor(scrap);
+		hudStage.addActor(hp.get(0));
+		hudStage.addActor(hp.get(1));
+		hudStage.addActor(hp.get(2));
+		hudStage.addActor(shieldLevel.get(0));
+		hudStage.addActor(shieldLevel.get(1));
+		hudStage.addActor(shieldLevel.get(2));
 
 		exitButton.setVisible(false);
 		continueButton.setVisible(false);
@@ -273,11 +271,12 @@ public class GameScreen implements Screen, InputProcessor {
 		background.setBackground(game.getActivePlanet().getBackground());
 
 		// pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
-		power = 100;
-		hull = 300;
-		shield = 500;
-		weapon = 700;
-		engine = 900;
+		float temp_pos = ((Gdx.graphics.getWidth() + 100) / 5) - Assets.upgradeBar.getWidth(); // TODO usunąć to potem
+		power = temp_pos;
+		hull = temp_pos * 2;
+		shield = temp_pos * 3;
+		weapon = temp_pos * 4;
+		engine = temp_pos * 5;
 		dimScreen.setPosition(0, 0);
 
 		Assets.track2.play();

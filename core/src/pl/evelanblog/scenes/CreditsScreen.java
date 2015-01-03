@@ -1,7 +1,7 @@
 package pl.evelanblog.scenes;
 
+import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.GameStateManager;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +22,8 @@ public class CreditsScreen implements Screen, InputProcessor {
 	public CreditsScreen(final PaxCosmica game)
 	{
 		this.game = game;
-		exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
+		//exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
+		exit = new Button(false, 1520, 20, 400, 96, "buttons/exitButton.png");
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 
 	}
@@ -39,12 +40,12 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 		scroll += speed * delta;
 
-//		game.getSprBatch().begin();
-//		font.draw(game.getSprBatch(), "Pax Cosmica", 200, scroll + 80);
-//		font.draw(game.getSprBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
-//		font.draw(game.getSprBatch(), "Code destroyer: Dave", 200, scroll + 20);
-//		exit.draw(game.getSprBatch());
-//		game.getSprBatch().end();
+		game.getSpriteBatch().begin();
+		font.draw(game.getSpriteBatch(), "Pax Cosmica", 200, scroll + 80);
+		font.draw(game.getSpriteBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
+		font.draw(game.getSpriteBatch(), "Code destroyer: Dave", 200, scroll + 20);
+		exit.draw(game.getSpriteBatch(), 1);
+		game.getSpriteBatch().end();
 	}
 
 	@Override
@@ -103,6 +104,8 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		Assets.playSound(Assets.clickSfx);
+		screenY = Gdx.graphics.getHeight() - screenY;
 		if (game.getMouse().overlaps(screenX, screenY, exit))
 		{
 			game.setScreen(GameStateManager.mainMenu);

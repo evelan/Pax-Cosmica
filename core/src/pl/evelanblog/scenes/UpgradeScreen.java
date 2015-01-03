@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class UpgradeScreen implements Screen, InputProcessor {
 
@@ -20,6 +21,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	private BitmapFont font;
 	private Button apply, discard, upgrade;
 	private Rectangle mousePointer;
+	private Stage upgradeScreen;
 
 	private float power, hull, shield, weapon, engine;
 	private float powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
@@ -31,6 +33,14 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	public UpgradeScreen(final PaxCosmica game)
 	{
 		this.game = game;
+		upgradeScreen = new Stage();
+		
+		upgrade = new Button(false, 1470, 100, 200, 50, "buttons/upgrade.png");
+		apply = new Button(false, 1520, 116, 400, 96, "buttons/applyButton.png");
+		discard = new Button(false, 1520, 20, 400, 96, "buttons/discardButton.png");
+		
+		upgradeScreen.addActor(apply);
+		upgradeScreen.addActor(discard);
 	}
 
 	@Override
@@ -38,8 +48,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		game.getSprBatch().begin();
-		game.getSprBatch().draw(new Texture(Gdx.files.internal("upgrade_background.png")), 0, 0);
+		upgradeScreen.getBatch().begin();
+		upgradeScreen.getBatch().draw(new Texture(Gdx.files.internal("background/upgrade.png")), 0, 0);
 
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
 		createBar(power, powerLvl, "Power: " + powerLvl);
@@ -47,24 +57,25 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
 		createBar(engine, engineLvl, "Engine: " + engineLvl);
 
-		font.draw(game.getSprBatch(), "Scrap: " + scrap, 10, 710);
-		game.getSprBatch().end();
+		font.draw(upgradeScreen.getBatch(), "Scrap: " + scrap, 10, Gdx.graphics.getHeight() - font.getLineHeight());
+		upgradeScreen.getBatch().end();
+		upgradeScreen.draw();
 
 	}
 
 	public void createBar(float x, float level, String name)
 	{
 		for (int i = 0; i < level; i++)
-			game.getSprBatch().draw(Assets.upgradeBar, x, 200 + i * 50);
+			upgradeScreen.getBatch().draw(Assets.upgradeBar, x, 200 + i * 50);
 
-		font.draw(game.getSprBatch(), "Cost: " + cost, x, level * 50 + 250);
+		font.draw(upgradeScreen.getBatch(), "Cost: " + cost, x, level * 50 + 250);
 
 		if (hover != -1) {
-			upgrade.setPosition(hover, 10);
-			// upgrade.draw(game.getSprBatch());
+			upgrade.setPosition(hover, 100);
+			upgrade.draw(upgradeScreen.getBatch(), 1);
 		}
 
-		font.draw(game.getSprBatch(), name, x + 10, 190);
+		font.draw(upgradeScreen.getBatch(), name, x + 10, 190);
 	}
 
 	@Override
@@ -74,15 +85,13 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 
-		apply = new Button(false, 1470, 196, 400, 96, "buttons/applyButton.png");
-		discard = new Button(false, 1470, 100, 400, 96, "buttons/discardButton.png");
-		upgrade = new Button(false, 1470, 0, 400, 100, "buttons/upgrade_button.png");
-
-		power = 100;
-		hull = 300;
-		shield = 500;
-		weapon = 700;
-		engine = 900;
+		// pozycje X, tych pasków/stanów/poziomów ulepszeń
+		float temp_pos = ((Gdx.graphics.getWidth() + 100) / 5) - Assets.upgradeBar.getWidth(); // TODO usunąć to potem
+		power = temp_pos;
+		hull = temp_pos * 2;
+		shield = temp_pos * 3;
+		weapon = temp_pos * 4;
+		engine = temp_pos * 5;
 
 		hullLvl = Player.hullLvl;
 		powerLvl = Player.powerLvl;
@@ -94,7 +103,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		mousePointer = new Rectangle();
 		mousePointer.setSize(1);
 
-		font = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -135,50 +144,49 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX, screenY);
 		Assets.playSound(Assets.clickSfx);
 
-		// if (apply.getBoundingRectangle().overlaps(mousePointer)) {
-		// Player.hullLvl = hullLvl;
-		// Player.engineLvl = engineLvl;
-		// Player.powerLvl = powerLvl;
-		// Player.weaponLvl = weaponLvl;
-		// Player.shieldLvl = shieldLvl;
-		// Stats.scrap = scrap;
-		//
-		// game.setScreen(GameStateManager.galaxyMap);
-		// dispose();
-		// }
-		// else if (discard.getBoundingRectangle().overlaps(mousePointer)) {
-		// game.setScreen(GameStateManager.galaxyMap);
-		// dispose();
-		// }
-		// else if (upgrade.getBoundingRectangle().overlaps(mousePointer))
-		// {
-		// if (scrap >= cost) {
-		// scrap -= cost;
-		// if (hover == power)
-		// powerLvl++;
-		// else if (hover == hull)
-		// hullLvl++;
-		// else if (hover == weapon)
-		// weaponLvl++;
-		// else if (shield == hover)
-		// shieldLvl++;
-		// else if (engine == hover)
-		// engineLvl++;
-		// }
-		// }
-		//
-		// if (screenX > power && screenX < power + 200)
-		// hover = power;
-		// else if (screenX > hull && screenX < hull + 200)
-		// hover = hull;
-		// else if (screenX > weapon && screenX < weapon + 200)
-		// hover = weapon;
-		// else if (screenX > shield && screenX < shield + 200)
-		// hover = shield;
-		// else if (screenX > engine && screenX < engine + 200)
-		// hover = engine;
-		// else
-		// hover = -1;
+		if (apply.getBoundingRectangle().overlaps(mousePointer)) {
+			Player.hullLvl = hullLvl;
+			Player.engineLvl = engineLvl;
+			Player.powerLvl = powerLvl;
+			Player.weaponLvl = weaponLvl;
+			Player.shieldLvl = shieldLvl;
+			Stats.scrap = scrap;
+			game.setScreen(GameStateManager.galaxyMap);
+			dispose();
+		}
+		else if (discard.getBoundingRectangle().overlaps(mousePointer)) {
+			game.setScreen(GameStateManager.galaxyMap);
+			dispose();
+		}
+		else if (upgrade.getBoundingRectangle().overlaps(mousePointer))
+		{
+			if (scrap >= cost) {
+				scrap -= cost;
+				if (hover == power)
+					powerLvl++;
+				else if (hover == hull)
+					hullLvl++;
+				else if (hover == weapon)
+					weaponLvl++;
+				else if (shield == hover)
+					shieldLvl++;
+				else if (engine == hover)
+					engineLvl++;
+			}
+		}
+
+		if (screenX > power && screenX < power + 200)
+			hover = power;
+		else if (screenX > hull && screenX < hull + 200)
+			hover = hull;
+		else if (screenX > weapon && screenX < weapon + 200)
+			hover = weapon;
+		else if (screenX > shield && screenX < shield + 200)
+			hover = shield;
+		else if (screenX > engine && screenX < engine + 200)
+			hover = engine;
+		else
+			hover = -1;
 
 		return true;
 	}

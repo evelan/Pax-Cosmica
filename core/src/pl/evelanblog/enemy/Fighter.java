@@ -24,10 +24,8 @@ public class Fighter extends Enemy {
 		shootTime += ((MathUtils.random(20)) / 10); // aby nie strzelały w takim samym odstępie czasu, małe urozmaicenie
 		radius = MathUtils.random(30, 100);
 		startY = MathUtils.random(0, Gdx.graphics.getHeight() - radius);
-
-		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 	}
-
+	
 	public void shoot() {
 		World.getObjects().addActor(new Bullet(getX(), getY() + (getHeight() / 2) - 4, bulletSpeed, false, 1f));
 		Assets.playSound(Assets.shootSfx);
