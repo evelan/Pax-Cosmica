@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Asteroid extends DynamicObject {
 
-	public static float SPAWN_TIME = 6f;
+	public static float SPAWN_TIME = 4f;
 	private ParticleEffect particle;
 	private boolean rotation;
 	private float count = 360.0f;

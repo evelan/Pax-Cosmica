@@ -237,11 +237,11 @@ public class GameScreen implements Screen, InputProcessor {
 		gameStage.addActor(World.getObjects());
 
 		// ADD HUD ACTORS
-		if (Gdx.app.getType() == ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
+		//if (Gdx.app.getType() == ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
 			hudStage.addActor(knob);
 			hudStage.addActor(buttonA);
 			hudStage.addActor(buttonB);
-		}
+		//}
 		hudStage.addActor(powerButton);
 		hudStage.addActor(pauseButton);
 		hudStage.addActor(resumeButton);

@@ -4,6 +4,7 @@ import pl.evelanblog.dynamicobjects.Asteroid;
 import pl.evelanblog.dynamicobjects.Booster;
 import pl.evelanblog.dynamicobjects.DynamicObject;
 import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.enemy.Bomber;
 import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
@@ -87,6 +88,11 @@ public class World {
 		if (sleepTime[2] > Fighter.SPAWN_TIME) {
 			objects.addActor(new Fighter());
 			sleepTime[2] = 0;
+		}
+		
+		if (sleepTime[3] > Fighter.SPAWN_TIME) {
+			objects.addActor(new Bomber());
+			sleepTime[3] = 0;
 		}
 
 		if (sleepTime[4] > Booster.SPAWN_TIME) {

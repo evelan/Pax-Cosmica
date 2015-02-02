@@ -1,15 +1,5 @@
 package pl.evelanblog.scenes;
 
-import java.util.ArrayList;
-
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.MyText;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Planet;
-import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.paxcosmica.control.MousePointer;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -18,6 +8,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import pl.evelanblog.paxcosmica.*;
+import pl.evelanblog.paxcosmica.control.MousePointer;
+
+import java.util.ArrayList;
 
 public class GalaxyMap implements Screen, InputProcessor {
 
@@ -187,7 +181,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 			obj.reset();
 			if (game.getMouse().overlaps(obj, moveValue, screenX, screenY))
 			{
-				attack.setCenterPosition(obj.getCenterX(), obj.getCenterY());
+				//attack.setCenterPosition(obj.getCenterX(), obj.getCenterY());
 				attack.setVisible(true);
 				obj.setHover();
 				game.setActivePlanet(obj);

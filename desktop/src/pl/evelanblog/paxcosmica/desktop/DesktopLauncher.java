@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		config.height = 1080;
 		config.vSyncEnabled = true;
 		config.resizable = false;
-		config.fullscreen = false;
+		config.fullscreen = true;
 		new LwjglApplication(new PaxCosmica(), config);
 	}
 }

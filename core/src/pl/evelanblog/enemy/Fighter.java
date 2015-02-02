@@ -15,11 +15,11 @@ import com.badlogic.gdx.math.MathUtils;
  */
 public class Fighter extends Enemy {
 
-	public final static float SPAWN_TIME = 6f;
+	public final static float SPAWN_TIME = 4f;
 
 	public Fighter() { // wiem mogłem wszystko dać do super ale nie chciałem zbyt długiego i pokręconego konstruktra
 		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)
-		super(80f, 3f, 0, 600f, 2f, 150f, "enemy/fighter.png");
+		super(120f, 3f, 0, 600f, 2f, 150f, "enemy/fighter.png");
 
 		shootTime += ((MathUtils.random(20)) / 10); // aby nie strzelały w takim samym odstępie czasu, małe urozmaicenie
 		radius = MathUtils.random(30, 100);
