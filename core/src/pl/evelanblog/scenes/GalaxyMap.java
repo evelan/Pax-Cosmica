@@ -181,7 +181,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 			obj.reset();
 			if (game.getMouse().overlaps(obj, moveValue, screenX, screenY))
 			{
-				//attack.setCenterPosition(obj.getCenterX(), obj.getCenterY());
+				attack.setPosition(obj.getX(), obj.getY()+obj.getHeight()/3);
 				attack.setVisible(true);
 				obj.setHover();
 				game.setActivePlanet(obj);

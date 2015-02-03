@@ -1,21 +1,5 @@
 package pl.evelanblog.scenes;
 
-import java.util.ArrayList;
-
-import pl.evelanblog.dynamicobjects.Player;
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Background;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.MyEffect;
-import pl.evelanblog.paxcosmica.MySprite;
-import pl.evelanblog.paxcosmica.MyText;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.paxcosmica.control.MousePointer;
-import pl.evelanblog.world.World;
-import pl.evelanblog.world.World.GameState;
-
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -23,6 +7,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.paxcosmica.*;
+import pl.evelanblog.paxcosmica.control.MousePointer;
+import pl.evelanblog.world.World;
+import pl.evelanblog.world.World.GameState;
+
+import java.util.ArrayList;
 
 public class GameScreen implements Screen, InputProcessor {
 
@@ -133,13 +124,14 @@ public class GameScreen implements Screen, InputProcessor {
 		hitEff.setVisible(true);
 		explodeEff.setVisible(true);
 
-		// te dwie pętle renderują paski osłony i HP
-		for (int i = 3; i > world.getPlayer().getHealth(); i--)
-			hp.get(i - 1).setVisible(false);
-
-		// te dwie pętle renderują paski osłony i HP
-		for (int i = 3; i > world.getPlayer().getShield(); i--)
-			shieldLevel.get(i - 1).setVisible(false);
+		//TODO zepsute
+//		// te dwie pętle renderują paski osłony i HP
+//		for (int i = 3; i > world.getPlayer().getHealth(); i--)
+//			hp.get(i - 1).setVisible(false);
+//
+//		// te dwie pętle renderują paski osłony i HP
+//		for (int i = 3; i > world.getPlayer().getShield(); i--)
+//			shieldLevel.get(i - 1).setVisible(false);
 
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
