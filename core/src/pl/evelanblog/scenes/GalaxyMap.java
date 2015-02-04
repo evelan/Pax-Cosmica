@@ -37,11 +37,11 @@ public class GalaxyMap implements Screen, InputProcessor {
 
 		attack = new Button(Assets.attackButton);
 		// store = new Button("buttons/storeButton.png");
-		upgrade = new Button(false, 1520, 116, 400, 96, "buttons/upgradesButton.png");
-		exit = new Button(false, 1520, 20, 400, 96, "buttons/exitButton.png");
+		upgrade = new Button(false, 1520, 116, 400, 96, Assets.upgradesButton);
+		exit = new Button(false, 1520, 20, 400, 96, Assets.exitButton);
 		dimScreen = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		left = new Button(0, 540, 128, "buttons/left.png");
-		right = new Button(1792, 540, 128, "buttons/right.png");
+		left = new Button(0, 540, 128, Assets.leftArrow);
+		right = new Button(1792, 540, 128, Assets.rightArrow);
 		mapHud.addActor(left);
 		mapHud.addActor(right);
 		mapHud.addActor(upgrade);

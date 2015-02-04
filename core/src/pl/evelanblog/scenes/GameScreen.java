@@ -28,7 +28,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
 
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
-	private ArrayList<CustomSprite> powerBars;
+	private static ArrayList<Button> hp, shieldLevel;
 	private MousePointer mousePointer; // przycsik myszki
 	//private CustomSprite dimScreen; // od przyciemniania i rozjaśniania ekranu
 	private MyText scrap, score; // tekst  o ilośc złomu oraz punktów
@@ -52,19 +52,32 @@ public class GameScreen implements Screen, InputProcessor {
 		powerManager = new Stage();
 		background = new Background(game.getActivePlanet().getBackground());
 
-		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "buttons/knob.png");
-		buttonA = new Button(true, 1600, 256, 256, 256, "buttons/buttonA.png");
-		buttonB = new Button(true, 1472, 0, 256, 256, "buttons/buttonB.png");
-		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/pauseButton.png");
-		resumeButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/unpauseButton.png");
-		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
-		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
+		hp = new ArrayList<Button>();
+		hp.add(new Button(0f, 1000, Assets.hullBar));
+		hp.add(new Button(15f, 1000, Assets.hullBar));
+		hp.add(new Button(30f, 1000, Assets.hullBar));
+
+		shieldLevel = new ArrayList<Button>();
+		shieldLevel.add(new Button(45f, 1000, Assets.shieldBar));
+		shieldLevel.get(0).setVisible(false);
+		shieldLevel.add(new Button(60f, 1000, Assets.shieldBar));
+		shieldLevel.get(1).setVisible(false);
+		shieldLevel.add(new Button(75f, 1000, Assets.shieldBar));
+		shieldLevel.get(2).setVisible(false);
+
+		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
+		buttonA = new Button(true, 1600, 256, 256, 256, Assets.buttonA);
+		buttonB = new Button(true, 1472, 0, 256, 256, Assets.buttonB);
+		pauseButton = new Button(1750, 920, Assets.pauseButton);
+		resumeButton = new Button(1750, 920, Assets.unpauseButton);
+		continueButton = new Button(false, 762, 540, 640, 192, Assets.continueButton);
+		exitButton = new Button(false, 762, 348, 640, 192, Assets.exitButton);
 
 		//do power managera
-		powerBars = new ArrayList<CustomSprite>();
-		upPwr = new Button(false, 0, 0, 200, 60, "buttons/up.png");
-		downPwr = new Button(false, 0, 0, 200, 60, "buttons/down.png");
-		powerButton = new Button(false, 860, 20, 300, 90, "buttons/powerButton.png");
+		//powerBars = new ArrayList<CustomSprite>();
+		upPwr = new Button(false, 0, 0, 200, 60, Assets.up);
+		downPwr = new Button(false, 0, 0, 200, 60, Assets.down);
+		powerButton = new Button(false, 860, 20, 300, 90, Assets.powerButton);
 
 		//dimScreen = new CustomSprite(Assets.dim);
 
@@ -109,7 +122,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 		hitEff.setVisible(true); // co to je?
 		explodeEff.setVisible(true);
-
 		//rysownie tekstu na ekranie
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
@@ -153,6 +165,14 @@ public class GameScreen implements Screen, InputProcessor {
 		drawPwrManager();
 		powerButton.draw(hudStage.getBatch(), 0.9f);
 		hudStage.getBatch().end();
+	}
+
+	public static ArrayList<Button> getHp() {
+		return hp;
+	}
+
+	public static ArrayList<Button> getShieldLevel() {
+		return shieldLevel;
 	}
 
 	public static MyEffect getExplodeEff() {
@@ -235,6 +255,12 @@ public class GameScreen implements Screen, InputProcessor {
 
 		hudStage.addActor(score);
 		hudStage.addActor(scrap);
+		hudStage.addActor(hp.get(0));
+		hudStage.addActor(hp.get(1));
+		hudStage.addActor(hp.get(2));
+		hudStage.addActor(shieldLevel.get(0));
+		hudStage.addActor(shieldLevel.get(1));
+		hudStage.addActor(shieldLevel.get(2));
 
 		background.setBackground(game.getActivePlanet().getBackground());
 

@@ -119,10 +119,10 @@ public class MainMenu implements Screen, InputProcessor {
 		paxCosmica = new Sprite(Assets.paxCosmica);
 		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
 
-		play = new Button(false, 1440, 602, 480, 144, "buttons/playButton.png");
-		options = new Button(false, 1440, 458, 480, 144, "buttons/optionsButton.png");
-		credits = new Button(false, 1440, 314, 480, 144, "buttons/creditsButton.png");
-		exit = new Button(false, 1440, 170, 480, 144, "buttons/exitButton.png");
+		play = new Button(false, 1440, 602, 480, 144, Assets.playButton);
+		options = new Button(false, 1440, 458, 480, 144, Assets.optionsButton);
+		credits = new Button(false, 1440, 314, 480, 144, Assets.creditsButton);
+		exit = new Button(false, 1440, 170, 480, 144, Assets.exitButton);
 
 		Gdx.input.setInputProcessor(this);
 		Assets.track1.play();

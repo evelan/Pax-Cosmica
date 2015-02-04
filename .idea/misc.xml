@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ClientPropertiesManager">
+    <properties class="javax.swing.AbstractButton">
+      <property name="hideActionText" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JComponent">
+      <property name="html.disable" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JEditorPane">
+      <property name="JEditorPane.w3cLengthUnits" class="java.lang.Boolean" />
+      <property name="JEditorPane.honorDisplayProperties" class="java.lang.Boolean" />
+      <property name="charset" class="java.lang.String" />
+    </properties>
+    <properties class="javax.swing.JList">
+      <property name="List.isFileList" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JPasswordField">
+      <property name="JPasswordField.cutCopyAllowed" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JSlider">
+      <property name="Slider.paintThumbArrowShape" class="java.lang.Boolean" />
+      <property name="JSlider.isFilled" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JTable">
+      <property name="Table.isFileList" class="java.lang.Boolean" />
+      <property name="JTable.autoStartsEdit" class="java.lang.Boolean" />
+      <property name="terminateEditOnFocusLost" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JToolBar">
+      <property name="JToolBar.isRollover" class="java.lang.Boolean" />
+    </properties>
+    <properties class="javax.swing.JTree">
+      <property name="JTree.lineStyle" class="java.lang.String" />
+    </properties>
+    <properties class="javax.swing.text.JTextComponent">
+      <property name="caretAspectRatio" class="java.lang.Double" />
+      <property name="caretWidth" class="java.lang.Integer" />
+    </properties>
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" />
     <resourceExtensions />
@@ -37,11 +75,11 @@
   <component name="GradleLocalSettings">
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="9922455334846" />
+        <entry key="$PROJECT_DIR$" value="8515147564561" />
       </map>
     </option>
   </component>
-  <component name="IdProvider" IDEtalkID="43288224ECD09A1A9197ADD7B3573C2F" />
+  <component name="IdProvider" IDEtalkID="64C590001CB81E2FB099B376BC30FE1F" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -55,7 +93,7 @@
   <component name="ProjectModuleManager">
     <modules />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="PropertiesComponent">
@@ -164,7 +202,7 @@
     <states>
       <state key="ProjectJDKs.UI">
         <settings>
-          <last-edited>1.7</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

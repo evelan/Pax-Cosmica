@@ -23,7 +23,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 	{
 		this.game = game;
 		//exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
-		exit = new Button(false, 1520, 20, 400, 96, "buttons/exitButton.png");
+		exit = new Button(false, 1520, 20, 400, 96, Assets.exitButton);
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 
 	}

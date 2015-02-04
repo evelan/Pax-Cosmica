@@ -49,6 +49,7 @@ public class Assets {
 	
 	public static Texture upgradeBar;
 	public static Texture upgradeBtn;
+    public static Texture upgradesButton;
 
 	public static Texture pauseButton, unpauseButton;
 
@@ -88,6 +89,8 @@ public class Assets {
 		enemyEngineEffect = new ParticleEffect();
 		enemyEngineEffect.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));
 
+		leftArrow = loadTexture("buttons/left.png");
+		rightArrow = loadTexture("buttons/right.png");
 		galaxy = loadTexture("background/galaxy.png");
 		stars = loadTexture("background/stars-pow2.png");
 		stars2 = loadTexture("background/stars-pow2.png");
@@ -117,6 +120,7 @@ public class Assets {
 		down = loadTexture("buttons/down.png");
 		up = loadTexture("buttons/up.png");
 		upgradeBtn = loadTexture("buttons/upgrade.png");
+        upgradesButton = loadTexture("buttons/upgradesButton.png");
 
 		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("background/mainmenu.png");

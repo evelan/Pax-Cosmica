@@ -1,11 +1,10 @@
 package pl.evelanblog.dynamicobjects;
 
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.scenes.GameScreen;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.scenes.GameScreen;
 
 public class Player extends DynamicObject {
 	private float bulletSpeed = 1000f;
@@ -25,6 +24,8 @@ public class Player extends DynamicObject {
 	public static float hullPwr = 1;
 	public static float weaponPwr = 1;
 	public static float enginePwr = 1;
+
+    public Boolean isHurt = false;
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
@@ -47,6 +48,8 @@ public class Player extends DynamicObject {
 			if (shieldReloadLvl > 10f) {
 				shieldReloadLvl = 0;
 				shield++;
+                for(int i=0;i<shield;i++)
+                    GameScreen.getShieldLevel().get(i).setVisible(true);
 			}
 		}
 
@@ -112,9 +115,32 @@ public class Player extends DynamicObject {
 		return (weaponPwr > 0 && live == true);
 	}
 
+    @Override
+    public void hurt(float damage) {
+        for (int i = 0; i < 3; i++) {
+           GameScreen.getShieldLevel().get(i).setVisible(false);
+            GameScreen.getHp().get(i).setVisible(false);
+        }
+        if (shield > 0) {
+            shield -= damage;
+
+        } else {
+            shield = 0;
+            hp -= damage;
+        }
+
+        if (hp <= 0)
+            kill();
+
+        for(int i=0;i<hp;i++)
+            GameScreen.getHp().get(i).setVisible(true);
+        for(int i =0;i<shield;i++)
+            GameScreen.getShieldLevel().get(i).setVisible(true);
+    }
+
 	@Override
 	public void kill()
-	{
+    {
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
