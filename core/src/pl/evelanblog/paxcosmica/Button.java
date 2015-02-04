@@ -7,29 +7,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Button extends Image {
 
-	// pisałem długi komentarz próbujący wyrazić moją ciekawość na temat tych konstruktorów ale zapytam wprost:
-	// Co tu sie odpierdala? :v
-	// to krótko
 	public Button(float x, float y, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
 		x = Gdx.graphics.getWidth() * x / 1920;
 		y = Gdx.graphics.getHeight() * y / 1080;
-		setBounds(x, y, Gdx.graphics.getWidth() * getWidth() / 1920, Gdx.graphics.getHeight() * getHeight() / 1080);
+		setBounds(x, y, super.getWidth(), super.getHeight());
 	}
-
+    public Button(float x, float y, Texture texture)
+    {
+        super(texture);
+        x = Gdx.graphics.getWidth() * x / 1920;
+        y = Gdx.graphics.getHeight() * y / 1080;
+        setBounds(x, y, super.getWidth(), super.getHeight());
+    }
 	public Button(String file)
-	{
-		super(new Texture(Gdx.files.internal(file)));
-		setBounds(Gdx.graphics.getWidth() * super.getX() / 1920, Gdx.graphics.getHeight() * super.getX() / 1080, Gdx.graphics.getWidth() * getWidth() / 1920,
-				Gdx.graphics.getHeight() * getHeight() / 1080);
-	}
+    {
+        super(new Texture(Gdx.files.internal(file)));
+        setBounds(0, 0, getWidth(), getHeight());
+    }
 
 	public Button(Texture texture)
 	{
 		super(texture);
-		setBounds(Gdx.graphics.getWidth() * super.getX() / 1920, Gdx.graphics.getHeight() * super.getX() / 1080, Gdx.graphics.getWidth() * getWidth() / 1920,
-				Gdx.graphics.getHeight() * getHeight() / 1080);
+        setBounds(0, 0, getWidth(), getHeight());
 	}
 
 	public Button(Texture texture, float x, float y)
@@ -41,7 +42,7 @@ public class Button extends Image {
 	/**
 	 * Konstruktor. Skaluje argumenty metody do danej rodzielczości, aby były dopasowane do całości ekranu niezależnie
 	 * od rozdzielczości.
-	 * 
+	 *
 	 * @author Dave
 	 * @version 1.0
 	 * @param isRound
@@ -50,43 +51,36 @@ public class Button extends Image {
 	 *            pozycja x
 	 * @param y
 	 *            pozycja y
-	 * @param z
+	 * @param h
 	 *            szerokosc
-	 * @param v
+	 * @param w
 	 *            wysokosc
-	 * @param file
-	 *            ścieżka do pliku *
+	 * @param texture
+	 *            tekstura *
 	 * */
-	public Button(Boolean isRound, float x, float y, float z, float v, String file)
+	public Button(Boolean isRound, float x, float y, float w, float h, Texture texture)
 	{
-		super(new Texture(Gdx.files.internal(file)));
+		super(texture);
 		x = Gdx.graphics.getWidth() * x / 1920;
 		y = Gdx.graphics.getHeight() * y / 1080;
 		if (isRound) {
-			z = Gdx.graphics.getHeight() * z / 1080;
-			v = Gdx.graphics.getHeight() * v / 1080;
+			h = Gdx.graphics.getHeight() * h / 1080;
+			w = h;
 		}
 		else {
-			z = Gdx.graphics.getWidth() * z / 1920;
-			v = Gdx.graphics.getHeight() * v / 1080;
-		}
-
-		setBounds(x, y, z, v);
-		x = Gdx.graphics.getWidth() * x / 1920;
-		y = Gdx.graphics.getHeight() * y / 1080;
-		z = Gdx.graphics.getWidth() * z / 1920;
-		v = Gdx.graphics.getHeight() * v / 1080;
-
-		setBounds(x, y, z, v);
+            w = Gdx.graphics.getWidth() * w / 1920;
+            h = Gdx.graphics.getHeight() * h / 1080;
+        }
+		setBounds(x, y, w, h);
 	}
 
-	public Button(float x, float y, float z, String file)
+	public Button(float x, float y, float hw, String file)
 	{
 		super(new Texture(Gdx.files.internal(file)));
 		x = Gdx.graphics.getWidth() * x / 1920;
 		y = Gdx.graphics.getHeight() * y / 1080;
-		z = Gdx.graphics.getHeight() * z / 1080;
-		setBounds(x, y, z, z);
+		hw = Gdx.graphics.getHeight() * hw / 1080;
+		setBounds(x, y, hw, hw);
 	}
 
 	public float getWidth()

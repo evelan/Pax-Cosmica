@@ -49,6 +49,7 @@ public class Assets {
 	
 	public static Texture upgradeBar;
 	public static Texture upgradeBtn;
+    public static Texture upgradesButton;
 
 	public static Texture pauseButton, unpauseButton;
 
@@ -117,6 +118,7 @@ public class Assets {
 		down = loadTexture("buttons/down.png");
 		up = loadTexture("buttons/up.png");
 		upgradeBtn = loadTexture("buttons/upgrade.png");
+        upgradesButton = loadTexture("buttons/upgradesButton.png");
 
 		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("background/mainmenu.png");

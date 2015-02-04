@@ -35,9 +35,9 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		this.game = game;
 		upgradeScreen = new Stage();
 		
-		upgrade = new Button(false, 1470, 100, 200, 50, "buttons/upgrade.png");
-		apply = new Button(false, 1520, 116, 400, 96, "buttons/applyButton.png");
-		discard = new Button(false, 1520, 20, 400, 96, "buttons/discardButton.png");
+		upgrade = new Button(false, 1470, 100, 200, 50, Assets.upgradeBtn);
+		apply = new Button(false, 1520, 116, 400, 96, Assets.applyButton);
+		discard = new Button(false, 1520, 20, 400, 96, Assets.discardButton);
 		
 		upgradeScreen.addActor(apply);
 		upgradeScreen.addActor(discard);

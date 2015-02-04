@@ -1,21 +1,5 @@
 package pl.evelanblog.scenes;
 
-import java.util.ArrayList;
-
-import pl.evelanblog.dynamicobjects.Player;
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Background;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.MyEffect;
-import pl.evelanblog.paxcosmica.MySprite;
-import pl.evelanblog.paxcosmica.MyText;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.paxcosmica.control.MousePointer;
-import pl.evelanblog.world.World;
-import pl.evelanblog.world.World.GameState;
-
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -23,6 +7,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.paxcosmica.*;
+import pl.evelanblog.paxcosmica.control.MousePointer;
+import pl.evelanblog.world.World;
+import pl.evelanblog.world.World.GameState;
+
+import java.util.ArrayList;
 
 public class GameScreen implements Screen, InputProcessor {
 
@@ -35,7 +26,16 @@ public class GameScreen implements Screen, InputProcessor {
 	private Vector2 defKnobPos = new Vector2(96, 96);
 
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
-	private ArrayList<Button> hp, shieldLevel;
+
+    public static ArrayList<Button> getHp() {
+        return hp;
+    }
+
+    public static ArrayList<Button> getShieldLevel() {
+        return shieldLevel;
+    }
+
+    private static ArrayList<Button> hp, shieldLevel;
 	private MousePointer mousePointer;
 	private MySprite dimScreen;
 	private MyText scrap, score;
@@ -59,24 +59,24 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage = new Stage();
 		background = new Background(game.getActivePlanet().getBackground());
 
-		hp = new ArrayList<Button>();
-		hp.add(new Button(Assets.hullBar, 0f, 1000));
-		hp.add(new Button(Assets.hullBar, 15f, 1000));
-		hp.add(new Button(Assets.hullBar, 30f, 1000));
+        hp = new ArrayList<Button>();
+		hp.add(new Button(0f, 1000, Assets.hullBar));
+		hp.add(new Button(15f, 1000, Assets.hullBar));
+		hp.add(new Button(30f, 1000, Assets.hullBar));
 
 		shieldLevel = new ArrayList<Button>();
-		shieldLevel.add(new Button(Assets.shieldBar, 45f, 1000));
-		shieldLevel.add(new Button(Assets.shieldBar, 60f, 1000));
-		shieldLevel.add(new Button(Assets.shieldBar, 75f, 1000));
+		shieldLevel.add(new Button(45f, 1000, Assets.shieldBar));   shieldLevel.get(0).setVisible(false);
+		shieldLevel.add(new Button(60f, 1000, Assets.shieldBar));   shieldLevel.get(1).setVisible(false);
+		shieldLevel.add(new Button(75f, 1000, Assets.shieldBar));   shieldLevel.get(2).setVisible(false);
 
-		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "buttons/knob.png");
-		buttonA = new Button(true, 1600, 256, 256, 256, "buttons/buttonA.png");
-		buttonB = new Button(true, 1472, 0, 256, 256, "buttons/buttonB.png");
-		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
-		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/pauseButton.png");
-		resumeButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/unpauseButton.png");
-		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
-		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
+		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
+		buttonA = new Button(true, 1600, 256, 256, 256, Assets.buttonA);
+		buttonB = new Button(true, 1472, 0, 256, 256, Assets.buttonB);
+		powerButton = new Button(860, 20, Assets.powerButton);
+		pauseButton = new Button(1750, 920,Assets.pauseButton);
+		resumeButton = new Button(1750, 920, Assets.unpauseButton);
+		continueButton = new Button(false, 762, 540, 640, 192, Assets.continueButton);
+		exitButton = new Button(false, 762, 348, 640, 192, Assets.exitButton);
 
 		upPwr = new Button("buttons/up.png");
 		downPwr = new Button("buttons/down.png");
@@ -132,14 +132,6 @@ public class GameScreen implements Screen, InputProcessor {
 			world.getPlayer().setVisible(true);
 		hitEff.setVisible(true);
 		explodeEff.setVisible(true);
-
-		// te dwie pętle renderują paski osłony i HP
-		for (int i = 3; i > world.getPlayer().getHealth(); i--)
-			hp.get(i - 1).setVisible(false);
-
-		// te dwie pętle renderują paski osłony i HP
-		for (int i = 3; i > world.getPlayer().getShield(); i--)
-			shieldLevel.get(i - 1).setVisible(false);
 
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
@@ -255,12 +247,13 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(score);
 		hudStage.addActor(scrap);
 		hudStage.addActor(hp.get(0));
-		hudStage.addActor(hp.get(1));
-		hudStage.addActor(hp.get(2));
+        hudStage.addActor(hp.get(1));
+        hudStage.addActor(hp.get(2));
 		hudStage.addActor(shieldLevel.get(0));
 		hudStage.addActor(shieldLevel.get(1));
 		hudStage.addActor(shieldLevel.get(2));
 
+        //////////////////////////////////////////////////////////////
 		exitButton.setVisible(false);
 		continueButton.setVisible(false);
 		hitEff.setVisible(false);

@@ -37,8 +37,8 @@ public class GalaxyMap implements Screen, InputProcessor {
 
 		attack = new Button(Assets.attackButton);
 		// store = new Button("buttons/storeButton.png");
-		upgrade = new Button(false, 1520, 116, 400, 96, "buttons/upgradesButton.png");
-		exit = new Button(false, 1520, 20, 400, 96, "buttons/exitButton.png");
+		upgrade = new Button(false, 1520, 116, 400, 96, Assets.upgradesButton);
+		exit = new Button(false, 1520, 20, 400, 96, Assets.exitButton);
 		dimScreen = new Sprite(Assets.dim, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		left = new Button(0, 540, 128, "buttons/left.png");
 		right = new Button(1792, 540, 128, "buttons/right.png");
@@ -181,7 +181,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 			obj.reset();
 			if (game.getMouse().overlaps(obj, moveValue, screenX, screenY))
 			{
-				//attack.setCenterPosition(obj.getCenterX(), obj.getCenterY());
+				attack.setPosition(obj.getX()+obj.getWidth()/2-attack.getWidth()/2, obj.getY()+obj.getHeight()/2-attack.getHeight()/2);
 				attack.setVisible(true);
 				obj.setHover();
 				game.setActivePlanet(obj);

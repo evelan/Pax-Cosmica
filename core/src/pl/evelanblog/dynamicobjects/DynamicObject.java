@@ -1,13 +1,12 @@
 package pl.evelanblog.dynamicobjects;
 
-import pl.evelanblog.world.World;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import pl.evelanblog.world.World;
 
 public abstract class DynamicObject extends Actor {
 
@@ -67,8 +66,9 @@ public abstract class DynamicObject extends Actor {
 
 		if (shield > 0) {
 			shield -= damage;
-			shield = 0;
+
 		} else {
+            shield = 0;
 			hp -= damage;
 		}
 
