@@ -36,13 +36,13 @@ public class Button extends Image {
 	 * @param isRound Czy tekstura jest okrągła/kwadratowa
 	 * @param x       pozycja x
 	 * @param y       pozycja y
-	 * @param z       szerokosc
-	 * @param v       wysokosc
+	 * @param w       szerokosc
+	 * @param h       wysokosc
 	 * @param file    ścieżka do pliku
 	 * @author Dave
-	 * @version 1.0
+	 * @version 1.1
 	 */
-	public Button(Boolean isRound, float x, float y, float h, float w, String file) {
+	public Button(Boolean isRound, float x, float y, float w, float h, String file) {
 		super(new Texture(Gdx.files.internal(file)));
 		x = Gdx.graphics.getWidth() * x / 1920;
 		y = Gdx.graphics.getHeight() * y / 1080;
@@ -50,10 +50,10 @@ public class Button extends Image {
 			h = Gdx.graphics.getHeight() * h / 1080;
 			w = Gdx.graphics.getHeight() * w / 1080;
 		} else {
-			h = Gdx.graphics.getWidth() * h / 1920;
-			w = Gdx.graphics.getHeight() * w / 1080;
+			w = Gdx.graphics.getWidth() * w / 1920;
+			h = Gdx.graphics.getHeight() * h / 1080;
 		}
-		setBounds(x, y, h, w);
+		setBounds(x, y, w, h);
 	}
 
 	public Button(float x, float y, float hw, String file) {

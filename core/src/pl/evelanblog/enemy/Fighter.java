@@ -1,11 +1,10 @@
 package pl.evelanblog.enemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.world.World;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 
 /**
  * To ma być typowe mięso armatnie wroga, jakieś tam typowe stateczki co latajo
@@ -15,7 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
  */
 public class Fighter extends Enemy {
 
-	public final static float SPAWN_TIME = 4f;
+	public final static float SPAWN_TIME = 6f;
 
 	public Fighter() { // wiem mogłem wszystko dać do super ale nie chciałem zbyt długiego i pokręconego konstruktra
 		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)

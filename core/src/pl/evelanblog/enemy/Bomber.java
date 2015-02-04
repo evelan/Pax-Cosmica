@@ -1,11 +1,10 @@
 package pl.evelanblog.enemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.world.World;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 
 /**
  * Wielkie i ociężałe statki
@@ -16,7 +15,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Bomber extends Enemy {
 
-	public final static float SPAWN_TIME = 8f;
+	public final static float SPAWN_TIME = 10f;
 
 	public Bomber() {
 		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)

@@ -1,13 +1,14 @@
 package pl.evelanblog.enemy;
 
-import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Stats;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
+import pl.evelanblog.dynamicobjects.DynamicObject;
+import pl.evelanblog.dynamicobjects.Scrap;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.world.World;
 
 public abstract class Enemy extends DynamicObject {
 
@@ -58,10 +59,10 @@ public abstract class Enemy extends DynamicObject {
 	{
 		dispose();
 		Stats.score += 10;
-		Stats.scrap += 4;
 		Stats.kills++;
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.start();
+		World.getObjects().addActor(new Scrap(getX(),getY()));
 	}
 }

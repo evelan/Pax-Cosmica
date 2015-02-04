@@ -1,5 +1,10 @@
 package pl.evelanblog.enemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
+import pl.evelanblog.dynamicobjects.Bullet;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.world.World;
 
 /**
  * Końcowy badass
@@ -7,6 +12,23 @@ package pl.evelanblog.enemy;
  * @author Evelan
  *
  */
-public class EnemyBoss  {
+public class EnemyBoss extends Enemy {
+
+	public EnemyBoss() {
+		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)
+		super(10f, 50f, 0f, 400f, 3f, 400f, "enemy/boss.png");
+
+		shootTime += 1f; // aby nie strzelały w takim samym odstępie czasu, małe urozmaicenie
+		radius = 120;
+		startY = MathUtils.random(0, Gdx.graphics.getHeight() / 2);
+	}
+
+	@Override
+	public void shoot() {
+		World.getObjects().addActor(new Bullet(getX(), getY() + getHeight() - (getHeight() / 6), bulletSpeed, false, 2f));
+		World.getObjects().addActor(new Bullet(getX(), getY() + getHeight() / 6, bulletSpeed, false, 2f));
+		Assets.playSound(Assets.shootSfx);
+		time = 0;
+	}
 
 }

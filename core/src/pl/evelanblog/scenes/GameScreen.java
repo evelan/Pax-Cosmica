@@ -1,5 +1,6 @@
 package pl.evelanblog.scenes;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -18,72 +19,64 @@ import java.util.ArrayList;
 public class GameScreen implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
-	public static Stage gameStage;
-	private Stage hudStage;
-	private World world;
+	public static Stage gameStage; // scena na której znajdują się statki, asteroidy, pociski oraz pociski
+	private Stage hudStage; // przyciski, knob, tekst oraz informacja ostanie shield i hp
+	private Stage powerManager;
+	private World world; // świat
 
-	private static Background background;
-	private Vector2 defKnobPos = new Vector2(96, 96);
+	private static Background background; // tło
+	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
 
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
-	private ArrayList<Button> hp, shieldLevel;
-	private MousePointer mousePointer;
-	private MySprite dimScreen;
-	private MyText scrap, score;
-	private Player player;
-	private static MyEffect explodeEff;
-	private static MyEffect hitEff;
-	private static float velX = 0;
-	private static float velY = 0;
-	private static boolean hit = false;
-	private boolean knobPressed = false;
+	private ArrayList<CustomSprite> powerBars;
+	private MousePointer mousePointer; // przycsik myszki
+	//private CustomSprite dimScreen; // od przyciemniania i rozjaśniania ekranu
+	private MyText scrap, score; // tekst  o ilośc złomu oraz punktów
+	private Player player; // gracz
+	private static MyEffect explodeEff, hitEff;
+	private static float velX = 0; // wychylenie gałki w osi X
+	private static float velY = 0; // wychylenie gałki w osi Y
+	private static boolean hit = false; // czy wciskamy przycisk A od strzelania
+	private boolean knobPressed = false; // czy wciskamy gałkę
 
-	private int knobPointer = -1;
-	private int hitPointer = -1;
-	private float hover = -1;
-	private float power, hull, shield, weapon, engine;
+	private int knobPointer = -1; // pointer gałki, potrzebne do multitoucha
+	private int hitPointer = -1; // pointer przycisku A, potrzebne do multitoucha
+	private float hover = -1; // mówi o tym co wcisnęliśmy w powermanagerze aby pokazać przycisk upgrade
+	private float power, hull, shield, weapon, engine; // wartości w pixelach gdzie mają być rysowane poszczególne paski w powermanagerze
 
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
 		gameStage = new Stage();
 		hudStage = new Stage();
+		powerManager = new Stage();
 		background = new Background(game.getActivePlanet().getBackground());
-
-		hp = new ArrayList<Button>();
-		hp.add(new Button(Assets.hullBar, 0f, 1000));
-		hp.add(new Button(Assets.hullBar, 15f, 1000));
-		hp.add(new Button(Assets.hullBar, 30f, 1000));
-
-		shieldLevel = new ArrayList<Button>();
-		shieldLevel.add(new Button(Assets.shieldBar, 45f, 1000));
-		shieldLevel.add(new Button(Assets.shieldBar, 60f, 1000));
-		shieldLevel.add(new Button(Assets.shieldBar, 75f, 1000));
 
 		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, "buttons/knob.png");
 		buttonA = new Button(true, 1600, 256, 256, 256, "buttons/buttonA.png");
 		buttonB = new Button(true, 1472, 0, 256, 256, "buttons/buttonB.png");
-		powerButton = new Button(false, 860, 20, Assets.powerButton.getWidth(), Assets.powerButton.getHeight(), "buttons/powerButton.png");
 		pauseButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/pauseButton.png");
 		resumeButton = new Button(true, 1750, 920, Assets.pauseButton.getWidth(), Assets.pauseButton.getHeight(), "buttons/unpauseButton.png");
 		continueButton = new Button(false, 640, 540, 640, 192, "buttons/continueButton.png");
 		exitButton = new Button(false, 640, 348, 640, 192, "buttons/exitButton.png");
 
-		upPwr = new Button("buttons/up.png");
-		downPwr = new Button("buttons/down.png");
+		//do power managera
+		powerBars = new ArrayList<CustomSprite>();
+		upPwr = new Button(false, 0, 0, 200, 60, "buttons/up.png");
+		downPwr = new Button(false, 0, 0, 200, 60, "buttons/down.png");
+		powerButton = new Button(false, 860, 20, 300, 90, "buttons/powerButton.png");
 
-		dimScreen = new MySprite(Assets.dim);
+		//dimScreen = new CustomSprite(Assets.dim);
 
 		mousePointer = game.getMouse();
-		score = new MyText("Score: " + Stats.score, 100, 1000);
-		scrap = new MyText("Scrap: " + Stats.scrap, 300, 1000);
+		score = new MyText("Score: " + Stats.score, Gdx.graphics.getWidth() * 800 / 1920, Gdx.graphics.getHeight() * 1060 / 1080);
+		scrap = new MyText("Scrap: " + Stats.scrap, Gdx.graphics.getWidth() * 1200 / 1920, Gdx.graphics.getHeight() * 1060 / 1080);
 
 		hitEff = new MyEffect(Assets.hitEffect);
 		explodeEff = new MyEffect(Assets.explosionEffect);
 
 		upPwr.setVisible(false);
 		downPwr.setVisible(false);
-
 	}
 
 	@Override
@@ -93,10 +86,8 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// ustawienie backgroundu zawsze na środku
 		background.getBackground().setY(gameStage.getCamera().position.y - gameStage.getHeight() / 2);
-
-		// rysowanie stage'y
-		gameStage.draw();
-		hudStage.draw();
+		gameStage.draw(); //rysowanie stage z graczem, przeciwnikami i strzałami
+		hudStage.draw(); // HUD, czyli wszystkie przycsiki i inne duperele
 
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
@@ -106,63 +97,62 @@ public class GameScreen implements Screen, InputProcessor {
 		{
 			Assets.track2.stop();
 			Assets.track1.play();
+			//TODO tutaj powinien nastąpic zapis gry również
+			//TODO powinno pokazać jakiś ekran że wygraliśmy i opcję do do wyjścia z gry, lub przejscia do galaktyki
 			game.setScreen(GameStateManager.galaxyMap);
-		}
-		else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
+		} else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
 		{
+			player.setVisible(false); // przestajemy wyświetlać gracza bo już zginął
 			exitButton.setVisible(true);
 			player.setVisible(false);
 		}
 
-		// działa tak jak chciałem, renderuje wszystkie obiekty w jednej pętli z jedną liniją
-		// for (DynamicObject obj : world.getObjects())
-		// obj.draw(game.getSprBatch(), delta);
-		// będę tęskinł za tymi linijami kodu :CCCCCCCCCCCCCCCC najpiękniejsze w całym kodzie
-
-		if (world.getPlayer().isAlive())
-			world.getPlayer().setVisible(true);
-		hitEff.setVisible(true);
+		hitEff.setVisible(true); // co to je?
 		explodeEff.setVisible(true);
 
-		//TODO zepsute
-//		// te dwie pętle renderują paski osłony i HP
-//		for (int i = 3; i > world.getPlayer().getHealth(); i--)
-//			hp.get(i - 1).setVisible(false);
-//
-//		// te dwie pętle renderują paski osłony i HP
-//		for (int i = 3; i > world.getPlayer().getShield(); i--)
-//			shieldLevel.get(i - 1).setVisible(false);
-
+		//rysownie tekstu na ekranie
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
 
-		if (world.getState() == GameState.powermanager || world.getState() == GameState.menu)
-		{
-			// dimScreen.draw(hudStage.getBatch(), 0.6f);
-			pauseButton.setVisible(false);
-			resumeButton.setVisible(true);
-			if (world.getState() == GameState.menu)
-			{
-				continueButton.setVisible(true);
-				exitButton.setVisible(true);
-			} else if (world.getState() == GameState.powermanager)
-			{
-				// TODO: to trzeba zmienić, bez tych getbatch
-				hudStage.getBatch().begin();
-				drawPwrManager();
-				powerButton.draw(hudStage.getBatch(), 0.9f);
-				hudStage.getBatch().end();
-			}
-		} else
-		{
-			pauseButton.setVisible(true);
-			resumeButton.setVisible(false);
-			exitButton.setVisible(false);
-			continueButton.setVisible(false);
-			powerButton.setVisible(true);
-			downPwr.setVisible(false);
-			upPwr.setVisible(false);
-		}
+		//jeśli gracz wejdzie w powermanagera
+		if (world.getState() == GameState.powermanager)
+			setPowerPanager();
+		else if (world.getState() == GameState.paused) // wciśniety przycisk pauzy
+			setPause();
+		else if (world.getState() == GameState.ongoing) // normalny stan, czyli gramy w grę po prostu
+			setResume(); //TODO tutaj można by coś pomyśleć aby się ten kod ciągle nie wykonywał bo to bez sensu, tylko wykrywać kiedy nastąpi zmiana stanu gry
+	}
+
+	//pauzuje grę
+	private void setPause() {
+		pauseButton.setVisible(false);
+		resumeButton.setVisible(true);
+		continueButton.setVisible(true);
+		exitButton.setVisible(true);
+	}
+
+	//przywraca grę
+	private void setResume() {
+		pauseButton.setVisible(true);
+		resumeButton.setVisible(false);
+		exitButton.setVisible(false);
+		continueButton.setVisible(false);
+		powerButton.setVisible(true);
+		downPwr.setVisible(false);
+		upPwr.setVisible(false);
+	}
+
+	//pokazuje powere managera
+	private void setPowerPanager() {
+		//TODO: SpriteBatch.begin must be called before draw.
+		//dimScreen.draw(hudStage.getBatch(), 0.6f); // przyciemnia to co się dzieje w tle
+		pauseButton.setVisible(false);
+		resumeButton.setVisible(true);
+
+		hudStage.getBatch().begin();
+		drawPwrManager();
+		powerButton.draw(hudStage.getBatch(), 0.9f);
+		hudStage.getBatch().end();
 	}
 
 	public static MyEffect getExplodeEff() {
@@ -181,8 +171,7 @@ public class GameScreen implements Screen, InputProcessor {
 		GameScreen.hitEff = hitEff;
 	}
 
-	private void drawPwrManager()
-	{
+	private void drawPwrManager() {
 		createBar(power, Player.powerGenerator, "Power " + (int) Player.powerGenerator + "  L" + (int) Player.powerLvl);
 		createBar(hull, Player.hullPwr, "Hull " + (int) Player.hullPwr + "  L" + (int) Player.hullLvl);
 		createBar(shield, Player.shieldPwr, "Shield " + (int) Player.shieldPwr + "  L" + (int) Player.shieldLvl);
@@ -190,8 +179,7 @@ public class GameScreen implements Screen, InputProcessor {
 		createBar(engine, Player.enginePwr, "Engine " + (int) Player.enginePwr + "  L" + (int) Player.engineLvl);
 	}
 
-	private void createBar(float x, float level, String name)
-	{
+	private void createBar(float x, float level, String name) {
 		for (int i = 0; i < level; i++)
 			hudStage.getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
 
@@ -202,7 +190,7 @@ public class GameScreen implements Screen, InputProcessor {
 			upPwr.setVisible(true);
 		}
 
-		new MyText(name, x + 10, 190).draw(hudStage.getBatch(), 1);
+		//new MyText(name, x + 10, 190).draw(hudStage.getBatch(), 1); ta linijka była jebutna i żre proca, bo tworzy ciagle nowe obiekty, bo bylem leniwy, przepraszam
 		// font.draw(hudStage.getBatch(), name, );
 	}
 
@@ -212,6 +200,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void resize(int width, int height) {
+
 	}
 
 	@Override
@@ -229,11 +218,11 @@ public class GameScreen implements Screen, InputProcessor {
 		gameStage.addActor(World.getObjects());
 
 		// ADD HUD ACTORS
-		//if (Gdx.app.getType() == ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
+		if (Gdx.app.getType() == Application.ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
 			hudStage.addActor(knob);
 			hudStage.addActor(buttonA);
 			hudStage.addActor(buttonB);
-		//}
+		}
 		hudStage.addActor(powerButton);
 		hudStage.addActor(pauseButton);
 		hudStage.addActor(resumeButton);
@@ -242,36 +231,20 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(upPwr);
 		hudStage.addActor(downPwr);
 
-		// hudStage.addActor(dimScreen);
+		//hudStage.addActor(dimScreen);
 
 		hudStage.addActor(score);
 		hudStage.addActor(scrap);
-		hudStage.addActor(hp.get(0));
-		hudStage.addActor(hp.get(1));
-		hudStage.addActor(hp.get(2));
-		hudStage.addActor(shieldLevel.get(0));
-		hudStage.addActor(shieldLevel.get(1));
-		hudStage.addActor(shieldLevel.get(2));
-
-		exitButton.setVisible(false);
-		continueButton.setVisible(false);
-		hitEff.setVisible(false);
-		explodeEff.setVisible(false);
-
-		// i = (int) world.getPlayer().getHealth();
 
 		background.setBackground(game.getActivePlanet().getBackground());
 
 		// pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
-		float temp_pos = ((Gdx.graphics.getWidth() + 100) / 5) - Assets.upgradeBar.getWidth(); // TODO usunąć to potem
-		power = temp_pos;
-		hull = temp_pos * 2;
-		shield = temp_pos * 3;
-		weapon = temp_pos * 4;
-		engine = temp_pos * 5;
-		dimScreen.setPosition(0, 0);
-
-		Assets.track2.play();
+		power = Gdx.graphics.getWidth() * 100 / 1920;
+		hull = Gdx.graphics.getWidth() * 410 / 1920;
+		shield = Gdx.graphics.getWidth() * 620 / 1920;
+		weapon = Gdx.graphics.getWidth() * 830 / 1920;
+		engine = Gdx.graphics.getWidth() * 1040 / 1920;
+		//dimScreen.setPosition(0, 0);
 
 		velX = 0;
 		velY = 0;
@@ -281,6 +254,8 @@ public class GameScreen implements Screen, InputProcessor {
 		hitPointer = -1;
 		hover = -1;
 
+		Assets.track2.play();
+		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -308,27 +283,23 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 
 		// pause button
-		if (mousePointer.overlaps(pauseButton))
-		{
+		if (mousePointer.overlaps(pauseButton)) {
 			Assets.playSound(Assets.clickSfx);
-			world.setState(GameState.menu);
+			world.setState(GameState.paused);
 		}
 
 		// resume button
-		else if (mousePointer.overlaps(resumeButton))
-		{
+		else if (mousePointer.overlaps(resumeButton)) {
 			Assets.playSound(Assets.clickSfx);
 			world.setState(GameState.ongoing);
 		}
 		// powerManagerButton
-		else if (mousePointer.overlaps(powerButton))
-		{
+		else if (mousePointer.overlaps(powerButton)) {
 			Assets.playSound(Assets.clickSfx);
 			world.setState(world.getState() == GameState.powermanager ? GameState.ongoing : GameState.powermanager);
 
 			// continueButton
-		} else if (mousePointer.overlaps(continueButton))
-		{
+		} else if (mousePointer.overlaps(continueButton)) {
 			pauseButton.setVisible(true);
 			resumeButton.setVisible(false);
 			continueButton.setVisible(false);
@@ -336,8 +307,7 @@ public class GameScreen implements Screen, InputProcessor {
 			Assets.playSound(Assets.clickSfx);
 			world.setState(GameState.ongoing);
 			// exitButton
-		} else if (mousePointer.overlaps(exitButton))
-		{
+		} else if (mousePointer.overlaps(exitButton)) {
 			Assets.playSound(Assets.clickSfx);
 			world.setState(GameState.defeat);
 			Assets.track2.stop();
@@ -353,8 +323,7 @@ public class GameScreen implements Screen, InputProcessor {
 				knobPointer = pointer;
 				velX = (((screenX - (knob.getImageWidth() / 2)) - defKnobPos.x)) / 64;
 				velY = ((screenY - (knob.getImageHeight() / 2)) - defKnobPos.y) / 64;
-			}
-			else {
+			} else {
 				knobPressed = false;
 			}
 		}
@@ -362,26 +331,18 @@ public class GameScreen implements Screen, InputProcessor {
 		// powerManager
 		if (world.getState() == GameState.powermanager) {
 
-			if (mousePointer.overlaps(upPwr))
-			{
+			if (mousePointer.overlaps(upPwr)) {
 				if (Player.powerGenerator > 0) {
-					if (hover == hull && Player.hullLvl > Player.hullPwr)
-					{
+					if (hover == hull && Player.hullLvl > Player.hullPwr) {
 						Player.hullPwr++;
 						Player.powerGenerator--;
-					}
-					else if (hover == weapon && Player.weaponLvl > Player.weaponPwr)
-					{
+					} else if (hover == weapon && Player.weaponLvl > Player.weaponPwr) {
 						Player.weaponPwr++;
 						Player.powerGenerator--;
-					}
-					else if (shield == hover && Player.shieldLvl > Player.shieldPwr)
-					{
+					} else if (shield == hover && Player.shieldLvl > Player.shieldPwr) {
 						Player.shieldPwr++;
 						Player.powerGenerator--;
-					}
-					else if (engine == hover && Player.engineLvl > Player.enginePwr)
-					{
+					} else if (engine == hover && Player.engineLvl > Player.enginePwr) {
 						Player.enginePwr++;
 						Player.powerGenerator--;
 					}
@@ -392,12 +353,10 @@ public class GameScreen implements Screen, InputProcessor {
 				if (hover == hull && Player.hullPwr > 0) {
 					Player.hullPwr--;
 					Player.powerGenerator++;
-				}
-				else if (hover == weapon && Player.weaponPwr > 0) {
+				} else if (hover == weapon && Player.weaponPwr > 0) {
 					Player.weaponPwr--;
 					Player.powerGenerator++;
-				}
-				else if (shield == hover && Player.shieldPwr > 0) {
+				} else if (shield == hover && Player.shieldPwr > 0) {
 					Player.shieldPwr--;
 					Player.powerGenerator++;
 				} else if (engine == hover && Player.enginePwr > 0) {
