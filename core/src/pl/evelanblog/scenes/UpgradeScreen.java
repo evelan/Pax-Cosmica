@@ -1,5 +1,6 @@
 package pl.evelanblog.scenes;
 
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
@@ -33,11 +34,11 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	public UpgradeScreen(final PaxCosmica game)
 	{
 		this.game = game;
-		upgradeScreen = new Stage();
+		upgradeScreen = new Stage(new StretchViewport(1920, 1080));
 		
-		upgrade = new Button(false, 1470, 100, 200, 50, Assets.upgradeBtn);
-		apply = new Button(false, 1520, 116, 400, 96, Assets.applyButton);
-		discard = new Button(false, 1520, 20, 400, 96, Assets.discardButton);
+		upgrade = new Button(1470, 100, Assets.upgradeBtn);
+		apply = new Button(1520, 116, Assets.applyButton);
+		discard = new Button(1520, 20,  Assets.discardButton);
 		
 		upgradeScreen.addActor(apply);
 		upgradeScreen.addActor(discard);
@@ -141,7 +142,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX, screenY);
+        mousePointer.setPosition(screenX*upgradeScreen.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
+                screenY*upgradeScreen.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
 		Assets.playSound(Assets.clickSfx);
 
 		if (apply.getBoundingRectangle().overlaps(mousePointer)) {

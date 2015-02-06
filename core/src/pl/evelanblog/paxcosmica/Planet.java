@@ -27,10 +27,8 @@ public class Planet extends Actor {
 	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String _name, String filename, float _rotationSpeed)
 	{
 		setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
-		x=Gdx.graphics.getWidth()*x/1920;
-		y=Gdx.graphics.getHeight()*y/1080;
-		sprite.setBounds(x, y, Gdx.graphics.getHeight()*300/1080, Gdx.graphics.getHeight()*300/1080);
-		setBounds(x, y, Gdx.graphics.getHeight()*300/1080, Gdx.graphics.getHeight()*300/1080);
+		sprite.setPosition(x, y);
+        setPosition(x, y);
 		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		getSprite().setScale(size);
 		getSprite().setOriginCenter();

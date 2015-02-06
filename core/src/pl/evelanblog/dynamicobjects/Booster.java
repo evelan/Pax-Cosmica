@@ -1,9 +1,7 @@
 package pl.evelanblog.dynamicobjects;
 
-import pl.evelanblog.paxcosmica.Assets;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import pl.evelanblog.paxcosmica.Assets;
 
 public class Booster extends DynamicObject {
 
@@ -14,7 +12,7 @@ public class Booster extends DynamicObject {
 	}
 
 	public Booster() {
-		super(Gdx.graphics.getWidth(), MathUtils.random(0, Gdx.graphics.getHeight() - Assets.booster.getWidth()), 120f, 1, 0, 1, "booster.png");
+		super(Assets.worldWidth, MathUtils.random(0, Assets.worldHeight - Assets.booster.getWidth()), 120f, 1, 0, 1, "booster.png");
 	}
 
 	public void update(float deltaTime) {

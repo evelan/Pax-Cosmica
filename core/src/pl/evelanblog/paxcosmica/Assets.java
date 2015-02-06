@@ -18,6 +18,7 @@ public class Assets {
 	public static Texture fighter, bomber;
 	public static Texture hullBar;
 	public static Texture shieldBar;
+    public static Texture barBorder;
 	public static Texture bubbleShield;
 	public static Texture leftArrow;
 	public static Texture rightArrow;
@@ -65,12 +66,16 @@ public class Assets {
 	public static Texture applyButton;
 	public static Texture continueButton;
 	public static Texture powerButton;
+    public static Texture bossHp;
+    public static Texture bossHpBorder;
 
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
 	public static ParticleEffect playerEngineEffect;
 	public static ParticleEffect enemyEngineEffect;
 	public static Texture dim;
+
+    public static float worldWidth = 1920, worldHeight = 1080;
 
 	public static Texture loadTexture(String file) {
 		return new Texture(Gdx.files.internal(file));
@@ -106,10 +111,14 @@ public class Assets {
 		bomber = loadTexture("enemy/bomber.png");
 		hullBar = loadTexture("player/hull.png");
 		shieldBar = loadTexture("player/shield.png");
-		spaceship = loadTexture("player/spaceship.png");
+		barBorder = loadTexture("player/barBorder.png");
+        spaceship = loadTexture("player/spaceship.png");
 		bubbleShield = loadTexture("player/bubble_shield.png");
 		dim = loadTexture("other/dim.png");
-		
+		bossHp = loadTexture("enemy/bossHp.png");
+        bossHpBorder = loadTexture("enemy/bossHpBorder.png");
+
+
 		firePlanet = loadTexture("planet/fire.png");
 		icePlanet = loadTexture("planet/ice.png");
 		coldPlanet = loadTexture("planet/cold.png");

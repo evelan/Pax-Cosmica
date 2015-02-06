@@ -21,9 +21,9 @@ public class Asteroid extends DynamicObject {
 
 	public Asteroid() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(Gdx.graphics.getWidth(), 0f, 40f + (MathUtils.random(10) * 10), 2f, 0f, 200f, "asteroid/asteroid_" + (MathUtils.random(2) + 1) + ".png");
+		super(Assets.worldWidth, 0f, 40f + (MathUtils.random(10) * 10), 2f, 0f, 200f, "asteroid/asteroid_" + (MathUtils.random(2) + 1) + ".png");
 
-		startY = (MathUtils.random(0, Gdx.graphics.getHeight() - 64));
+		startY = (MathUtils.random(0, Assets.worldHeight - 64));
 
 		particle = new ParticleEffect();
 		particle.load(Gdx.files.internal("data/asteroid.p"), Gdx.files.internal(""));

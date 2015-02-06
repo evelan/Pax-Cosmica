@@ -8,19 +8,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 import pl.evelanblog.world.World;
 import pl.evelanblog.world.World.GameState;
 
-import java.util.ArrayList;
-
 public class GameScreen implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	public static Stage gameStage; // scena na której znajdują się statki, asteroidy, pociski oraz pociski
-	private Stage hudStage; // przyciski, knob, tekst oraz informacja ostanie shield i hp
+	private static Stage hudStage; // przyciski, knob, tekst oraz informacja o stanie shield i hp
 	private Stage powerManager;
 	private World world; // świat
 
@@ -28,7 +27,7 @@ public class GameScreen implements Screen, InputProcessor {
 	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
 
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
-	private static ArrayList<Button> hp, shieldLevel;
+	private static Button hpBar, shieldBar, hpBorder, shieldBorder;
 	private MousePointer mousePointer; // przycsik myszki
 	//private CustomSprite dimScreen; // od przyciemniania i rozjaśniania ekranu
 	private MyText scrap, score; // tekst  o ilośc złomu oraz punktów
@@ -47,43 +46,36 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
-		gameStage = new Stage();
-		hudStage = new Stage();
-		powerManager = new Stage();
+		gameStage = new Stage(new StretchViewport(1920, 1080));
+		hudStage = new Stage(new StretchViewport(1920, 1080));
+		powerManager = new Stage(new StretchViewport(1920, 1080));
 		background = new Background(game.getActivePlanet().getBackground());
 
-		hp = new ArrayList<Button>();
-		hp.add(new Button(0f, 1000, Assets.hullBar));
-		hp.add(new Button(15f, 1000, Assets.hullBar));
-		hp.add(new Button(30f, 1000, Assets.hullBar));
+		hpBar = new Button(15, 1025, 200, 40, Assets.hullBar);
+		shieldBar = new Button(15, 982, 0, 40, Assets.shieldBar);
+        hpBorder = new Button(15, 1025, 200, 40, Assets.barBorder);
+        shieldBorder = new Button(15, 982, 0, 40, Assets.barBorder);
 
-		shieldLevel = new ArrayList<Button>();
-		shieldLevel.add(new Button(45f, 1000, Assets.shieldBar));
-		shieldLevel.get(0).setVisible(false);
-		shieldLevel.add(new Button(60f, 1000, Assets.shieldBar));
-		shieldLevel.get(1).setVisible(false);
-		shieldLevel.add(new Button(75f, 1000, Assets.shieldBar));
-		shieldLevel.get(2).setVisible(false);
+        knob = new Button(defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
+        buttonA = new Button(1600, 256, 256, 256, Assets.buttonA);
+        buttonB = new Button(1472, 0, 256, 256, Assets.buttonB);
 
-		knob = new Button(true, defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
-		buttonA = new Button(true, 1600, 256, 256, 256, Assets.buttonA);
-		buttonB = new Button(true, 1472, 0, 256, 256, Assets.buttonB);
-		pauseButton = new Button(1750, 920, Assets.pauseButton);
-		resumeButton = new Button(1750, 920, Assets.unpauseButton);
-		continueButton = new Button(false, 762, 540, 640, 192, Assets.continueButton);
-		exitButton = new Button(false, 762, 348, 640, 192, Assets.exitButton);
+        pauseButton = new Button(1750, 920,Assets.pauseButton);
+        resumeButton = new Button(1750, 920, Assets.unpauseButton);
+        continueButton = new Button(640, 540, 640, 192, Assets.continueButton);
+        exitButton = new Button(640, 348, 640, 192, Assets.exitButton);
 
 		//do power managera
 		//powerBars = new ArrayList<CustomSprite>();
-		upPwr = new Button(false, 0, 0, 200, 60, Assets.up);
-		downPwr = new Button(false, 0, 0, 200, 60, Assets.down);
-		powerButton = new Button(false, 860, 20, 300, 90, Assets.powerButton);
+		upPwr = new Button(0, 0, 200, 60, Assets.up);
+		downPwr = new Button(0, 0, 200, 60, Assets.down);
+        powerButton = new Button(810, 20, Assets.powerButton);
 
 		//dimScreen = new CustomSprite(Assets.dim);
 
 		mousePointer = game.getMouse();
-		score = new MyText("Score: " + Stats.score, Gdx.graphics.getWidth() * 800 / 1920, Gdx.graphics.getHeight() * 1060 / 1080);
-		scrap = new MyText("Scrap: " + Stats.scrap, Gdx.graphics.getWidth() * 1200 / 1920, Gdx.graphics.getHeight() * 1060 / 1080);
+		score = new MyText("Score: " + Stats.score, 965, 1060);
+		scrap = new MyText("Scrap: " + Stats.scrap, 1200, 1060);
 
 		hitEff = new MyEffect(Assets.hitEffect);
 		explodeEff = new MyEffect(Assets.explosionEffect);
@@ -92,7 +84,11 @@ public class GameScreen implements Screen, InputProcessor {
 		downPwr.setVisible(false);
 	}
 
-	@Override
+    public static Button getHpBorder() {
+        return hpBorder;
+    }
+
+    @Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -167,12 +163,12 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.getBatch().end();
 	}
 
-	public static ArrayList<Button> getHp() {
-		return hp;
+	public static Button getHpBar() {
+		return hpBar;
 	}
 
-	public static ArrayList<Button> getShieldLevel() {
-		return shieldLevel;
+	public static Button getShieldBar() {
+		return shieldBar;
 	}
 
 	public static MyEffect getExplodeEff() {
@@ -255,21 +251,19 @@ public class GameScreen implements Screen, InputProcessor {
 
 		hudStage.addActor(score);
 		hudStage.addActor(scrap);
-		hudStage.addActor(hp.get(0));
-		hudStage.addActor(hp.get(1));
-		hudStage.addActor(hp.get(2));
-		hudStage.addActor(shieldLevel.get(0));
-		hudStage.addActor(shieldLevel.get(1));
-		hudStage.addActor(shieldLevel.get(2));
+		hudStage.addActor(hpBar);
+		hudStage.addActor(shieldBar);
+        hudStage.addActor(hpBorder);
+        hudStage.addActor(shieldBorder);
 
 		background.setBackground(game.getActivePlanet().getBackground());
 
 		// pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
-		power = Gdx.graphics.getWidth() * 100 / 1920;
-		hull = Gdx.graphics.getWidth() * 410 / 1920;
-		shield = Gdx.graphics.getWidth() * 620 / 1920;
-		weapon = Gdx.graphics.getWidth() * 830 / 1920;
-		engine = Gdx.graphics.getWidth() * 1040 / 1920;
+		power = 100;
+		hull = 410;
+		shield = 620;
+		weapon = 830;
+		engine = 1040;
 		//dimScreen.setPosition(0, 0);
 
 		velX = 0;
@@ -300,7 +294,8 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX, screenY);
+		mousePointer.setPosition(screenX*gameStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
+                screenY*gameStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
 
 		// A BUTTON
 		if (!hit && mousePointer.overlaps(buttonA)) {
@@ -524,4 +519,10 @@ public class GameScreen implements Screen, InputProcessor {
 	public static Background getBackground() {
 		return background;
 	}
+
+    public static Stage getHudStage() {return hudStage;};
+
+    public static Button getShieldBorder() {
+        return shieldBorder;
+    }
 }

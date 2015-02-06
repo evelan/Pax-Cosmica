@@ -1,6 +1,5 @@
 package pl.evelanblog.paxcosmica;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -43,16 +42,16 @@ public class Background extends Actor {
 		stars1.setX(stars1.getX() - (delta * 20 * speed));
 		stars2.setX(stars2.getX() - (delta * 20 * speed));
 		if (stars1.getX() + stars1.getWidth() < 0)
-			stars1.setX(Gdx.graphics.getWidth());
+			stars1.setX(1920);
 		if (stars2.getX() + stars2.getWidth() < 0)
-			stars2.setX(Gdx.graphics.getWidth());
+			stars2.setX(1920);
 
 		stars3.setX(stars3.getX() - (delta * 30 * speed));
 		stars4.setX(stars4.getX() - (delta * 30 * speed));
 		if (stars3.getX() + stars3.getWidth() < 0)
-			stars3.setX(Gdx.graphics.getWidth());
+			stars3.setX(1920);
 		if (stars4.getX() + stars4.getWidth() < 0)
-			stars4.setX(Gdx.graphics.getWidth());
+			stars4.setX(1920);
 	}
 
 	public Sprite getBackground() {

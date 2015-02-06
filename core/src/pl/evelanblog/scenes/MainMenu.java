@@ -1,5 +1,6 @@
 package pl.evelanblog.scenes;
 
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.PaxCosmica;
@@ -26,7 +27,7 @@ public class MainMenu implements Screen, InputProcessor {
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
-		menuStage = new Stage();
+		menuStage = new Stage(new StretchViewport(1920,1080));
 		dim = new Sprite(Assets.dim);
 		mousePointer = new MousePointer();
 	}
@@ -70,7 +71,9 @@ public class MainMenu implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX, screenY);
+		mousePointer.setPosition(screenX*menuStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
+                screenY*menuStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
+
 		Assets.playSound(Assets.clickSfx);
 
 		// PLAY BUTTON
@@ -119,10 +122,10 @@ public class MainMenu implements Screen, InputProcessor {
 		paxCosmica = new Sprite(Assets.paxCosmica);
 		paxCosmica.setBounds(50, 150, Assets.paxCosmica.getWidth(), Assets.paxCosmica.getHeight());
 
-		play = new Button(false, 1440, 602, 480, 144, Assets.playButton);
-		options = new Button(false, 1440, 458, 480, 144, Assets.optionsButton);
-		credits = new Button(false, 1440, 314, 480, 144, Assets.creditsButton);
-		exit = new Button(false, 1440, 170, 480, 144, Assets.exitButton);
+		play = new Button(1440, 602, 480, 144, Assets.playButton);
+		options = new Button(1440, 458, 480, 144, Assets.optionsButton);
+		credits = new Button(1440, 314, 480, 144, Assets.creditsButton);
+		exit = new Button(1440, 170, 480, 144, Assets.exitButton);
 
 		Gdx.input.setInputProcessor(this);
 		Assets.track1.play();

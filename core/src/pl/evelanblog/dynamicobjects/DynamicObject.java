@@ -63,15 +63,7 @@ public abstract class DynamicObject extends Actor {
 	 *            ilość zadawanych obrażeń
 	 */
 	public void hurt(float damage) {
-
-		if (shield > 0) {
-			shield -= damage;
-
-		} else {
-            shield = 0;
-			hp -= damage;
-		}
-
+        hp -= damage;
 		if (hp <= 0)
 			kill();
 	}

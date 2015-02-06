@@ -45,12 +45,16 @@ public class World {
 
 	public void update(float delta) {
 
-		//jeśli gracz zabije podczas gry więcej niż 10 przeciwników I nie ma bossa na ekrrtanie to go dodaje
-		if (Stats.kills > 10 && !enemyBossExists) {
+		//jeśli gracz zabije podczas gry więcej niż 10 przeciwników I nie ma bossa na ekranie, to go dodaje
+		if (Stats.kills > 1 && !enemyBossExists) {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
 			enemyBossExists = true;
+            GameScreen.getHudStage().addActor(enemyBoss.getBossHp());
+            GameScreen.getHudStage().addActor(enemyBoss.getBossHpBorder());
 			Gdx.app.log("STATE", "Dodano do sceny EnemyBoss!");
+            enemyBoss.getBossHp().setVisible(true);
+            enemyBoss.getBossHpBorder().setVisible(true);
 		}
 
 		//jeśli zabijemy bossa wygrywamy można jeszcze dodać jakieś 3 sekund odstępu zanim pokaże się ekran że wygraliśmy

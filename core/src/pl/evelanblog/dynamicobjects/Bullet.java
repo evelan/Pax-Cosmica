@@ -2,8 +2,6 @@ package pl.evelanblog.dynamicobjects;
 
 import pl.evelanblog.paxcosmica.Assets;
 
-import com.badlogic.gdx.Gdx;
-
 public class Bullet extends DynamicObject {
 	private boolean direction; // true - strzały gracza, false - strzały wroga
 
@@ -14,7 +12,7 @@ public class Bullet extends DynamicObject {
 
 	@Override
 	public void update(float deltaTime) {
-		if (getX() < 0 || getX() > Gdx.graphics.getWidth()) // jak wyleci za ekran to umieramy szczała
+		if (getX() < 0 || getX() > Assets.worldWidth) // jak wyleci za ekran to umieramy szczała
 			dispose();
 
 		if (direction) // w którą stronę latajo szczały

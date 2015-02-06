@@ -1,6 +1,5 @@
 package pl.evelanblog.enemy;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.paxcosmica.Assets;
@@ -22,7 +21,7 @@ public class Fighter extends Enemy {
 
 		shootTime += ((MathUtils.random(20)) / 10); // aby nie strzelały w takim samym odstępie czasu, małe urozmaicenie
 		radius = MathUtils.random(30, 100);
-		startY = MathUtils.random(0, Gdx.graphics.getHeight() - radius);
+		startY = MathUtils.random(0, Assets.worldHeight - radius);
 	}
 	
 	public void shoot() {

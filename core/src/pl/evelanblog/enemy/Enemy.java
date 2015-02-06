@@ -22,7 +22,7 @@ public abstract class Enemy extends DynamicObject {
 								// dziedziczą po Enemy
 
 	protected Enemy(float speed, float hp, float shield, float bulletSpeed, float shootTime, float impactDamage, String texture) {
-		super(Gdx.graphics.getWidth(), 0, speed, hp, shield, impactDamage, texture);
+		super(Assets.worldWidth, 0, speed, hp, shield, impactDamage, texture);
 
 		engine = new ParticleEffect();
 		engine.load(Gdx.files.internal("data/enemyEngine.p"), Gdx.files.internal(""));

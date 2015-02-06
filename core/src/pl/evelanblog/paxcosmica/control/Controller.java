@@ -40,13 +40,13 @@ public class Controller implements InputProcessor {
 		buttonB = new Button(Assets.buttonB);
 		buttonB.setPosition(920, 32);
 
-		powerButton = new Button("buttons/powerButton.png");
+		powerButton = new Button(Assets.powerButton);
 		powerButton.setPosition(540, 20);
 
 		pauseButton = new Button(Assets.pauseButton);
-		pauseButton.setPosition(1200, Gdx.graphics.getHeight() - 50);
+		pauseButton.setPosition(1200, Assets.worldHeight - 50);
 
-		continueButton = new Button("buttons/continueButton.png");
+		continueButton = new Button(Assets.continueButton);
 		continueButton.setPosition(540, 312);
 
 		exitButton = new Button(Assets.exitButton);

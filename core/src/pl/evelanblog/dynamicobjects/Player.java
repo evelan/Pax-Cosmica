@@ -25,7 +25,7 @@ public class Player extends DynamicObject {
 	public static float weaponPwr = 1;
 	public static float enginePwr = 1;
 
-    public Boolean isHurt = false;
+    private float temp=0;
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
@@ -48,8 +48,8 @@ public class Player extends DynamicObject {
 			if (shieldReloadLvl > 10f) {
 				shieldReloadLvl = 0;
 				shield++;
-                for(int i=0;i<shield;i++)
-                    GameScreen.getShieldLevel().get(i).setVisible(true);
+                GameScreen.getShieldBar().setSize(200/shieldPwr , GameScreen.getShieldBar().getHeight());
+                GameScreen.getShieldBorder().setSize(200, GameScreen.getShieldBorder().getHeight());
 			}
 		}
 
@@ -57,14 +57,14 @@ public class Player extends DynamicObject {
 												// weaponPwr bedzie on przyspieszac razy 80
 
 		temp_y = GameScreen.gameStage.getCamera().position.y + (GameScreen.getVelY() * deltaTime * speed);
-		if (temp_y > 0 && temp_y < Gdx.graphics.getHeight() - getHeight())
+		if (temp_y > 0 && temp_y < Assets.worldHeight - getHeight())
 		{
 			GameScreen.gameStage.getCamera().position.y = temp_y;
 			setY(GameScreen.gameStage.getCamera().position.y);
 		}
 
 		temp_x = getX() + (GameScreen.getVelX() * deltaTime * speed);
-		if (temp_x > 0 && temp_x < Gdx.graphics.getWidth() - getWidth())
+		if (temp_x > 0 && temp_x < Assets.worldWidth - getWidth())
 			setX(temp_x);
 
 		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
@@ -117,25 +117,23 @@ public class Player extends DynamicObject {
 
     @Override
     public void hurt(float damage) {
-        for (int i = 0; i < 3; i++) {
-           GameScreen.getShieldLevel().get(i).setVisible(false);
-            GameScreen.getHp().get(i).setVisible(false);
-        }
         if (shield > 0) {
+            temp = damage-shield;
             shield -= damage;
-
+            if(shield>0)
+                GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() - (200/shieldPwr) * damage, GameScreen.getShieldBar().getHeight());
+            else
+            {
+                shield = 0;
+                GameScreen.getShieldBorder().setSize(0,GameScreen.getShieldBar().getHeight());
+                GameScreen.getShieldBar().setSize(0,GameScreen.getShieldBar().getHeight());
+            }
         } else {
-            shield = 0;
             hp -= damage;
+            GameScreen.getHpBar().setSize(GameScreen.getHpBar().getWidth() - (200 / (hullPwr*3)) * damage, GameScreen.getHpBar().getHeight());
         }
-
         if (hp <= 0)
             kill();
-
-        for(int i=0;i<hp;i++)
-            GameScreen.getHp().get(i).setVisible(true);
-        for(int i =0;i<shield;i++)
-            GameScreen.getShieldLevel().get(i).setVisible(true);
     }
 
 	@Override
@@ -145,5 +143,9 @@ public class Player extends DynamicObject {
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
 		Assets.explosionEffect.start();
+        GameScreen.getShieldBorder().setSize(0,GameScreen.getShieldBar().getHeight());
+        GameScreen.getShieldBar().setSize(0,GameScreen.getShieldBar().getHeight());
+        GameScreen.getHpBar().setSize(0,GameScreen.getShieldBar().getHeight());
+        GameScreen.getHpBorder().setSize(0,GameScreen.getShieldBar().getHeight());
 	}
 }

@@ -1,14 +1,15 @@
 package pl.evelanblog.scenes;
 
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.PaxCosmica;
 
 public class CreditsScreen implements Screen, InputProcessor {
 
@@ -17,13 +18,15 @@ public class CreditsScreen implements Screen, InputProcessor {
 	private Button exit;
 	private float scroll;
 	private float speed = 50;
+    private Stage creditsStage;
 	
 
 	public CreditsScreen(final PaxCosmica game)
 	{
 		this.game = game;
+        creditsStage = new Stage(new StretchViewport(1920, 1080));
 		//exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
-		exit = new Button(false, 1520, 20, 400, 96, Assets.exitButton);
+        exit = new Button(1500, 20, 400, 96, Assets.exitButton);
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 
 	}
@@ -106,6 +109,8 @@ public class CreditsScreen implements Screen, InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Assets.playSound(Assets.clickSfx);
 		screenY = Gdx.graphics.getHeight() - screenY;
+        screenX = (int) (screenX*creditsStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth());
+        screenY = (int) (screenY*creditsStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
 		if (game.getMouse().overlaps(screenX, screenY, exit))
 		{
 			game.setScreen(GameStateManager.mainMenu);

@@ -20,7 +20,7 @@ public class PaxCosmica extends Game {
 		Assets.load();
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1920, 1080);
+		camera.setToOrtho(false, Assets.worldWidth, Assets.worldHeight);
 		mousePointer = new MousePointer();
 
 		gsm = new GameStateManager(this);
