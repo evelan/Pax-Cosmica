@@ -27,15 +27,14 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	private int scrap;
 	float dimValue;
 
-	public UpgradeScreen(final PaxCosmica game)
-	{
+	public UpgradeScreen(final PaxCosmica game) {
 		this.game = game;
 		upgradeScreen = new Stage(new StretchViewport(1920, 1080));
-		
-		upgrade = new Button(1470, 100, Assets.upgradeBtn);
-		apply = new Button(1520, 116, Assets.applyButton);
-		discard = new Button(1520, 20,  Assets.discardButton);
-		
+
+		upgrade = new Button(1470, 100, 320, 96, Assets.upgradeBtn);
+		apply = new Button(1520, 116, 320, 96, Assets.applyButton);
+		discard = new Button(1520, 20, 320, 96, Assets.discardButton);
+
 		upgradeScreen.addActor(apply);
 		upgradeScreen.addActor(discard);
 	}
@@ -60,8 +59,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 
 	}
 
-	public void createBar(float x, float level, String name)
-	{
+	public void createBar(float x, float level, String name) {
 		for (int i = 0; i < level; i++)
 			upgradeScreen.getBatch().draw(Assets.upgradeBar, x, 200 + i * 50);
 

@@ -293,6 +293,10 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void dispose() {
+		hudStage.dispose();
+		powerManager.dispose();
+		gameStage.dispose();
+
 	}
 
 	@Override
@@ -527,9 +531,9 @@ public class GameScreen implements Screen, InputProcessor {
 		return background;
 	}
 
-    public static Stage getHudStage() {return hudStage;};
+    public static Stage getHudStage() {return hudStage;}
 
-    public static Button getShieldBorder() {
+	public static Button getShieldBorder() {
         return shieldBorder;
     }
 }

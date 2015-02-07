@@ -59,17 +59,15 @@ public abstract class DynamicObject extends Actor {
 	/**
 	 * Uszkadza obiekt, jak HP spadnie poniżej 0 to umiera
 	 *
-	 * @param damage
-	 *            ilość zadawanych obrażeń
+	 * @param damage ilość zadawanych obrażeń
 	 */
 	public void hurt(float damage) {
-        hp -= damage;
+		hp -= damage;
 		if (hp <= 0)
 			kill();
 	}
 
-	public void update(float delta)
-	{
+	public void update(float delta) {
 		if (getX() + getWidth() < 0)
 			dispose();
 	}
@@ -84,10 +82,7 @@ public abstract class DynamicObject extends Actor {
 
 	public boolean overlaps(Actor actor) {
 		Rectangle r = new Rectangle(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
-		if (this.getSprite().getBoundingRectangle().overlaps(r))
-			return true;
-		else
-			return false;
+		return this.getSprite().getBoundingRectangle().overlaps(r);
 	}
 
 	public boolean isAlive() {
@@ -99,38 +94,32 @@ public abstract class DynamicObject extends Actor {
 	}
 
 	@Override
-	public void setX(float foo)
-	{
+	public void setX(float foo) {
 		sprite.setX(foo);
 	}
 
 	@Override
-	public void setY(float foo)
-	{
+	public void setY(float foo) {
 		sprite.setY(foo);
 	}
 
 	@Override
-	public float getX()
-	{
+	public float getX() {
 		return sprite.getX();
 	}
 
 	@Override
-	public float getY()
-	{
+	public float getY() {
 		return sprite.getY();
 	}
 
 	@Override
-	public float getWidth()
-	{
+	public float getWidth() {
 		return sprite.getWidth();
 	}
 
 	@Override
-	public float getHeight()
-	{
+	public float getHeight() {
 		return sprite.getHeight();
 	}
 

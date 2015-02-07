@@ -23,7 +23,7 @@ public class Collider {
 	/**
 	 * Sprawdza czy jakiś inny obiekt koliduje z graczem
 	 *
-	 * @param array
+	 * @param objects
 	 */
 	public void checkPlayerCollision(Group objects) {
 
@@ -63,7 +63,7 @@ public class Collider {
 	/**
 	 * Sprawdza czy strzały przeciwnika lub gracza kolidują z czymś
 	 *
-	 * @param array
+	 * @param objects wszystkie obiekty świata
 	 */
 	public void checkBulletCollision(Group objects) {
 
@@ -76,7 +76,7 @@ public class Collider {
 					if (actor2 instanceof Asteroid) {
 						Asteroid asteroid = (Asteroid) actor2;
 						// kolizja asteroidy i pocisku
-						if (asteroid.getSprite().getBoundingRectangle().overlaps(bullet.getSprite().getBoundingRectangle())) {
+						if (asteroid.overlaps(bullet)) {
 							asteroid.hurt(bullet.getImpactDamage());
 							bullet.kill();
 						}

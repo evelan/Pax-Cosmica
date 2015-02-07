@@ -18,7 +18,7 @@ import pl.evelanblog.scenes.GameScreen;
 public class World {
 
 	private static Group objects; //wszystkie obiekty na scenie (bez gracza)
-	private Collider collider; // zderzacz hadronów XD
+	private Collider collider; // zderzacz hadronów
 	private Player player; // gracz
 	private EnemyBoss enemyBoss; // boss
 	private GameState state; // stany gry
