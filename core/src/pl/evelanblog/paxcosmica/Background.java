@@ -25,8 +25,8 @@ public class Background extends Actor {
 		stars2.setBounds(Assets.stars.getWidth(), 150, Assets.stars.getWidth(), Assets.stars.getHeight());
 		stars3.setBounds(0, -150, Assets.stars.getWidth(), Assets.stars.getHeight());
 		stars4.setBounds(Assets.stars.getWidth(), -150, Assets.stars.getWidth(), Assets.stars.getHeight());
-		background.setBounds(0, 0, Assets.galaxy.getWidth(), Assets.galaxy.getHeight());
-	}
+		background.setBounds(0, 0, Assets.worldWidth, Assets.worldHeight);
+    }
 
 	@Override
 	public void draw(Batch batch, float alpha) {
@@ -60,37 +60,5 @@ public class Background extends Actor {
 
 	public void setBackground(Sprite background) {
 		this.background = background;
-	}
-
-	public Sprite getStars1() {
-		return stars1;
-	}
-
-	public void setStars1(Sprite stars1) {
-		this.stars1 = stars1;
-	}
-
-	public Sprite getStars2() {
-		return stars2;
-	}
-
-	public void setStars2(Sprite stars2) {
-		this.stars2 = stars2;
-	}
-
-	public Sprite getStars3() {
-		return stars3;
-	}
-
-	public void setStars3(Sprite stars3) {
-		this.stars3 = stars3;
-	}
-
-	public Sprite getStars4() {
-		return stars4;
-	}
-
-	public void setStars4(Sprite stars4) {
-		this.stars4 = stars4;
 	}
 }

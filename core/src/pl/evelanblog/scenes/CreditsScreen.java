@@ -5,11 +5,12 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.paxcosmica.PaxPreferences;
 
 public class CreditsScreen implements Screen, InputProcessor {
 
@@ -22,14 +23,14 @@ public class CreditsScreen implements Screen, InputProcessor {
 	
 
 	public CreditsScreen(final PaxCosmica game)
-	{
-		this.game = game;
+    {
+        this.game = game;
         creditsStage = new Stage(new StretchViewport(1920, 1080));
-		//exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
+        //exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
         exit = new Button(1500, 20, 400, 96, Assets.exitButton);
-		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-
-	}
+        font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
+        creditsStage.addActor(exit);
+    }
 
 	@Override
 	public void render(float delta) {
@@ -43,12 +44,13 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 		scroll += speed * delta;
 
-		game.getSpriteBatch().begin();
-		font.draw(game.getSpriteBatch(), "Pax Cosmica", 200, scroll + 80);
-		font.draw(game.getSpriteBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
-		font.draw(game.getSpriteBatch(), "Code destroyer: Dave", 200, scroll + 20);
-		exit.draw(game.getSpriteBatch(), 1);
-		game.getSpriteBatch().end();
+        creditsStage.draw();
+        creditsStage.getBatch().begin();
+		font.draw(creditsStage.getBatch(), "Pax Cosmica", 200, scroll + 80);
+		font.draw(creditsStage.getBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
+		font.draw(creditsStage.getBatch(), "Code destroyer: Dave", 200, scroll + 20);
+		exit.draw(creditsStage.getBatch(), 1);
+		creditsStage.getBatch().end();
 	}
 
 	@Override
@@ -107,7 +109,8 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Assets.playSound(Assets.clickSfx);
+        if(PaxPreferences.getSoundEnabled())
+		    Assets.playSound(Assets.clickSfx);
 		screenY = Gdx.graphics.getHeight() - screenY;
         screenX = (int) (screenX*creditsStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth());
         screenY = (int) (screenY*creditsStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());

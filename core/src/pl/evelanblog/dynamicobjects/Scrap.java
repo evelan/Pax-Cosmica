@@ -8,13 +8,14 @@ import pl.evelanblog.paxcosmica.Stats;
 
 public class Scrap extends DynamicObject {
 
+
 	public Scrap(float x, float y) {
 		super(x, y, 50f, 1f, 0f, 0f, "booster/booster.png");
 	}
 
 	@Override
 	public void kill() {
-		Stats.scrap += 4;
+        Stats.scrap += 4;
 		dispose();
 	}
 

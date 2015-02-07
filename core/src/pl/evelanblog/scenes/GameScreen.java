@@ -105,9 +105,11 @@ public class GameScreen implements Screen, InputProcessor {
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 		{
 			Assets.track2.stop();
-			Assets.track1.play();
+            if(PaxPreferences.getMusicEnabled())
+			    Assets.track1.play();
 			//TODO tutaj powinien nastąpic zapis gry również
 			//TODO powinno pokazać jakiś ekran że wygraliśmy i opcję do do wyjścia z gry, lub przejscia do galaktyki
+            Stats.save();
 			game.setScreen(GameStateManager.galaxyMap);
 		} else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
 		{
@@ -222,8 +224,10 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 		gameStage.getActors().clear();
-		world = new World();
+		world = new World(game);
 		player = world.getPlayer();
+
+        Stats.levelKills=0;
 
 		// ADD SCENE ACTORS
 		gameStage.addActor(background);
@@ -273,8 +277,8 @@ public class GameScreen implements Screen, InputProcessor {
 		knobPointer = -1;
 		hitPointer = -1;
 		hover = -1;
-
-		Assets.track2.play();
+        if(PaxPreferences.getMusicEnabled())
+		    Assets.track2.play();
 		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
 		Gdx.input.setInputProcessor(this);
 	}
@@ -297,6 +301,9 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX*gameStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
                 screenY*gameStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
 
+        if(PaxPreferences.getSoundEnabled() && !knobPressed)
+            Assets.playSound(Assets.clickSfx);
+
 		// A BUTTON
 		if (!hit && mousePointer.overlaps(buttonA)) {
 			hit = true;
@@ -305,18 +312,17 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// pause button
 		if (mousePointer.overlaps(pauseButton)) {
-			Assets.playSound(Assets.clickSfx);
 			world.setState(GameState.paused);
 		}
 
 		// resume button
 		else if (mousePointer.overlaps(resumeButton)) {
-			Assets.playSound(Assets.clickSfx);
+
 			world.setState(GameState.ongoing);
 		}
 		// powerManagerButton
 		else if (mousePointer.overlaps(powerButton)) {
-			Assets.playSound(Assets.clickSfx);
+
 			world.setState(world.getState() == GameState.powermanager ? GameState.ongoing : GameState.powermanager);
 
 			// continueButton
@@ -325,13 +331,14 @@ public class GameScreen implements Screen, InputProcessor {
 			resumeButton.setVisible(false);
 			continueButton.setVisible(false);
 			exitButton.setVisible(false);
-			Assets.playSound(Assets.clickSfx);
+
 			world.setState(GameState.ongoing);
 			// exitButton
 		} else if (mousePointer.overlaps(exitButton)) {
-			Assets.playSound(Assets.clickSfx);
+
 			world.setState(GameState.defeat);
 			Assets.track2.stop();
+            Stats.save();
 			game.setScreen(GameStateManager.mainMenu);
 		}
 
@@ -386,7 +393,7 @@ public class GameScreen implements Screen, InputProcessor {
 				}
 			}
 
-			Assets.playSound(Assets.clickSfx);
+
 			if (screenX > hull && screenX < hull + 200)
 				hover = hull;
 			else if (screenX > weapon && screenX < weapon + 200)

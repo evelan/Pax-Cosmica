@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
@@ -18,9 +17,9 @@ public class GalaxyMap implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	private Sprite dimScreen;
-	private Image background;
+    private Background background;
 	private Button attack, upgrade, exit, left, right;
-	private MyText score, scrap, fuel, galaxyNumer;
+	private MyText score, scrap, fuel, galaxyNumber;
 	private Rectangle mousePointer;
 	private float dimValue, moveValue;
 	private ArrayList<Planet> planets;
@@ -33,7 +32,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 		mapStage = new Stage(new StretchViewport(1920, 1080));
 		mapHud = new Stage(new StretchViewport(1920, 1080));
 
-		background = new Image(Assets.mainmenu);
+		background = new Background(new Sprite(Assets.mainmenu));
 		mapHud.addActor(background);
 
 		attack = new Button(Assets.attackButton);
@@ -51,15 +50,16 @@ public class GalaxyMap implements Screen, InputProcessor {
 		mousePointer = new MousePointer();
 		mousePointer.setSize(1);
 
-		score = new MyText("Score: " + Stats.score, 10, mapHud.getViewport().getWorldHeight() - 10);
-		scrap = new MyText("Scrap: " + Stats.scrap, 210, mapHud.getViewport().getWorldHeight() - 10);
 		fuel = new MyText("Fuel: " + Stats.fuel, 410, mapHud.getViewport().getWorldHeight() - 10);
-		galaxyNumer = new MyText("Galaxy: " + moveValue, 610, mapHud.getViewport().getWorldHeight() - 10);
+		galaxyNumber = new MyText("Galaxy: " + moveValue, 610, mapHud.getViewport().getWorldHeight() - 10);
+
+        score = new MyText("Score: " + Stats.score, 10, 1070);
+        scrap = new MyText("Scrap: " + Stats.scrap, 210, 1070);
 
 		mapHud.addActor(score);
 		mapHud.addActor(scrap);
 		mapHud.addActor(fuel);
-		mapHud.addActor(galaxyNumer);
+		mapHud.addActor(galaxyNumber);
 
 		// tworzenie planet
 		planets.add(new Planet(200, 200, 1, 0.10f, true, false, "Ice", "planet/ice.png", 0.05f));
@@ -111,6 +111,8 @@ public class GalaxyMap implements Screen, InputProcessor {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+        score.setText("Score: " + Stats.score);
+        scrap.setText("Scrap: " + Stats.scrap);
 	}
 
 	@Override
@@ -146,7 +148,8 @@ public class GalaxyMap implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Assets.playSound(Assets.clickSfx);
+        if(PaxPreferences.getSoundEnabled())
+            Assets.playSound(Assets.clickSfx);
         screenY = Gdx.graphics.getHeight() - screenY;
         screenX = (int)(screenX*mapStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth());
         screenY = (int)(screenY*mapStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
@@ -160,20 +163,22 @@ public class GalaxyMap implements Screen, InputProcessor {
         } else if (game.getMouse().overlaps(left)) {
             mapStage.getCamera().position.x -= Assets.worldWidth;
             moveValue--;
-            galaxyNumer.setText("Galaxy: " + moveValue);
+            galaxyNumber.setText("Galaxy: " + moveValue);
         }
         else if (game.getMouse().overlaps(right)) {
             mapStage.getCamera().position.x += Assets.worldWidth;
             moveValue++;
-            galaxyNumer.setText("Galaxy: " + moveValue);
+            galaxyNumber.setText("Galaxy: " + moveValue);
         }
 
         else if (game.getMouse().overlaps(upgrade))
         {
+            Stats.save();
             game.setScreen(GameStateManager.upgradeScreen);
             dispose();
         } else if (game.getMouse().overlaps(exit))
         {
+            Stats.save();
             game.setScreen(GameStateManager.mainMenu);
             dispose();
         }

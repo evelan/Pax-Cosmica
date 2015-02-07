@@ -13,9 +13,11 @@ import pl.evelanblog.enemy.Enemy;
 public class Collider {
 
 	private Player player;
+    private final PaxCosmica game;
 
-	public Collider(Player player) {
+	public Collider(Player player, PaxCosmica game) {
 		this.player = player;
+        this.game = game;
 	}
 
 	/**
@@ -30,12 +32,14 @@ public class Collider {
 				if (obj instanceof Scrap) { //kolizja ze scrapem
 					Scrap scrap = (Scrap) obj;
 					scrap.kill();
-					Assets.playSound(Assets.powerupSfx);
+                    if(PaxPreferences.getSoundEnabled())
+					    Assets.playSound(Assets.powerupSfx);
 					Gdx.app.log("PLAYER", "Gracz wziął SCRAP");
 				} else if (obj instanceof Booster) { // kolizja z boosterem
 					Booster booster = (Booster) obj;
 					booster.kill();
-					Assets.playSound(Assets.powerupSfx);
+                    if(PaxPreferences.getSoundEnabled())
+					    Assets.playSound(Assets.powerupSfx);
 					Gdx.app.log("PLAYER", "Gracz wziął BOOSTERa");
 				} else if (obj instanceof Bullet) { // kolizja ze "szczałom"
 					Bullet bullet = (Bullet) obj;

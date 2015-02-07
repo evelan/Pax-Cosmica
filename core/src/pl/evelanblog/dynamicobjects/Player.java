@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.scenes.GameScreen;
 
 public class Player extends DynamicObject {
@@ -95,7 +97,8 @@ public class Player extends DynamicObject {
 	 * @return
 	 */
 	public Bullet shoot() {
-		Assets.playSound(Assets.shootSfx);
+        if(PaxPreferences.getSoundEnabled())
+		    Assets.playSound(Assets.shootSfx);
 		return new Bullet(getX() + getWidth() - 10, getY() + (getHeight() / 2) - 4, bulletSpeed, true, 1f);
 	}
 

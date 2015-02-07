@@ -69,6 +69,13 @@ public class Assets {
     public static Texture bossHp;
     public static Texture bossHpBorder;
 
+    public static Texture volumeBarBorder;
+    public static Texture volumeBarCore;
+    public static Texture volumeBarKnob;
+
+    public static Texture checkboxBorder;
+    public static Texture checkboxTick;
+
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
 	public static ParticleEffect playerEngineEffect;
@@ -157,6 +164,12 @@ public class Assets {
 
 		track1 = Gdx.audio.newMusic(Gdx.files.internal("music/zero_project.mp3"));
 		track2 = Gdx.audio.newMusic(Gdx.files.internal("music/track02.mp3"));
+
+        volumeBarBorder = loadTexture("components/sliderBarBorder.png");
+        volumeBarCore = loadTexture("components/sliderBarCore.png");
+        volumeBarKnob = loadTexture("components/sliderBarKnob.png");
+        checkboxBorder= loadTexture("components/checkboxBorder.png");
+        checkboxTick = loadTexture("components/checkboxTick.png");
 	}
 
 	public static void playSound(Sound sound) {

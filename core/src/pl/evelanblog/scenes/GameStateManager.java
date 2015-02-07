@@ -8,6 +8,8 @@ public class GameStateManager {
 	public static GameScreen gameScreen;
 	public static GalaxyMap galaxyMap;
 	public static UpgradeScreen upgradeScreen;
+    public static OptionsScreen options;
+    public static CreditsScreen credits;
 
 	public GameStateManager(final PaxCosmica game)
 	{
@@ -15,6 +17,8 @@ public class GameStateManager {
 		galaxyMap = new GalaxyMap(game);
 		gameScreen = new GameScreen(game);
 		upgradeScreen = new UpgradeScreen(game);
+        options = new OptionsScreen(game);
+        credits = new CreditsScreen(game);
 	}
 
 }

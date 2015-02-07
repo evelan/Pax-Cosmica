@@ -1,12 +1,5 @@
 package pl.evelanblog.scenes;
 
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import pl.evelanblog.dynamicobjects.Player;
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Stats;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -15,6 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import pl.evelanblog.dynamicobjects.Player;
+import pl.evelanblog.paxcosmica.*;
 
 public class UpgradeScreen implements Screen, InputProcessor {
 
@@ -144,7 +140,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
         mousePointer.setPosition(screenX*upgradeScreen.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
                 screenY*upgradeScreen.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
-		Assets.playSound(Assets.clickSfx);
+        if(PaxPreferences.getSoundEnabled())
+		    Assets.playSound(Assets.clickSfx);
 
 		if (apply.getBoundingRectangle().overlaps(mousePointer)) {
 			Player.hullLvl = hullLvl;
@@ -152,7 +149,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 			Player.powerLvl = powerLvl;
 			Player.weaponLvl = weaponLvl;
 			Player.shieldLvl = shieldLvl;
-			Stats.scrap = scrap;
+            Stats.scrap = scrap;
 			game.setScreen(GameStateManager.galaxyMap);
 			dispose();
 		}

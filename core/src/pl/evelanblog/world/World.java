@@ -11,6 +11,7 @@ import pl.evelanblog.enemy.Bomber;
 import pl.evelanblog.enemy.EnemyBoss;
 import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.paxcosmica.Collider;
+import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
 
@@ -23,6 +24,7 @@ public class World {
 	private GameState state; // stany gry
 	private float[] sleepTime = new float[6]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się asteroidy etc.
 	private boolean enemyBossExists = false;
+    private final PaxCosmica game;
 
 	public static enum GameState {
 		ongoing, // gra się toczy i jest elegancko, szczelanie etc
@@ -32,10 +34,11 @@ public class World {
 		powermanager // power manager + pauza
 	}
 
-	public World() {
-		objects = new Group();
+	public World(PaxCosmica game) {
+		this.game = game;
+        objects = new Group();
 		player = new Player();
-		collider = new Collider(player);
+		collider = new Collider(player, game);
 
 		for (int i = 0; i < 6; i++) //zerujemy tablicę z czasami
 			sleepTime[i] = 0;
@@ -46,7 +49,7 @@ public class World {
 	public void update(float delta) {
 
 		//jeśli gracz zabije podczas gry więcej niż 10 przeciwników I nie ma bossa na ekranie, to go dodaje
-		if (Stats.kills > 1 && !enemyBossExists) {
+		if (Stats.levelKills > 0 && !enemyBossExists) {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
 			enemyBossExists = true;
@@ -59,7 +62,8 @@ public class World {
 
 		//jeśli zabijemy bossa wygrywamy można jeszcze dodać jakieś 3 sekund odstępu zanim pokaże się ekran że wygraliśmy
 		if (!enemyBoss.isAlive()) {
-			state = GameState.win;
+            state = GameState.win;
+            Stats.kills += Stats.levelKills;
 			Gdx.app.log("STATE", "EnemyBoss nie żyje " + state);
 		}
 
@@ -74,6 +78,7 @@ public class World {
 			collider.checkPlayerCollision(objects);
 			collider.checkBulletCollision(objects);
 		} else if (!player.isAlive()) {
+            Stats.kills += Stats.levelKills;
 			state = GameState.defeat;
 			Gdx.app.log("STATE", "Gracz zginął, " + state);
 		}
@@ -115,7 +120,7 @@ public class World {
 		}
 
 		if (sleepTime[4] > Battleship.SPAWN_TIME) {
-			objects.addActor(new Battleship());
+			objects.addActor(new Battleship(game));
 			sleepTime[4] = 0;
 		}
 	}

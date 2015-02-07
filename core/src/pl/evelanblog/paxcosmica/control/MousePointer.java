@@ -3,6 +3,7 @@ package pl.evelanblog.paxcosmica.control;
 import com.badlogic.gdx.math.Rectangle;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.CheckBox;
 import pl.evelanblog.paxcosmica.Planet;
 
 public class MousePointer extends Rectangle {
@@ -24,6 +25,19 @@ public class MousePointer extends Rectangle {
 		return y;
 	}
 
+    public boolean overlaps(CheckBox checkBox){
+        if(checkBox.isVisible())
+        {
+
+            if (this.overlaps(new Rectangle(checkBox.getBoundingRectangle())))
+                return true;
+            else
+                return false;
+        }
+
+        return false;
+    }
+
 	public boolean overlaps(float x, float y, Button button)
 	{
 		if(button.isVisible())
@@ -32,9 +46,7 @@ public class MousePointer extends Rectangle {
 			//y = Gdx.graphics.getHeight() - y;
 			setPosition(x, y);
 
-			Rectangle r = new Rectangle(button.getX(),button.getY(),button.getWidth(),button.getHeight());
-
-			if (this.overlaps(r))
+            if (this.overlaps(button.getBoundingRectangle()))
 				return true;
 			else
 				return false;
@@ -46,8 +58,7 @@ public class MousePointer extends Rectangle {
 	public boolean overlaps(Button button) {
 		if(button.isVisible())
 		{
-			Rectangle r = new Rectangle(button.getX(),button.getY(),button.getWidth(),button.getHeight());
-			if (this.overlaps(r))
+			if (this.overlaps(button.getBoundingRectangle()))
 				return true;
 			else
 				return false;
@@ -78,8 +89,7 @@ public class MousePointer extends Rectangle {
 		if(button.isVisible())
 		{
 			setPosition(x+moveValue * Assets.worldWidth, y);
-			Rectangle r = new Rectangle(button.getX(),button.getY(),button.getWidth(),button.getHeight());
-			if (this.overlaps(r))
+			if (this.overlaps(button.getBoundingRectangle()))
 			{
 				setPosition(x,y);
 				return true;

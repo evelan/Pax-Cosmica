@@ -3,6 +3,7 @@ package pl.evelanblog.enemy;
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.world.World;
 
 /**
@@ -15,6 +16,7 @@ public class Fighter extends Enemy {
 
 	public final static float SPAWN_TIME = 6f;
 
+
 	public Fighter() { // wiem mogłem wszystko dać do super ale nie chciałem zbyt długiego i pokręconego konstruktra
 		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)
 		super(120f, 3f, 0, 600f, 2f, 150f, "enemy/fighter.png");
@@ -26,7 +28,8 @@ public class Fighter extends Enemy {
 	
 	public void shoot() {
 		World.getObjects().addActor(new Bullet(getX(), getY() + (getHeight() / 2) - 4, bulletSpeed, false, 1f));
-		Assets.playSound(Assets.shootSfx);
+        if(PaxPreferences.getSoundEnabled())
+		    Assets.playSound(Assets.shootSfx);
 		time = 0;
 	}
 }

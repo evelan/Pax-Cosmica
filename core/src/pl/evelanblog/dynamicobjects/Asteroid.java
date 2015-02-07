@@ -1,13 +1,13 @@
 package pl.evelanblog.dynamicobjects;
 
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Stats;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.PaxPreferences;
+import pl.evelanblog.paxcosmica.Stats;
 
 public class Asteroid extends DynamicObject {
 
@@ -48,7 +48,8 @@ public class Asteroid extends DynamicObject {
 		Stats.score += 10;
 		Stats.scrap += 4;
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
-		Assets.playSound(Assets.explosionSfx);
+        if(PaxPreferences.getSoundEnabled())
+		    Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2));
 		Assets.explosionEffect.start();
 	}

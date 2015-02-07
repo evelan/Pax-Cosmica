@@ -1,12 +1,5 @@
 package pl.evelanblog.scenes;
 
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.paxcosmica.control.MousePointer;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -14,6 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import pl.evelanblog.paxcosmica.*;
+import pl.evelanblog.paxcosmica.control.MousePointer;
 
 public class MainMenu implements Screen, InputProcessor {
 
@@ -74,24 +70,26 @@ public class MainMenu implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX*menuStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
                 screenY*menuStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
 
-		Assets.playSound(Assets.clickSfx);
+        if(PaxPreferences.getSoundEnabled())
+            Assets.playSound(Assets.clickSfx);
 
 		// PLAY BUTTON
 		if (mousePointer.overlaps(play)) {
-			Stats.clear();
+            Stats.clear();
 			game.setScreen(GameStateManager.galaxyMap);
 			dispose();
 		}
 
 		// OPTIONS BUTTON
 		else if (mousePointer.overlaps(options)) {
-			Assets.track1.stop();
+			//Assets.track1.stop();
+            game.setScreen(GameStateManager.options);
 			dispose();
 		}
 
 		// CREDITS BUTTON
 		else if (mousePointer.overlaps(credits)) {
-			game.setScreen(new CreditsScreen(game));
+			game.setScreen(GameStateManager.credits);
 		}
 
 		// EXIT BUTTON
@@ -110,7 +108,7 @@ public class MainMenu implements Screen, InputProcessor {
 		dimValue = 1f;
 
 		background = new Sprite(Assets.mainmenu);
-		background.setBounds(0, 0, Assets.mainmenu.getWidth(), Assets.mainmenu.getHeight());
+		background.setBounds(0, 0, Assets.worldWidth, Assets.worldHeight);
 		background.setOriginCenter();
 
 		planet = new Sprite(Assets.planet);
@@ -128,7 +126,8 @@ public class MainMenu implements Screen, InputProcessor {
 		exit = new Button(1440, 170, 480, 144, Assets.exitButton);
 
 		Gdx.input.setInputProcessor(this);
-		Assets.track1.play();
+        if(PaxPreferences.getMusicEnabled())
+            Assets.track1.play();
 	}
 
 	@Override

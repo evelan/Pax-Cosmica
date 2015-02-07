@@ -39,6 +39,7 @@ public class Planet extends Actor {
 		this.name = _name;
 		this.rotationSpeed = _rotationSpeed;
 		this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/"+name.toLowerCase()+".jpg")));
+        this.background.setSize(Assets.worldWidth, Assets.worldHeight);
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		tekst = new MyText(font, portal ? "P:" + name : name, getX(), getY());
 		
