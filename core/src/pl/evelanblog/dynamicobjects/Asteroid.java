@@ -54,7 +54,6 @@ public class Asteroid extends DynamicObject {
 		Assets.explosionEffect.start();
 	}
 
-	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		radians += (deltaTime);

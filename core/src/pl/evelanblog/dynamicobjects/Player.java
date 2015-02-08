@@ -10,11 +10,11 @@ import pl.evelanblog.scenes.GameScreen;
 
 public class Player extends DynamicObject {
 	private float bulletSpeed = 1000f;
-	private float shootFrequency = 0.2f;
 	private Sprite shieldSprite;
 	private Circle shieldCollisionBox;
 	public float shieldReloadLvl = 0;
-	private float temp_x, temp_y;
+	float shootFrequency = 0.2f;
+	float temp_x, temp_y;
 
 	public static float powerLvl = 4;
 	public static float shieldLvl = 1;
@@ -27,8 +27,6 @@ public class Player extends DynamicObject {
 	public static float hullPwr = 1;
 	public static float weaponPwr = 1;
 	public static float enginePwr = 1;
-
-	private float temp = 0;
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
@@ -59,10 +57,10 @@ public class Player extends DynamicObject {
 		bulletSpeed = 600f + (weaponPwr * 80); // standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomem
 		// weaponPwr bedzie on przyspieszac razy 80
 
-		temp_y = GameScreen.gameStage.getCamera().position.y + (GameScreen.getVelY() * deltaTime * speed);
+		temp_y = GameScreen.getGameStage().getCamera().position.y + (GameScreen.getVelY() * deltaTime * speed);
 		if (temp_y > 0 && temp_y < Assets.worldHeight - getHeight()) {
-			GameScreen.gameStage.getCamera().position.y = temp_y;
-			setY(GameScreen.gameStage.getCamera().position.y);
+			GameScreen.getGameStage().getCamera().position.y = temp_y;
+			setY(GameScreen.getGameStage().getCamera().position.y);
 		}
 
 		temp_x = getX() + (GameScreen.getVelX() * deltaTime * speed);
@@ -72,10 +70,6 @@ public class Player extends DynamicObject {
 		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		shieldSprite.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
 		shieldCollisionBox.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
-	}
-
-	public Circle getShieldCollisionBox() {
-		return shieldCollisionBox;
 	}
 
 	/**
@@ -96,11 +90,11 @@ public class Player extends DynamicObject {
 	/**
 	 * Odtwarza dzwiek strzalu z Assets
 	 *
-	 * @return
+	 * @return zwraca obiekt pocisku
 	 */
 	public Bullet shoot() {
-        if(PaxPreferences.getSoundEnabled())
-		    Assets.playSound(Assets.shootSfx);
+		if (PaxPreferences.getSoundEnabled())
+			Assets.playSound(Assets.shootSfx);
 		return new Bullet(getX() + getWidth() - 10, getY() + (getHeight() / 2) - 4, bulletSpeed, true, 1f);
 	}
 
@@ -111,17 +105,15 @@ public class Player extends DynamicObject {
 	/**
 	 * Sprawdza czy gracz ma mozlowosc strzelania
 	 *
-	 * @param weaponPwr poziom energii broni
 	 * @return true jesli moze strzelic, w innym wypadku false
 	 */
 	public boolean ableToShoot() {
-		return (weaponPwr > 0 && live == true);
+		return (weaponPwr > 0 && live);
 	}
 
 	@Override
 	public void hurt(float damage) {
 		if (shield > 0) {
-			temp = damage - shield;
 			shield -= damage;
 			if (shield > 0)
 				GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() - (200 / shieldPwr) * damage, GameScreen.getShieldBar().getHeight());

@@ -3,7 +3,6 @@ package pl.evelanblog.enemy;
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.world.World;
 
@@ -15,7 +14,7 @@ public class Battleship extends Enemy {
 
 	public final static float SPAWN_TIME = 14f;
 
-	public Battleship(PaxCosmica game) {
+	public Battleship() {
 		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)
 		super(80f, 8f, 4f, 600f, 3f, 400f, "enemy/battleship.png");
 		shootTime += ((MathUtils.random(20)) / 10); // aby nie strzelały w takim samym odstępie czasu, małe urozmaicenie

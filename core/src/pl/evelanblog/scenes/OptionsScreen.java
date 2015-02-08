@@ -11,7 +11,7 @@ import pl.evelanblog.paxcosmica.*;
 public class OptionsScreen implements Screen, InputProcessor
 {
     private PaxCosmica game;
-    private MyText music, sfx;
+    private CustomText music, sfx;
     private Stage optionsStage;
     private Button exit;
     private CheckBox musicCheckbox, soundCheckbox;
@@ -22,8 +22,8 @@ public class OptionsScreen implements Screen, InputProcessor
         optionsStage = new Stage(new StretchViewport(Assets.worldWidth, Assets.worldHeight));
         exit = new Button(1500, 20, 400, 96, Assets.exitButton);
 
-        music = new MyText("Music", 480, 540);
-        sfx = new MyText("SFX", 480, 440);
+        music = new CustomText("Music", 480, 540);
+        sfx = new CustomText("SFX", 480, 440);
 
         musicCheckbox = new CheckBox(580, 500, 64, 64);
         soundCheckbox = new CheckBox(580, 400, 64, 64);
@@ -146,7 +146,6 @@ public class OptionsScreen implements Screen, InputProcessor
 
     //TODO: mnimal, medium, high
 	//TODO: save battery - less fps (30)
-	//TODO: turn on/off music and sfc
 	//TODO volume music, sfx
 
 }

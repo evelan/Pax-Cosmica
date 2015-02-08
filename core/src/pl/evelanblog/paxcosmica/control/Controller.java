@@ -1,15 +1,14 @@
 package pl.evelanblog.paxcosmica.control;
 
-import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.scenes.GameStateManager;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.scenes.GameStateManager;
 
 public class Controller implements InputProcessor {
 
@@ -26,7 +25,7 @@ public class Controller implements InputProcessor {
 	private boolean upgradeScreen = false;
 	private int hitPointer = -1;
 	private int knobPointer = -1;
-/* DAFUQ ?! Czemu trzymasz metody, które nic nie robią :o */
+/* DAFUQ ?! Czemu trzymasz metody, które nic nie robią :o BO MOGĘ! HUE HUE HUE*/
 	public Controller(final PaxCosmica game) {
 
 		this.game = game;

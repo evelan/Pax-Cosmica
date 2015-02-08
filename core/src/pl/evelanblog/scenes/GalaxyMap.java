@@ -19,7 +19,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 	private Sprite dimScreen;
     private Background background;
 	private Button attack, upgrade, exit, left, right;
-	private MyText score, scrap, fuel, galaxyNumber;
+	private CustomText score, scrap, fuel, galaxyNumber;
 	private Rectangle mousePointer;
 	private float dimValue, moveValue;
 	private ArrayList<Planet> planets;
@@ -50,11 +50,11 @@ public class GalaxyMap implements Screen, InputProcessor {
 		mousePointer = new MousePointer();
 		mousePointer.setSize(1);
 
-		fuel = new MyText("Fuel: " + Stats.fuel, 410, mapHud.getViewport().getWorldHeight() - 10);
-		galaxyNumber = new MyText("Galaxy: " + moveValue, 610, mapHud.getViewport().getWorldHeight() - 10);
+		fuel = new CustomText("Fuel: " + Stats.fuel, 410, mapHud.getViewport().getWorldHeight() - 10);
+		galaxyNumber = new CustomText("Galaxy: " + moveValue, 610, mapHud.getViewport().getWorldHeight() - 10);
 
-        score = new MyText("Score: " + Stats.score, 10, 1070);
-        scrap = new MyText("Scrap: " + Stats.scrap, 210, 1070);
+        score = new CustomText("Score: " + Stats.score, 10, 1070);
+        scrap = new CustomText("Scrap: " + Stats.scrap, 210, 1070);
 
 		mapHud.addActor(score);
 		mapHud.addActor(scrap);

@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class MyText extends Actor {
+public class CustomText extends Actor {
 	BitmapFont font;
 	CharSequence text;
 	float x, y;
 
-	public MyText(BitmapFont font, CharSequence text, float x, float y) {
+	public CustomText(BitmapFont font, CharSequence text, float x, float y) {
 		this.font = font;
 		this.text = text;
 		this.x = x;
 		this.y = y;
 	}
 
-	public MyText(CharSequence text, float x, float y) {
+	public CustomText(CharSequence text, float x, float y) {
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		this.text = text;
 		this.x = x;

@@ -13,17 +13,15 @@ import pl.evelanblog.enemy.Enemy;
 public class Collider {
 
 	private Player player;
-    private final PaxCosmica game;
 
-	public Collider(Player player, PaxCosmica game) {
+	public Collider(Player player) {
 		this.player = player;
-        this.game = game;
 	}
 
 	/**
 	 * Sprawdza czy jakiś inny obiekt koliduje z graczem
 	 *
-	 * @param objects
+	 * @param objects wszystkie obiekty z world (oprócz gracza)
 	 */
 	public void checkPlayerCollision(Group objects) {
 

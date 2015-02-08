@@ -17,7 +17,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 	private BitmapFont font;
 	private PaxCosmica game;
 	private Button exit;
-	private float scroll;
+	private float scroll = 0;
 	private float speed = 50;
     private Stage creditsStage;
 	
@@ -26,10 +26,7 @@ public class CreditsScreen implements Screen, InputProcessor {
     {
         this.game = game;
         creditsStage = new Stage(new StretchViewport(1920, 1080));
-        //exit = new Button(false, 1230, 50, 640, 192, "buttons/exitButton.png");
         exit = new Button(1500, 20, 400, 96, Assets.exitButton);
-        font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-        creditsStage.addActor(exit);
     }
 
 	@Override
@@ -38,7 +35,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if (Gdx.input.isTouched())
-			speed = 250;
+			speed = 300;
 		else
 			speed = 50;
 
@@ -61,7 +58,9 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		scroll = 200;
+		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
+		creditsStage.addActor(exit);
+		scroll = 0;
 		Gdx.input.setInputProcessor(this);
 	}
 

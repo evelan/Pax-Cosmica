@@ -11,7 +11,6 @@ import pl.evelanblog.enemy.Bomber;
 import pl.evelanblog.enemy.EnemyBoss;
 import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.paxcosmica.Collider;
-import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
 
@@ -24,7 +23,6 @@ public class World {
 	private GameState state; // stany gry
 	private float[] sleepTime = new float[6]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się asteroidy etc.
 	private boolean enemyBossExists = false;
-    private final PaxCosmica game;
 
 	public static enum GameState {
 		ongoing, // gra się toczy i jest elegancko, szczelanie etc
@@ -34,11 +32,10 @@ public class World {
 		powermanager // power manager + pauza
 	}
 
-	public World(PaxCosmica game) {
-		this.game = game;
+	public World() {
         objects = new Group();
 		player = new Player();
-		collider = new Collider(player, game);
+		collider = new Collider(player);
 
 		for (int i = 0; i < 6; i++) //zerujemy tablicę z czasami
 			sleepTime[i] = 0;
@@ -71,7 +68,7 @@ public class World {
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
 
-		spawnObjects(delta); // spawning objects like asteroids
+		spawnObjects(); // spawning objects like asteroids
 		updateObjects(delta); // update all objects
 
 		if (player.isAlive()) {
@@ -88,6 +85,7 @@ public class World {
 	private void updateObjects(float delta) { // aktualizacja wszystkich obiektów, pozycji itd
 		player.update(delta); // update position
 
+
 		for (Actor obj : objects.getChildren())
 			((DynamicObject) obj).update(delta);
 
@@ -97,7 +95,7 @@ public class World {
 		}
 	}
 
-	private void spawnObjects(float delta) { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update!!!!!!!!!!
+	private void spawnObjects() { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update!!!!!!!!!!
 		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
 		if (sleepTime[0] > player.getShootFrequency() && player.ableToShoot() && GameScreen.getHit()) {
 			objects.addActor(player.shoot());
@@ -120,7 +118,7 @@ public class World {
 		}
 
 		if (sleepTime[4] > Battleship.SPAWN_TIME) {
-			objects.addActor(new Battleship(game));
+			objects.addActor(new Battleship());
 			sleepTime[4] = 0;
 		}
 	}

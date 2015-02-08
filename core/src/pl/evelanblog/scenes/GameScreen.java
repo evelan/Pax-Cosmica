@@ -18,30 +18,32 @@ import pl.evelanblog.world.World.GameState;
 public class GameScreen implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
-	public static Stage gameStage; // scena na której znajdują się statki, asteroidy, pociski oraz pociski
-	private static Stage hudStage; // przyciski, knob, tekst oraz informacja o stanie shield i hp
-	private Stage powerManager;
+	private static Stage gameStage; // scena na której znajdują się statki, asteroidy, pociski oraz pociski
+	private static Stage hudStage; // przyciski, knob, tekst oraz informacja o stanie shieldPos i hp
+	private Stage powerManager; //powerPos manager
 	private World world; // świat
 
 	private static Background background; // tło
-	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
-
-	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
 	private static Button hpBar, shieldBar, hpBorder, shieldBorder;
+	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
 	private MousePointer mousePointer; // przycsik myszki
-	//private CustomSprite dimScreen; // od przyciemniania i rozjaśniania ekranu
-	private MyText scrap, score; // tekst  o ilośc złomu oraz punktów
+	private CustomText scrap, score; // tekst  o ilośc złomu oraz punktów
 	private Player player; // gracz
-	private static MyEffect explodeEff, hitEff;
-	private static float velX = 0; // wychylenie gałki w osi X
-	private static float velY = 0; // wychylenie gałki w osi Y
-	private static boolean hit = false; // czy wciskamy przycisk A od strzelania
-	private boolean knobPressed = false; // czy wciskamy gałkę
 
+	/* DO STEROWANIA */
+	private static float velX; // wychylenie gałki w osi X
+	private static float velY; // wychylenie gałki w osi Y
+	private static boolean hit; // czy wciskamy przycisk A od strzelania
+	private static boolean knobPressed; // czy wciskamy gałkę
 	private int knobPointer = -1; // pointer gałki, potrzebne do multitoucha
 	private int hitPointer = -1; // pointer przycisku A, potrzebne do multitoucha
+	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
 	private float hover = -1; // mówi o tym co wcisnęliśmy w powermanagerze aby pokazać przycisk upgrade
-	private float power, hull, shield, weapon, engine; // wartości w pixelach gdzie mają być rysowane poszczególne paski w powermanagerze
+
+	private float powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
+	private float powerPos, hullPos, shieldPos, weaponPos, enginePos; // wartości w pixelach gdzie mają być rysowane poszczególne paski w powermanagerze
+	CustomParticleEffect explodeEffect, hitEffect;
+	//private CustomSprite dimScreen; // od przyciemniania i rozjaśniania ekranu
 
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
@@ -53,42 +55,38 @@ public class GameScreen implements Screen, InputProcessor {
 
 		hpBar = new Button(15, 1025, 200, 40, Assets.hullBar);
 		shieldBar = new Button(15, 982, 0, 40, Assets.shieldBar);
-        hpBorder = new Button(15, 1025, 200, 40, Assets.barBorder);
-        shieldBorder = new Button(15, 982, 0, 40, Assets.barBorder);
+		hpBorder = new Button(15, 1025, 200, 40, Assets.barBorder);
+		shieldBorder = new Button(15, 982, 0, 40, Assets.barBorder);
 
-        knob = new Button(defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
-        buttonA = new Button(1600, 256, 256, 256, Assets.buttonA);
-        buttonB = new Button(1472, 0, 256, 256, Assets.buttonB);
+		knob = new Button(defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
+		buttonA = new Button(1600, 256, 256, 256, Assets.buttonA);
+		buttonB = new Button(1472, 0, 256, 256, Assets.buttonB);
 
-        pauseButton = new Button(1750, 920,Assets.pauseButton);
-        resumeButton = new Button(1750, 920, Assets.unpauseButton);
-        continueButton = new Button(640, 540, 640, 192, Assets.continueButton);
-        exitButton = new Button(640, 348, 640, 192, Assets.exitButton);
+		pauseButton = new Button(1750, 920, Assets.pauseButton);
+		resumeButton = new Button(1750, 920, Assets.unpauseButton);
+		continueButton = new Button(640, 540, 640, 192, Assets.continueButton);
+		exitButton = new Button(640, 348, 640, 192, Assets.exitButton);
 
-		//do power managera
-		//powerBars = new ArrayList<CustomSprite>();
+		//do powerPos managera
 		upPwr = new Button(0, 0, 200, 60, Assets.up);
 		downPwr = new Button(0, 0, 200, 60, Assets.down);
-        powerButton = new Button(810, 20, Assets.powerButton);
+		powerButton = new Button(810, 20, Assets.powerButton);
 
 		//dimScreen = new CustomSprite(Assets.dim);
 
 		mousePointer = game.getMouse();
-		score = new MyText("Score: " + Stats.score, 965, 1060);
-		scrap = new MyText("Scrap: " + Stats.scrap, 1200, 1060);
+		score = new CustomText("Score: " + Stats.score, 965, 1060);
+		scrap = new CustomText("Scrap: " + Stats.scrap, 1200, 1060);
 
-		hitEff = new MyEffect(Assets.hitEffect);
-		explodeEff = new MyEffect(Assets.explosionEffect);
-
-		upPwr.setVisible(false);
-		downPwr.setVisible(false);
+		hitEffect = new CustomParticleEffect(Assets.hitEffect);
+		explodeEffect = new CustomParticleEffect(Assets.explosionEffect);
 	}
 
-    public static Button getHpBorder() {
-        return hpBorder;
-    }
+	public static Button getHpBorder() {
+		return hpBorder;
+	}
 
-    @Override
+	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -105,21 +103,21 @@ public class GameScreen implements Screen, InputProcessor {
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 		{
 			Assets.track2.stop();
-            if(PaxPreferences.getMusicEnabled())
-			    Assets.track1.play();
-			//TODO tutaj powinien nastąpic zapis gry również
+			if (PaxPreferences.getMusicEnabled())
+				Assets.track1.play();
 			//TODO powinno pokazać jakiś ekran że wygraliśmy i opcję do do wyjścia z gry, lub przejscia do galaktyki
-            Stats.save();
+			Stats.save();
 			game.setScreen(GameStateManager.galaxyMap);
 		} else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
 		{
 			player.setVisible(false); // przestajemy wyświetlać gracza bo już zginął
 			exitButton.setVisible(true);
 			player.setVisible(false);
+		} else if(world.getState() == GameState.powermanager)
+		{
+
 		}
 
-		hitEff.setVisible(true); // co to je?
-		explodeEff.setVisible(true);
 		//rysownie tekstu na ekranie
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
@@ -173,28 +171,12 @@ public class GameScreen implements Screen, InputProcessor {
 		return shieldBar;
 	}
 
-	public static MyEffect getExplodeEff() {
-		return explodeEff;
-	}
-
-	public void setExplodeEff(MyEffect explodeEff) {
-		GameScreen.explodeEff = explodeEff;
-	}
-
-	public static MyEffect getHitEff() {
-		return hitEff;
-	}
-
-	public void setHitEff(MyEffect hitEff) {
-		GameScreen.hitEff = hitEff;
-	}
-
 	private void drawPwrManager() {
-		createBar(power, Player.powerGenerator, "Power " + (int) Player.powerGenerator + "  L" + (int) Player.powerLvl);
-		createBar(hull, Player.hullPwr, "Hull " + (int) Player.hullPwr + "  L" + (int) Player.hullLvl);
-		createBar(shield, Player.shieldPwr, "Shield " + (int) Player.shieldPwr + "  L" + (int) Player.shieldLvl);
-		createBar(weapon, Player.weaponPwr, "Weapon " + (int) Player.weaponPwr + "  L" + (int) Player.weaponLvl);
-		createBar(engine, Player.enginePwr, "Engine " + (int) Player.enginePwr + "  L" + (int) Player.engineLvl);
+		createBar(powerPos, Player.powerGenerator, "Power " + (int) Player.powerGenerator + "  L" + (int) Player.powerLvl);
+		createBar(hullPos, Player.hullPwr, "Hull " + (int) Player.hullPwr + "  L" + (int) Player.hullLvl);
+		createBar(shieldPos, Player.shieldPwr, "Shield " + (int) Player.shieldPwr + "  L" + (int) Player.shieldLvl);
+		createBar(weaponPos, Player.weaponPwr, "Weapon " + (int) Player.weaponPwr + "  L" + (int) Player.weaponLvl);
+		createBar(enginePos, Player.enginePwr, "Engine " + (int) Player.enginePwr + "  L" + (int) Player.engineLvl);
 	}
 
 	private void createBar(float x, float level, String name) {
@@ -224,17 +206,17 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 		gameStage.getActors().clear();
-		world = new World(game);
+		world = new World();
 		player = world.getPlayer();
 
-        Stats.levelKills=0;
+		Stats.levelKills = 0;
 
 		// ADD SCENE ACTORS
 		gameStage.addActor(background);
 		gameStage.addActor(player);
 
-		gameStage.addActor(hitEff);
-		gameStage.addActor(explodeEff);
+		gameStage.addActor(hitEffect);
+		gameStage.addActor(explodeEffect);
 		gameStage.addActor(World.getObjects());
 
 		// ADD HUD ACTORS
@@ -257,17 +239,20 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(scrap);
 		hudStage.addActor(hpBar);
 		hudStage.addActor(shieldBar);
-        hudStage.addActor(hpBorder);
-        hudStage.addActor(shieldBorder);
+		hudStage.addActor(hpBorder);
+		hudStage.addActor(shieldBorder);
 
 		background.setBackground(game.getActivePlanet().getBackground());
 
+		upPwr.setVisible(false);
+		downPwr.setVisible(false);
+
 		// pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
-		power = 100;
-		hull = 410;
-		shield = 620;
-		weapon = 830;
-		engine = 1040;
+		powerPos = 100;
+		hullPos = 410;
+		shieldPos = 620;
+		weaponPos = 830;
+		enginePos = 1040;
 		//dimScreen.setPosition(0, 0);
 
 		velX = 0;
@@ -277,8 +262,8 @@ public class GameScreen implements Screen, InputProcessor {
 		knobPointer = -1;
 		hitPointer = -1;
 		hover = -1;
-        if(PaxPreferences.getMusicEnabled())
-		    Assets.track2.play();
+		if (PaxPreferences.getMusicEnabled())
+			Assets.track2.play();
 		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
 		Gdx.input.setInputProcessor(this);
 	}
@@ -302,11 +287,11 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX*gameStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
-                screenY*gameStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
+		mousePointer.setPosition(screenX * gameStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth(),
+				screenY * gameStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
 
-        if(PaxPreferences.getSoundEnabled() && !knobPressed)
-            Assets.playSound(Assets.clickSfx);
+		if (PaxPreferences.getSoundEnabled() && !knobPressed)
+			Assets.playSound(Assets.clickSfx);
 
 		// A BUTTON
 		if (!hit && mousePointer.overlaps(buttonA)) {
@@ -342,7 +327,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 			world.setState(GameState.defeat);
 			Assets.track2.stop();
-            Stats.save();
+			Stats.save();
 			game.setScreen(GameStateManager.mainMenu);
 		}
 
@@ -365,16 +350,16 @@ public class GameScreen implements Screen, InputProcessor {
 
 			if (mousePointer.overlaps(upPwr)) {
 				if (Player.powerGenerator > 0) {
-					if (hover == hull && Player.hullLvl > Player.hullPwr) {
+					if (hover == hullPos && Player.hullLvl > Player.hullPwr) {
 						Player.hullPwr++;
 						Player.powerGenerator--;
-					} else if (hover == weapon && Player.weaponLvl > Player.weaponPwr) {
+					} else if (hover == weaponPos && Player.weaponLvl > Player.weaponPwr) {
 						Player.weaponPwr++;
 						Player.powerGenerator--;
-					} else if (shield == hover && Player.shieldLvl > Player.shieldPwr) {
+					} else if (shieldPos == hover && Player.shieldLvl > Player.shieldPwr) {
 						Player.shieldPwr++;
 						Player.powerGenerator--;
-					} else if (engine == hover && Player.engineLvl > Player.enginePwr) {
+					} else if (enginePos == hover && Player.engineLvl > Player.enginePwr) {
 						Player.enginePwr++;
 						Player.powerGenerator--;
 					}
@@ -382,30 +367,29 @@ public class GameScreen implements Screen, InputProcessor {
 
 			} else if (mousePointer.overlaps(downPwr)) {
 
-				if (hover == hull && Player.hullPwr > 0) {
+				if (hover == hullPos && Player.hullPwr > 0) {
 					Player.hullPwr--;
 					Player.powerGenerator++;
-				} else if (hover == weapon && Player.weaponPwr > 0) {
+				} else if (hover == weaponPos && Player.weaponPwr > 0) {
 					Player.weaponPwr--;
 					Player.powerGenerator++;
-				} else if (shield == hover && Player.shieldPwr > 0) {
+				} else if (shieldPos == hover && Player.shieldPwr > 0) {
 					Player.shieldPwr--;
 					Player.powerGenerator++;
-				} else if (engine == hover && Player.enginePwr > 0) {
+				} else if (enginePos == hover && Player.enginePwr > 0) {
 					Player.enginePwr--;
 					Player.powerGenerator++;
 				}
 			}
 
-
-			if (screenX > hull && screenX < hull + 200)
-				hover = hull;
-			else if (screenX > weapon && screenX < weapon + 200)
-				hover = weapon;
-			else if (screenX > shield && screenX < shield + 200)
-				hover = shield;
-			else if (screenX > engine && screenX < engine + 200)
-				hover = engine;
+			if (screenX > hullPos && screenX < hullPos + 200)
+				hover = hullPos;
+			else if (screenX > weaponPos && screenX < weaponPos + 200)
+				hover = weaponPos;
+			else if (screenX > shieldPos && screenX < shieldPos + 200)
+				hover = shieldPos;
+			else if (screenX > enginePos && screenX < enginePos + 200)
+				hover = enginePos;
 			else
 				hover = -1;
 		}
@@ -531,9 +515,15 @@ public class GameScreen implements Screen, InputProcessor {
 		return background;
 	}
 
-    public static Stage getHudStage() {return hudStage;}
-
 	public static Button getShieldBorder() {
-        return shieldBorder;
-    }
+		return shieldBorder;
+	}
+
+	public static Stage getGameStage() {
+		return gameStage;
+	}
+
+	public static Stage getHudStage() {
+		return hudStage;
+	}
 }
