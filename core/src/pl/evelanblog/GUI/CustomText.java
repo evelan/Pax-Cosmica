@@ -1,4 +1,4 @@
-package pl.evelanblog.paxcosmica;
+package pl.evelanblog.GUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +9,11 @@ public class CustomText extends Actor {
 	BitmapFont font;
 	CharSequence text;
 	float x, y;
+
+	public CustomText()
+	{
+
+	}
 
 	public CustomText(BitmapFont font, CharSequence text, float x, float y) {
 		this.font = font;

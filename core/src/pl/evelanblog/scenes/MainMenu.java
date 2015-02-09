@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import pl.evelanblog.GUI.Button;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 
@@ -127,7 +128,7 @@ public class MainMenu implements Screen, InputProcessor {
 
 		Gdx.input.setInputProcessor(this);
         if(PaxPreferences.getMusicEnabled())
-            Assets.track1.play();
+            Assets.play(Assets.track1);
 	}
 
 	@Override

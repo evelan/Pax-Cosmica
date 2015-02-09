@@ -3,7 +3,7 @@ package pl.evelanblog.enemy;
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
+import pl.evelanblog.GUI.Button;
 import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.world.World;
 

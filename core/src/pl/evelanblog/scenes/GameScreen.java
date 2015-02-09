@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import pl.evelanblog.GUI.Button;
+import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
@@ -20,12 +22,13 @@ public class GameScreen implements Screen, InputProcessor {
 	private final PaxCosmica game;
 	private static Stage gameStage; // scena na której znajdują się statki, asteroidy, pociski oraz pociski
 	private static Stage hudStage; // przyciski, knob, tekst oraz informacja o stanie shieldPos i hp
-	private Stage powerManager; //powerPos manager
+	private PowerManager powerManager;
 	private World world; // świat
 
 	private static Background background; // tło
 	private static Button hpBar, shieldBar, hpBorder, shieldBorder;
-	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, upPwr, downPwr, resumeButton;
+	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, resumeButton;
+
 	private MousePointer mousePointer; // przycsik myszki
 	private CustomText scrap, score; // tekst  o ilośc złomu oraz punktów
 	private Player player; // gracz
@@ -38,19 +41,14 @@ public class GameScreen implements Screen, InputProcessor {
 	private int knobPointer = -1; // pointer gałki, potrzebne do multitoucha
 	private int hitPointer = -1; // pointer przycisku A, potrzebne do multitoucha
 	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
-	private float hover = -1; // mówi o tym co wcisnęliśmy w powermanagerze aby pokazać przycisk upgrade
-
-	private float powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
-	private float powerPos, hullPos, shieldPos, weaponPos, enginePos; // wartości w pixelach gdzie mają być rysowane poszczególne paski w powermanagerze
 	CustomParticleEffect explodeEffect, hitEffect;
-	//private CustomSprite dimScreen; // od przyciemniania i rozjaśniania ekranu
 
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
 		gameStage = new Stage(new StretchViewport(1920, 1080));
 		hudStage = new Stage(new StretchViewport(1920, 1080));
-		powerManager = new Stage(new StretchViewport(1920, 1080));
+		powerManager = new PowerManager();
 		background = new Background(game.getActivePlanet().getBackground());
 
 		hpBar = new Button(15, 1025, 200, 40, Assets.hullBar);
@@ -68,11 +66,7 @@ public class GameScreen implements Screen, InputProcessor {
 		exitButton = new Button(640, 348, 640, 192, Assets.exitButton);
 
 		//do powerPos managera
-		upPwr = new Button(0, 0, 200, 60, Assets.up);
-		downPwr = new Button(0, 0, 200, 60, Assets.down);
 		powerButton = new Button(810, 20, Assets.powerButton);
-
-		//dimScreen = new CustomSprite(Assets.dim);
 
 		mousePointer = game.getMouse();
 		score = new CustomText("Score: " + Stats.score, 965, 1060);
@@ -104,7 +98,7 @@ public class GameScreen implements Screen, InputProcessor {
 		{
 			Assets.track2.stop();
 			if (PaxPreferences.getMusicEnabled())
-				Assets.track1.play();
+				Assets.play(Assets.track1);
 			//TODO powinno pokazać jakiś ekran że wygraliśmy i opcję do do wyjścia z gry, lub przejscia do galaktyki
 			Stats.save();
 			game.setScreen(GameStateManager.galaxyMap);
@@ -113,9 +107,8 @@ public class GameScreen implements Screen, InputProcessor {
 			player.setVisible(false); // przestajemy wyświetlać gracza bo już zginął
 			exitButton.setVisible(true);
 			player.setVisible(false);
-		} else if(world.getState() == GameState.powermanager)
-		{
-
+		} else if (world.getState() == GameState.powermanager) {
+			//TODO IF STEJTMENT
 		}
 
 		//rysownie tekstu na ekranie
@@ -146,8 +139,8 @@ public class GameScreen implements Screen, InputProcessor {
 		exitButton.setVisible(false);
 		continueButton.setVisible(false);
 		powerButton.setVisible(true);
-		downPwr.setVisible(false);
-		upPwr.setVisible(false);
+		powerManager.setVisible(false);
+		powerManager.showActors(false);
 	}
 
 	//pokazuje powere managera
@@ -156,11 +149,7 @@ public class GameScreen implements Screen, InputProcessor {
 		//dimScreen.draw(hudStage.getBatch(), 0.6f); // przyciemnia to co się dzieje w tle
 		pauseButton.setVisible(false);
 		resumeButton.setVisible(true);
-
-		hudStage.getBatch().begin();
-		drawPwrManager();
-		powerButton.draw(hudStage.getBatch(), 0.9f);
-		hudStage.getBatch().end();
+		powerManager.setVisible(true);
 	}
 
 	public static Button getHpBar() {
@@ -169,29 +158,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	public static Button getShieldBar() {
 		return shieldBar;
-	}
-
-	private void drawPwrManager() {
-		createBar(powerPos, Player.powerGenerator, "Power " + (int) Player.powerGenerator + "  L" + (int) Player.powerLvl);
-		createBar(hullPos, Player.hullPwr, "Hull " + (int) Player.hullPwr + "  L" + (int) Player.hullLvl);
-		createBar(shieldPos, Player.shieldPwr, "Shield " + (int) Player.shieldPwr + "  L" + (int) Player.shieldLvl);
-		createBar(weaponPos, Player.weaponPwr, "Weapon " + (int) Player.weaponPwr + "  L" + (int) Player.weaponLvl);
-		createBar(enginePos, Player.enginePwr, "Engine " + (int) Player.enginePwr + "  L" + (int) Player.engineLvl);
-	}
-
-	private void createBar(float x, float level, String name) {
-		for (int i = 0; i < level; i++)
-			hudStage.getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
-
-		if (hover != -1) {
-			downPwr.setPosition(hover, 100);
-			upPwr.setPosition(hover, 500);
-			downPwr.setVisible(true);
-			upPwr.setVisible(true);
-		}
-
-		//new MyText(name, x + 10, 190).draw(hudStage.getBatch(), 1); ta linijka była jebutna i żre proca, bo tworzy ciagle nowe obiekty, bo bylem leniwy, przepraszam
-		// font.draw(hudStage.getBatch(), name, );
 	}
 
 	@Override
@@ -207,10 +173,15 @@ public class GameScreen implements Screen, InputProcessor {
 	public void show() {
 		gameStage.getActors().clear();
 		world = new World();
-		player = world.getPlayer();
+		player = World.getPlayer();
 
 		Stats.levelKills = 0;
 
+		// ADD SCENE ACTORS
+		gameStage.addActor(background);
+		Stats.levelKills = 0;
+		getHpBar().setSize(200, 40);
+		getHpBorder().setSize(200, 40);
 		// ADD SCENE ACTORS
 		gameStage.addActor(background);
 		gameStage.addActor(player);
@@ -230,8 +201,6 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(resumeButton);
 		hudStage.addActor(continueButton);
 		hudStage.addActor(exitButton);
-		hudStage.addActor(upPwr);
-		hudStage.addActor(downPwr);
 
 		//hudStage.addActor(dimScreen);
 
@@ -241,19 +210,14 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(shieldBar);
 		hudStage.addActor(hpBorder);
 		hudStage.addActor(shieldBorder);
+		hudStage.addActor(powerManager);
+
+		//Power Manager
+		powerManager.setVisible(false);
+		powerManager.addActors(hudStage);
+		powerManager.showActors(false);
 
 		background.setBackground(game.getActivePlanet().getBackground());
-
-		upPwr.setVisible(false);
-		downPwr.setVisible(false);
-
-		// pozycje X w powermanagerze, tych pasków/stanów/poziomów ulepszeń
-		powerPos = 100;
-		hullPos = 410;
-		shieldPos = 620;
-		weaponPos = 830;
-		enginePos = 1040;
-		//dimScreen.setPosition(0, 0);
 
 		velX = 0;
 		velY = 0;
@@ -261,11 +225,11 @@ public class GameScreen implements Screen, InputProcessor {
 		knobPressed = false;
 		knobPointer = -1;
 		hitPointer = -1;
-		hover = -1;
 		if (PaxPreferences.getMusicEnabled())
-			Assets.track2.play();
+			Assets.play(Assets.track2);
 		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
 		Gdx.input.setInputProcessor(this);
+
 	}
 
 	@Override
@@ -279,9 +243,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void dispose() {
 		hudStage.dispose();
-		powerManager.dispose();
 		gameStage.dispose();
-
 	}
 
 	@Override
@@ -312,7 +274,12 @@ public class GameScreen implements Screen, InputProcessor {
 		// powerManagerButton
 		else if (mousePointer.overlaps(powerButton)) {
 
-			world.setState(world.getState() == GameState.powermanager ? GameState.ongoing : GameState.powermanager);
+			if (world.getState() == GameState.powermanager) {
+				powerManager.save();
+				world.setState(GameState.ongoing);
+			} else {
+				world.setState(GameState.powermanager);
+			}
 
 			// continueButton
 		} else if (mousePointer.overlaps(continueButton)) {
@@ -347,51 +314,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// powerManager
 		if (world.getState() == GameState.powermanager) {
-
-			if (mousePointer.overlaps(upPwr)) {
-				if (Player.powerGenerator > 0) {
-					if (hover == hullPos && Player.hullLvl > Player.hullPwr) {
-						Player.hullPwr++;
-						Player.powerGenerator--;
-					} else if (hover == weaponPos && Player.weaponLvl > Player.weaponPwr) {
-						Player.weaponPwr++;
-						Player.powerGenerator--;
-					} else if (shieldPos == hover && Player.shieldLvl > Player.shieldPwr) {
-						Player.shieldPwr++;
-						Player.powerGenerator--;
-					} else if (enginePos == hover && Player.engineLvl > Player.enginePwr) {
-						Player.enginePwr++;
-						Player.powerGenerator--;
-					}
-				}
-
-			} else if (mousePointer.overlaps(downPwr)) {
-
-				if (hover == hullPos && Player.hullPwr > 0) {
-					Player.hullPwr--;
-					Player.powerGenerator++;
-				} else if (hover == weaponPos && Player.weaponPwr > 0) {
-					Player.weaponPwr--;
-					Player.powerGenerator++;
-				} else if (shieldPos == hover && Player.shieldPwr > 0) {
-					Player.shieldPwr--;
-					Player.powerGenerator++;
-				} else if (enginePos == hover && Player.enginePwr > 0) {
-					Player.enginePwr--;
-					Player.powerGenerator++;
-				}
-			}
-
-			if (screenX > hullPos && screenX < hullPos + 200)
-				hover = hullPos;
-			else if (screenX > weaponPos && screenX < weaponPos + 200)
-				hover = weaponPos;
-			else if (screenX > shieldPos && screenX < shieldPos + 200)
-				hover = shieldPos;
-			else if (screenX > enginePos && screenX < enginePos + 200)
-				hover = enginePos;
-			else
-				hover = -1;
+			powerManager.touchDown(mousePointer);
 		}
 		return true;
 	}

@@ -49,8 +49,10 @@ public class Assets {
 	public static Texture down, up;
 	
 	public static Texture upgradeBar;
+    public static Texture upgradeBar2;
 	public static Texture upgradeBtn;
-    public static Texture upgradesButton;
+    //public static Texture upgradesButton;
+    public static Texture moveButton;
 
 	public static Texture pauseButton, unpauseButton;
 
@@ -133,10 +135,12 @@ public class Assets {
 		purplePlanet = loadTexture("planet/purple.png");
 		galaxyPlanet = loadTexture("planet/galaxy_planet.png");
 		upgradeBar = loadTexture("other/power_bar.png");
+        upgradeBar2 = loadTexture("other/powerBar2.png");
 		down = loadTexture("buttons/down.png");
 		up = loadTexture("buttons/up.png");
 		upgradeBtn = loadTexture("buttons/upgrade.png");
-        upgradesButton = loadTexture("buttons/upgradesButton.png");
+        //upgradesButton = loadTexture("buttons/upgradesButton.png");
+        moveButton = loadTexture("buttons/moveButton.png");
 
 		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("background/mainmenu.png");
@@ -173,6 +177,7 @@ public class Assets {
 	}
 
 	public static void playSound(Sound sound) {
-		sound.play();
+		sound.play(PaxPreferences.getSoundVolume());
 	}
+    public static void play(Music music){music.play(); music.setVolume(PaxPreferences.getMusicVolume());}
 }

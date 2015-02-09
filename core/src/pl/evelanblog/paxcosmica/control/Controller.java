@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import pl.evelanblog.GUI.Button;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.scenes.GameStateManager;
 
@@ -109,23 +109,23 @@ public class Controller implements InputProcessor {
 		if (game.getMouse().overlaps(pauseButton))
 		{
 			pauseButton=new Button(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			menuGame = menuGame ? false : true;
-			pauseGame = pauseGame ? false : true;
+			menuGame = !menuGame;
+			pauseGame = !pauseGame;
 
 		} else if (game.getMouse().overlaps(powerButton))
 		{
 			pauseButton=new Button(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			pauseGame = pauseGame ? false : true;
-			upgradeScreen = upgradeScreen ? false : true;
+			pauseGame = !pauseGame;
+			upgradeScreen = !upgradeScreen;
 
 		} else if (game.getMouse().overlaps(continueButton))
 		{
 			pauseButton=new Button(pauseGame ? Assets.pauseButton : Assets.unpauseButton);
-			pauseGame = pauseGame ? false : true;
-			menuGame = menuGame ? false : true;
+			pauseGame = !pauseGame;
+			menuGame = !menuGame;
 		} else if (game.getMouse().overlaps(exitButton))
 		{
-			pauseGame = pauseGame ? false : true;
+			pauseGame = !pauseGame;
 			game.setScreen(GameStateManager.mainMenu);
 		}
 

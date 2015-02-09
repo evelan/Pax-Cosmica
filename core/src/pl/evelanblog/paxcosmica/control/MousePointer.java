@@ -1,9 +1,10 @@
 package pl.evelanblog.paxcosmica.control;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.Button;
-import pl.evelanblog.paxcosmica.CheckBox;
+import pl.evelanblog.GUI.Button;
+import pl.evelanblog.GUI.CheckBox;
 import pl.evelanblog.paxcosmica.Planet;
 
 public class MousePointer extends Rectangle {
@@ -54,6 +55,13 @@ public class MousePointer extends Rectangle {
 		return false;
 
 	}
+
+    public boolean overlaps(Circle circle) {
+
+        Circle mouse = new Circle(this.getX(), this.getY(), 5);
+
+            return mouse.overlaps(circle);
+    }
 
 	public boolean overlaps(Button button) {
 		if(button.isVisible())

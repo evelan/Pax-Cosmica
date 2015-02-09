@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import pl.evelanblog.GUI.Button;
+import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 
@@ -18,7 +20,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 	private final PaxCosmica game;
 	private Sprite dimScreen;
     private Background background;
-	private Button attack, upgrade, exit, left, right;
+	private Button attack, move, exit, left, right;
 	private CustomText score, scrap, fuel, galaxyNumber;
 	private Rectangle mousePointer;
 	private float dimValue, moveValue;
@@ -36,15 +38,15 @@ public class GalaxyMap implements Screen, InputProcessor {
 		mapHud.addActor(background);
 
 		attack = new Button(Assets.attackButton);
+        move = new Button(Assets.moveButton);
 		// store = new Button("buttons/storeButton.png");
-		upgrade = new Button(1520, 116, 400, 96, Assets.upgradesButton);
         exit = new Button(1520, 20, 400, 96, Assets.exitButton);
 		dimScreen = new Sprite(Assets.dim, 0, 0, (int) mapHud.getViewport().getWorldWidth(), (int) mapHud.getViewport().getWorldHeight());
 		left = new Button(0, 540, 128, 128, Assets.leftArrow);
 		right = new Button(1792, 540, 128, 128, Assets.rightArrow);
+
 		mapHud.addActor(left);
 		mapHud.addActor(right);
-		mapHud.addActor(upgrade);
 		mapHud.addActor(exit);
 
 		mousePointer = new MousePointer();
@@ -62,21 +64,18 @@ public class GalaxyMap implements Screen, InputProcessor {
 		mapHud.addActor(galaxyNumber);
 
 		// tworzenie planet
-		planets.add(new Planet(200, 200, 1, 0.10f, true, false, "Ice", "planet/ice.png", 0.05f));
-		planets.add(new Planet(600, 540, 1, 0.01f, false, false, "Fire", "planet/fire.png", 0.01f));
-		planets.add(new Planet(-600, 540, 1, 0.02f, false, false, "Gold", "planet/gold.png", 0.01f));
-		planets.add(new Planet(2200, 540, 1, 0.05f, true, false, "Purple", "planet/purple.png", 0.01f));
+		planets.add(new Planet(200, 200, 1, 0.10f, true, "Ice", "planet/ice.png", 0.05f));
+		planets.add(new Planet(600, 540, 1, 0.01f, false, "Fire", "planet/fire.png", 0.01f));
+		planets.add(new Planet(-600, 540, 1, 0.02f, false, "Gold", "planet/gold.png", 0.01f));
+		planets.add(new Planet(2200, 540, 1, 0.05f, true, "Purple", "planet/purple.png", 0.01f));
+        planets.add(new Planet(1320, 580, 1, true, "Shop", "planet/shop.png", 0.005f));
 		for (Planet obj : planets)
 			mapStage.addActor(obj);
 
 		game.setActivePlanet(planets.get(0));
 
 		mapStage.addActor(attack);
-		// mapStage.addActor(move);
-		// mapStage.addActor(store);
-		attack.setVisible(false);
-		// move.setVisible(false);
-		// store.setVisible(false);
+        mapStage.addActor(move);
 	}
 
 	@Override
@@ -111,6 +110,10 @@ public class GalaxyMap implements Screen, InputProcessor {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+
+		attack.setVisible(false);
+		move.setVisible(false);
+		
         score.setText("Score: " + Stats.score);
         scrap.setText("Scrap: " + Stats.scrap);
 	}
@@ -155,12 +158,17 @@ public class GalaxyMap implements Screen, InputProcessor {
         screenY = (int)(screenY*mapStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
         game.getMouse().setPosition(screenX, screenY);
 
-        if (game.getMouse().overlaps(attack, moveValue, screenX, screenY))
-        {
+        if (game.getMouse().overlaps(attack, moveValue, screenX, screenY)) {
             Assets.track1.stop();
             game.setScreen(GameStateManager.gameScreen);
-
-        } else if (game.getMouse().overlaps(left)) {
+        }
+        else if(game.getMouse().overlaps(move, moveValue, screenX, screenY))
+        {
+            Stats.save();
+            game.setScreen(GameStateManager.upgradeScreen);
+            dispose();
+        }
+         else if (game.getMouse().overlaps(left)) {
             mapStage.getCamera().position.x -= Assets.worldWidth;
             moveValue--;
             galaxyNumber.setText("Galaxy: " + moveValue);
@@ -170,13 +178,7 @@ public class GalaxyMap implements Screen, InputProcessor {
             moveValue++;
             galaxyNumber.setText("Galaxy: " + moveValue);
         }
-
-        else if (game.getMouse().overlaps(upgrade))
-        {
-            Stats.save();
-            game.setScreen(GameStateManager.upgradeScreen);
-            dispose();
-        } else if (game.getMouse().overlaps(exit))
+        else if (game.getMouse().overlaps(exit))
         {
             Stats.save();
             game.setScreen(GameStateManager.mainMenu);
@@ -184,15 +186,26 @@ public class GalaxyMap implements Screen, InputProcessor {
         }
         // Obsługa wyboru planet
         attack.setVisible(false);
+        move.setVisible(false);
         for (Planet obj : planets)
         {
             obj.reset();
             if (game.getMouse().overlaps(obj, moveValue, screenX, screenY))
             {
-                attack.setPosition(obj.getX() + obj.getWidth() / 2 - attack.getWidth()/2, obj.getY()+obj.getHeight()/2-attack.getHeight()/2);
-                attack.setVisible(true);
-                obj.setHover();
-                game.setActivePlanet(obj);
+                if(!obj.isStore())
+                {
+                    attack.setPosition(obj.getX() + obj.getWidth() / 2 - attack.getWidth()/2, obj.getY()+obj.getHeight()/2-attack.getHeight()/2);
+                    attack.setVisible(true);
+                    obj.setHover();
+                    game.setActivePlanet(obj);
+                }
+                else
+                {
+                    move.setPosition(obj.getX() + obj.getWidth() / 2 - attack.getWidth()/2, obj.getY()+obj.getHeight()/2-attack.getHeight()/2);
+                    move.setVisible(true);
+                    obj.setHover();
+                    game.setActivePlanet(obj);
+                }
             }
         }
         return true;

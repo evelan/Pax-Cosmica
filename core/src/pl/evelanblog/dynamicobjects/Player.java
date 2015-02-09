@@ -3,41 +3,43 @@ package pl.evelanblog.dynamicobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Circle;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.scenes.GameScreen;
 
 public class Player extends DynamicObject {
+	/* OGŁASZA SIĘ CO NASTĘPUJE */
+	/*Tu nie może być żadnych statycznych zmiennych, bo potem bedzie drugi obiekt gracza i te zmienne będą współdzielone co byłoby bez sensu :) */
+
 	private float bulletSpeed = 1000f;
+	private float shieldReloadLvl = 0;
 	private Sprite shieldSprite;
-	private Circle shieldCollisionBox;
-	public float shieldReloadLvl = 0;
 	float shootFrequency = 0.2f;
 	float temp_x, temp_y;
 
-	public static float powerLvl = 4;
-	public static float shieldLvl = 1;
-	public static float hullLvl = 1;
-	public static float weaponLvl = 1;
-	public static float engineLvl = 1;
+	//public static float powerLvl = PaxPreferences.getPowerLvl();
+	private float shieldLvl = PaxPreferences.getShieldLvl();
+	private float hullLvl = PaxPreferences.getHullLvl();
+	private float weaponLvl = PaxPreferences.getWeaponLvl();
+	private float engineLvl = PaxPreferences.getEngineLvl();
 
-	public static float powerGenerator;
-	public static float shieldPwr = 1;
-	public static float hullPwr = 1;
-	public static float weaponPwr = 1;
-	public static float enginePwr = 1;
+	//public static float powerGenerator = PaxPreferences.getPowerGenerator();
+	private int shieldPwr = PaxPreferences.getShieldPwr();
+	private int hullPwr = PaxPreferences.getHullPwr();
+	private int weaponPwr = PaxPreferences.getWeaponPwr();
+	private int enginePwr = PaxPreferences.getEnginePwr();
+
+	float temp = 0;
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(100, 300, 180f, 3f, 0f, 100f, "player/spaceship.png");
+		super(100, 300, 180f, hullPwr, 0f, 100f, "player/spaceship.png"); //TODO czeba pomyśleć
 		shieldSprite = new Sprite(Assets.bubbleShield);
 		shieldSprite.setOriginCenter();
-		shieldCollisionBox = new Circle();
 	}
 
 	public void update(float deltaTime) {
-		powerGenerator = powerLvl - shieldPwr - hullPwr - weaponPwr - enginePwr;
+		//powerGenerator = powerLvl - shieldPwr - hullPwr - weaponPwr - enginePwr;
 
 		if (enginePwr < 1)
 			speed = 0;
@@ -49,7 +51,7 @@ public class Player extends DynamicObject {
 			if (shieldReloadLvl > 10f) {
 				shieldReloadLvl = 0;
 				shield++;
-				GameScreen.getShieldBar().setSize(200 / shieldPwr, GameScreen.getShieldBar().getHeight());
+				GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() + (200 / shieldLvl), GameScreen.getShieldBar().getHeight());
 				GameScreen.getShieldBorder().setSize(200, GameScreen.getShieldBorder().getHeight());
 			}
 		}
@@ -69,7 +71,6 @@ public class Player extends DynamicObject {
 
 		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		shieldSprite.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
-		shieldCollisionBox.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
 	}
 
 	/**
@@ -90,7 +91,7 @@ public class Player extends DynamicObject {
 	/**
 	 * Odtwarza dzwiek strzalu z Assets
 	 *
-	 * @return zwraca obiekt pocisku
+	 * @return zwraca obiekt Pocisku
 	 */
 	public Bullet shoot() {
 		if (PaxPreferences.getSoundEnabled())
@@ -114,9 +115,11 @@ public class Player extends DynamicObject {
 	@Override
 	public void hurt(float damage) {
 		if (shield > 0) {
+			temp = damage - shield;
 			shield -= damage;
+			System.out.println(shield);
 			if (shield > 0)
-				GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() - (200 / shieldPwr) * damage, GameScreen.getShieldBar().getHeight());
+				GameScreen.getShieldBar().setSize(200 * shield / shieldPwr, GameScreen.getShieldBar().getHeight());
 			else {
 				shield = 0;
 				GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
@@ -124,8 +127,9 @@ public class Player extends DynamicObject {
 			}
 		} else {
 			hp -= damage;
-			GameScreen.getHpBar().setSize(GameScreen.getHpBar().getWidth() - (200 / (hullPwr * 3)) * damage, GameScreen.getHpBar().getHeight());
+			GameScreen.getHpBar().setSize(200 * hp / (hullPwr * 3), GameScreen.getHpBar().getHeight());
 		}
+		System.out.println(hp);
 		if (hp <= 0)
 			kill();
 	}
@@ -140,5 +144,33 @@ public class Player extends DynamicObject {
 		GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
 		GameScreen.getHpBar().setSize(0, GameScreen.getShieldBar().getHeight());
 		GameScreen.getHpBorder().setSize(0, GameScreen.getShieldBar().getHeight());
+	}
+
+	//nie lubię takich metod :) więcej info u administratora :E
+	public void setHp(float hp)
+	{
+		this.hp = hp;
+	}
+
+	public float getHp() {
+		return hp;
+	}
+
+	public void setStats() {
+		//PaxPreferences.setPowerLvl(powerLvl);
+		//PaxPreferences.setPowerGenerator(powerGenerator);
+		PaxPreferences.setEngineLvl(engineLvl);
+		PaxPreferences.setEnginePwr(enginePwr);
+		PaxPreferences.setHullLvl(hullLvl);
+		PaxPreferences.setHullPwr(hullPwr);
+		PaxPreferences.setShieldLvl(shieldLvl);
+		PaxPreferences.setShieldPwr(shieldPwr);
+		PaxPreferences.setWeaponLvl(weaponLvl);
+		PaxPreferences.setWeaponPwr(weaponPwr);
+	}
+
+	public float getHullLvl()
+	{
+		return hullLvl;
 	}
 }

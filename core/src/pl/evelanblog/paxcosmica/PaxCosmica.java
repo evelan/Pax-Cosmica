@@ -26,14 +26,6 @@ public class PaxCosmica extends Game {
 		gsm = new GameStateManager(this);
 		setScreen(GameStateManager.mainMenu);
 
-        try{PaxPreferences.getSoundEnabled();} catch(Exception e){PaxPreferences.setSoundEnabled(true);}
-        try{PaxPreferences.getMusicEnabled();} catch(Exception e){PaxPreferences.setMusicEnabled(true);}
-        try{PaxPreferences.getScore();} catch(Exception e){PaxPreferences.setScore(0);}
-        try{PaxPreferences.getKills();} catch(Exception e){PaxPreferences.setKills(0);}
-        try{PaxPreferences.getScrap();} catch(Exception e){PaxPreferences.setScrap(0);}
-        try{PaxPreferences.getMusicVolume();} catch(Exception e){PaxPreferences.setMusicVolume(100);}
-        try{PaxPreferences.getSoundVolume();} catch(Exception e){PaxPreferences.setSoundVolume(100);}
-
 	}
 
 	public MousePointer getMouse()

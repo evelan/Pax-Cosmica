@@ -17,8 +17,8 @@ import pl.evelanblog.scenes.GameScreen;
 public class World {
 
 	private static Group objects; //wszystkie obiekty na scenie (bez gracza)
+	private static Player player; // gracz 1
 	private Collider collider; // zderzacz hadronów
-	private Player player; // gracz
 	private EnemyBoss enemyBoss; // boss
 	private GameState state; // stany gry
 	private float[] sleepTime = new float[6]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się asteroidy etc.
@@ -46,7 +46,7 @@ public class World {
 	public void update(float delta) {
 
 		//jeśli gracz zabije podczas gry więcej niż 10 przeciwników I nie ma bossa na ekranie, to go dodaje
-		if (Stats.levelKills > 0 && !enemyBossExists) {
+		if (Stats.levelKills > 14 && !enemyBossExists) {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
 			enemyBossExists = true;
@@ -123,7 +123,7 @@ public class World {
 		}
 	}
 
-	public Player getPlayer() {
+	public static Player getPlayer() {
 		return player;
 	}
 

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import pl.evelanblog.GUI.CustomText;
+import pl.evelanblog.GUI.MyText;
 
 public class Planet extends Actor {
 
@@ -21,10 +23,10 @@ public class Planet extends Actor {
 	private boolean portal = false;
 	private String name;
 	private boolean discovered = false;
-	private BitmapFont font;
 	private CustomText tekst;
+	private BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);;
 
-	public Planet(float x, float y, float size, float speed, boolean clockwise, boolean store, String _name, String filename, float _rotationSpeed)
+	public Planet(float x, float y, float size, float speed, boolean clockwise, String _name, String filename, float _rotationSpeed)
 	{
 		setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
 		sprite.setPosition(x, y);
@@ -35,15 +37,30 @@ public class Planet extends Actor {
 		this.size = size;
 		this.speed = speed;
 		this.clockwise = clockwise;
-		this.store = store;
+        this.store = false;
 		this.name = _name;
 		this.rotationSpeed = _rotationSpeed;
 		this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/"+name.toLowerCase()+".jpg")));
         this.background.setSize(Assets.worldWidth, Assets.worldHeight);
-		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		tekst = new CustomText(font, portal ? "P:" + name : name, getX(), getY());
 		
 	}
+    //Konstruktor SHOP
+    public Planet(float x, float y, float size, boolean clockwise, String _name, String filename, float _rotationSpeed)
+    {
+        setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
+        sprite.setPosition(x, y);
+        setPosition(x, y);
+        getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        getSprite().setScale(size);
+        getSprite().setOriginCenter();
+        this.size = size;
+        this.clockwise = clockwise;
+        this.store = true;
+        this.name = _name;
+        this.rotationSpeed = _rotationSpeed;
+        tekst = new MyText(font, portal ? "P:" + name : name, getX(), getY());
+    }
 
 	public float getX()
 	{
@@ -76,9 +93,9 @@ public class Planet extends Actor {
 		else
 		{
 			if (clockwise)
-				count -= speed;
+				count -= rotationSpeed;
 			else
-				count += speed;
+				count += rotationSpeed;
 		}
 
 		getSprite().setRotation(count);
