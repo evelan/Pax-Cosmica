@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
-import pl.evelanblog.dynamicobjects.Player;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 import pl.evelanblog.world.World;
@@ -31,7 +30,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	private MousePointer mousePointer; // przycsik myszki
 	private CustomText scrap, score; // tekst  o ilośc złomu oraz punktów
-	private Player player; // gracz
 
 	/* DO STEROWANIA */
 	private static float velX; // wychylenie gałki w osi X
@@ -46,9 +44,9 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
+
 		gameStage = new Stage(new StretchViewport(1920, 1080));
 		hudStage = new Stage(new StretchViewport(1920, 1080));
-		powerManager = new PowerManager();
 		background = new Background(game.getActivePlanet().getBackground());
 
 		hpBar = new Button(15, 1025, 200, 40, Assets.hullBar);
@@ -104,9 +102,9 @@ public class GameScreen implements Screen, InputProcessor {
 			game.setScreen(GameStateManager.galaxyMap);
 		} else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
 		{
-			player.setVisible(false); // przestajemy wyświetlać gracza bo już zginął
+			World.getPlayer().setVisible(false); // przestajemy wyświetlać gracza bo już zginął
 			exitButton.setVisible(true);
-			player.setVisible(false);
+			World.getPlayer().setVisible(false);
 		} else if (world.getState() == GameState.powermanager) {
 			//TODO IF STEJTMENT
 		}
@@ -173,7 +171,7 @@ public class GameScreen implements Screen, InputProcessor {
 	public void show() {
 		gameStage.getActors().clear();
 		world = new World();
-		player = World.getPlayer();
+		powerManager = new PowerManager();
 
 		Stats.levelKills = 0;
 
@@ -182,13 +180,13 @@ public class GameScreen implements Screen, InputProcessor {
 		Stats.levelKills = 0;
 		getHpBar().setSize(200, 40);
 		getHpBorder().setSize(200, 40);
+
 		// ADD SCENE ACTORS
 		gameStage.addActor(background);
-		gameStage.addActor(player);
-
 		gameStage.addActor(hitEffect);
 		gameStage.addActor(explodeEffect);
 		gameStage.addActor(World.getObjects());
+		gameStage.addActor(World.getPlayer());
 
 		// ADD HUD ACTORS
 		if (Gdx.app.getType() == Application.ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski

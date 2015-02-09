@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class CustomParticleEffect extends Actor {
-
 	private ParticleEffect effect;
 
 	public CustomParticleEffect(ParticleEffect effect) {

@@ -12,7 +12,7 @@ public class CustomText extends Actor {
 
 	public CustomText()
 	{
-
+		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 	}
 
 	public CustomText(BitmapFont font, CharSequence text, float x, float y) {

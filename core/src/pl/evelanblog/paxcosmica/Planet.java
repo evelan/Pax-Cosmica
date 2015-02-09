@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import pl.evelanblog.GUI.CustomText;
-import pl.evelanblog.GUI.MyText;
 
 public class Planet extends Actor {
 
@@ -24,7 +23,7 @@ public class Planet extends Actor {
 	private String name;
 	private boolean discovered = false;
 	private CustomText tekst;
-	private BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);;
+	private BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 
 	public Planet(float x, float y, float size, float speed, boolean clockwise, String _name, String filename, float _rotationSpeed)
 	{
@@ -59,7 +58,7 @@ public class Planet extends Actor {
         this.store = true;
         this.name = _name;
         this.rotationSpeed = _rotationSpeed;
-        tekst = new MyText(font, portal ? "P:" + name : name, getX(), getY());
+        tekst = new CustomText(font, portal ? "P:" + name : name, getX(), getY());
     }
 
 	public float getX()

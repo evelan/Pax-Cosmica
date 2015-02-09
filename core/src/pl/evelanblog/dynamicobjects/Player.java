@@ -17,23 +17,22 @@ public class Player extends DynamicObject {
 	float shootFrequency = 0.2f;
 	float temp_x, temp_y;
 
-	//public static float powerLvl = PaxPreferences.getPowerLvl();
-	private float shieldLvl = PaxPreferences.getShieldLvl();
-	private float hullLvl = PaxPreferences.getHullLvl();
-	private float weaponLvl = PaxPreferences.getWeaponLvl();
-	private float engineLvl = PaxPreferences.getEngineLvl();
-
 	//public static float powerGenerator = PaxPreferences.getPowerGenerator();
-	private int shieldPwr = PaxPreferences.getShieldPwr();
-	private int hullPwr = PaxPreferences.getHullPwr();
-	private int weaponPwr = PaxPreferences.getWeaponPwr();
-	private int enginePwr = PaxPreferences.getEnginePwr();
+	//public static float powerLvl = PaxPreferences.getPowerLvl();
+	public float shieldLvl = PaxPreferences.getShieldLvl();
+	public int shieldPwr = PaxPreferences.getShieldPwr();
+	public float hullLvl = PaxPreferences.getHullLvl();
+	public float weaponLvl = PaxPreferences.getWeaponLvl();
+	public float engineLvl = PaxPreferences.getEngineLvl();
+	public int hullPwr = PaxPreferences.getHullPwr();
+	public int weaponPwr = PaxPreferences.getWeaponPwr();
+	public int enginePwr = PaxPreferences.getEnginePwr();
 
 	float temp = 0;
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(100, 300, 180f, hullPwr, 0f, 100f, "player/spaceship.png"); //TODO czeba pomyśleć
+		super(100, 300, 180f, PaxPreferences.getHullPwr(), 0f, 100f, "player/spaceship.png"); //TODO czeba pomyśleć
 		shieldSprite = new Sprite(Assets.bubbleShield);
 		shieldSprite.setOriginCenter();
 	}
@@ -146,16 +145,6 @@ public class Player extends DynamicObject {
 		GameScreen.getHpBorder().setSize(0, GameScreen.getShieldBar().getHeight());
 	}
 
-	//nie lubię takich metod :) więcej info u administratora :E
-	public void setHp(float hp)
-	{
-		this.hp = hp;
-	}
-
-	public float getHp() {
-		return hp;
-	}
-
 	public void setStats() {
 		//PaxPreferences.setPowerLvl(powerLvl);
 		//PaxPreferences.setPowerGenerator(powerGenerator);
@@ -169,8 +158,7 @@ public class Player extends DynamicObject {
 		PaxPreferences.setWeaponPwr(weaponPwr);
 	}
 
-	public float getHullLvl()
-	{
-		return hullLvl;
+	public void setHp(float hp) {
+		this.hp = hp;
 	}
 }
