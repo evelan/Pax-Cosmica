@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
+import pl.evelanblog.enums.GameState;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
 import pl.evelanblog.world.World;
-import pl.evelanblog.world.World.GameState;
 
 public class GameScreen implements Screen, InputProcessor {
 

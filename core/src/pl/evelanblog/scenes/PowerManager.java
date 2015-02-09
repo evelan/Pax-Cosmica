@@ -20,7 +20,7 @@ public class PowerManager extends Actor {
 	private int cost = 5; //Koszt potrzebny do wyliczenia zwrotu scrapu przy zmianie punktów
 	private float hover = -1; // mówi o tym co wcisnęliśmy aby pokazać przycisk upgrade
 	public Button upPwr, downPwr;
-	private int hullPos, shieldPos, weaponPos, enginePos;
+	private float hullPos, shieldPos, weaponPos, enginePos;
 	private CustomText hullLabel, shieldLabel, weaponLabel, engineLabel;
 
 	public PowerManager() {
@@ -30,24 +30,24 @@ public class PowerManager extends Actor {
 		enginePos = 1040;
 		upPwr = new Button(hullPos, 100, 200, 60, Assets.up);
 		downPwr = new Button(hullPos, 0, 200, 60, Assets.down);
+		save();
 		GameScreen.getHudStage().addActor(upPwr);
 		GameScreen.getHudStage().addActor(downPwr);
 		hullLabel = new CustomText(); //TODO użyć tu innego konstruktora
 		shieldLabel = new CustomText();
 		weaponLabel = new CustomText();
 		engineLabel = new CustomText();
-		save();
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		showActors(true);
 
-		//createBar(power, World.getPlayer().powerGenerator, "Power " + (int) World.getPlayer().powerGenerator + "  L" + (int) World.getPlayer().powerLvl);
-		createBar(hullPos, World.getPlayer().hullLvl, hullPwrBf, batch);
-		createBar(shieldPos, World.getPlayer().shieldLvl, shieldPwrBf, batch);
-		createBar(weaponPos, World.getPlayer().weaponLvl, weaponPwrBf, batch);
-		createBar(enginePos, World.getPlayer().engineLvl, enginePwrBf, batch);
+		//createBar(powerPos, World.getPlayer().powerGenerator, "Power " + (int) World.getPlayer().powerGenerator + "  L" + (int) World.getPlayer().powerLvl);
+		createBar(hullPos, World.getPlayer().hullPwr, hullPwrBf, batch);
+		createBar(shieldPos, World.getPlayer().shieldPwr, shieldPwrBf, batch);
+		createBar(weaponPos, World.getPlayer().weaponPwr, weaponPwrBf, batch);
+		createBar(enginePos, World.getPlayer().enginePwr, enginePwrBf, batch);
 
 		hullLabel.setText("Hull " + World.getPlayer().hullPwr + " L" + (int) World.getPlayer().hullLvl);
 		hullLabel.setPosition(hullPos + 10, 190);
@@ -64,9 +64,7 @@ public class PowerManager extends Actor {
 	}
 
 	public void createBar(float x, float level, float prevLevel, Batch batch) {
-		int i;
-
-		for (i = 0; i < level; i++) {
+		for (int i = 0; i < level; i++) {
 			if (i >= prevLevel)
 				batch.draw(Assets.upgradeBar, x, 200 + i * 30);
 			else
@@ -77,12 +75,12 @@ public class PowerManager extends Actor {
 	public void touchDown(MousePointer mousePointer) {
 		if (mousePointer.overlaps(upPwr)) {
 
-			if (Stats.scrap > 0) {
+			if (Stats.scrap >= 5) {
 				cost = 5;
 				if (hover == hullPos && World.getPlayer().hullLvl > World.getPlayer().hullPwr) {
 					World.getPlayer().hullPwr++;
 					Stats.scrap -= cost;
-					World.getPlayer().setHp(World.getPlayer().hullLvl);
+					World.getPlayer().setHp(World.getPlayer().hullLvl * 3);
 				} else if (hover == weaponPos && World.getPlayer().weaponLvl > World.getPlayer().weaponPwr) {
 					World.getPlayer().weaponPwr++;
 					Stats.scrap -= cost;
@@ -98,10 +96,10 @@ public class PowerManager extends Actor {
 
 		} else if (mousePointer.overlaps(downPwr)) {
 
-			System.out.println(hullPwrBf + " " + World.getPlayer().hullLvl);
-			if (hover == hullPos && World.getPlayer().hullLvl > 0) {
-				World.getPlayer().hullLvl--;
-				cost = World.getPlayer().hullLvl >= hullPwrBf ? 5 : 4;
+			System.out.println(hullPwrBf + " " + World.getPlayer().hullPwr);
+			if (hover == hullPos && World.getPlayer().hullPwr > 0) {
+				World.getPlayer().hullPwr--;
+				cost = World.getPlayer().hullPwr >= hullPwrBf ? 5 : 4;
 				Stats.scrap += cost;
 			} else if (hover == weaponPos && World.getPlayer().weaponPwr > 0) {
 				World.getPlayer().weaponPwr--;
@@ -115,7 +113,6 @@ public class PowerManager extends Actor {
 				World.getPlayer().enginePwr--;
 				cost = World.getPlayer().enginePwr >= enginePwrBf ? 5 : 4;
 				Stats.scrap += cost;
-
 			}
 			World.getPlayer().setStats();
 

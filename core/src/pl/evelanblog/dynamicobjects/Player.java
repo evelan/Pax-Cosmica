@@ -18,13 +18,13 @@ public class Player extends DynamicObject {
 	float temp_x, temp_y;
 
 	//public static float powerGenerator = PaxPreferences.getPowerGenerator();
-	//public static float powerLvl = PaxPreferences.getPowerLvl();
+	public float powerLvl = PaxPreferences.getPowerLvl();
 	public float shieldLvl = PaxPreferences.getShieldLvl();
-	public int shieldPwr = PaxPreferences.getShieldPwr();
 	public float hullLvl = PaxPreferences.getHullLvl();
 	public float weaponLvl = PaxPreferences.getWeaponLvl();
 	public float engineLvl = PaxPreferences.getEngineLvl();
 	public int hullPwr = PaxPreferences.getHullPwr();
+	public int shieldPwr = PaxPreferences.getShieldPwr();
 	public int weaponPwr = PaxPreferences.getWeaponPwr();
 	public int enginePwr = PaxPreferences.getEnginePwr();
 
@@ -32,7 +32,7 @@ public class Player extends DynamicObject {
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(100, 300, 180f, PaxPreferences.getHullPwr(), 0f, 100f, "player/spaceship.png"); //TODO czeba pomyśleć
+		super(100, 300, 180f, 3 * PaxPreferences.getHullPwr(), 0f, 100f, "player/spaceship.png");
 		shieldSprite = new Sprite(Assets.bubbleShield);
 		shieldSprite.setOriginCenter();
 	}

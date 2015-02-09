@@ -12,7 +12,7 @@ public class Stats {
 		levelKills = 0;
 		kills = 0;
 		score = 0;
-		scrap = 0;
+		scrap = 100; //do testów
 		fuel = 100f;
 	}
 

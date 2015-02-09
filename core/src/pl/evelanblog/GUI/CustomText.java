@@ -10,8 +10,8 @@ public class CustomText extends Actor {
 	CharSequence text;
 	float x, y;
 
-	public CustomText()
-	{
+	public CustomText() {
+		super();
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 	}
 
@@ -34,8 +34,13 @@ public class CustomText extends Actor {
 		font.draw(batch, text, x, y);
 	}
 
-	public void setText(CharSequence text)
-	{
+	public void setText(CharSequence text) {
 		this.text = text;
+	}
+
+	@Override
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
 	}
 }
