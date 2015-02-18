@@ -2,8 +2,9 @@ package pl.evelanblog.enemy;
 
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
+import pl.evelanblog.dynamicobjects.Scrap;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxPreferences;
+import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.world.World;
 
 /**
@@ -29,9 +30,13 @@ public class Bomber extends Enemy {
 	public void shoot() {
 		World.getObjects().addActor(new Bullet(getX(), getY() + getHeight() - (getHeight() / 6), bulletSpeed, false, 2f));
 		World.getObjects().addActor(new Bullet(getX(), getY() + getHeight() / 6, bulletSpeed, false, 2f));
-        if(PaxPreferences.getSoundEnabled())
 		    Assets.playSound(Assets.shootSfx);
 		time = 0;
 	}
 
+	@Override public void kill() {
+		super.kill();
+		Stats.score += 10;
+		World.getObjects().addActor(new Scrap(getX(), getY(), 2));
+	}
 }

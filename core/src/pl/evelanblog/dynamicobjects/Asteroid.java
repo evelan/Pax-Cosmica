@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.world.World;
 
 public class Asteroid extends DynamicObject {
 
@@ -34,24 +34,21 @@ public class Asteroid extends DynamicObject {
 	}
 
 	@Override
-	public void draw(Batch batch, float alpha)
-	{
+	public void draw(Batch batch, float alpha) {
 		particle.draw(batch, Gdx.graphics.getDeltaTime());
 		batch.draw(getSprite(), this.getX(), this.getY(), this.getWidth() / 2, this.getHeight() / 2, this.getWidth(), this.getHeight(), this.getScaleX(),
 				this.getScaleY(), count);
 	}
 
 	@Override
-	public void kill()
-	{
+	public void kill() {
 		dispose();
-		Stats.score += 10;
-		Stats.scrap += 4;
+		Stats.score += 1;
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
-        if(PaxPreferences.getSoundEnabled())
-		    Assets.playSound(Assets.explosionSfx);
+		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2));
 		Assets.explosionEffect.start();
+		World.getObjects().addActor(new Scrap(getX(), getY(), 1));
 	}
 
 	public void update(float deltaTime) {
@@ -64,8 +61,7 @@ public class Asteroid extends DynamicObject {
 		particle.setPosition(this.getX() + this.getWidth() - 20, this.getY() + (this.getHeight() / 2));
 		if (count < 0.0f)
 			count = 360.0f;
-		else
-		{
+		else {
 			if (rotation)
 				count -= (speed / 70);
 			else

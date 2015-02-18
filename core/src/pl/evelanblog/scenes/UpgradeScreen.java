@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.paxcosmica.Stats;
+import pl.evelanblog.utilities.GameManager;
 import pl.evelanblog.world.World;
 
 public class UpgradeScreen implements Screen, InputProcessor {
@@ -25,7 +25,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	private Stage upgradeScreen;
 
 	private float power, hull, shield, weapon, engine;
-	private float powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
+	private int powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
 	private float hover = -1;
 	private int cost = 5;
 	private int scrap;
@@ -50,7 +50,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		upgradeScreen.getBatch().begin();
 		upgradeScreen.getBatch().draw(new Texture(Gdx.files.internal("background/upgrade.png")), 0, 0);
 
-		//createBar(power, powerLvl, "Power: " + powerLvl);
+		createBar(power, powerLvl, "Power: " + powerLvl);
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
 		createBar(shield, shieldLvl, "Shield: " + shieldLvl);
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
@@ -85,13 +85,13 @@ public class UpgradeScreen implements Screen, InputProcessor {
 
 		// pozycje X, tych pasków/stanów/poziomów ulepszeń
 		float temp_pos = ((Assets.worldWidth + 100) / 5) - Assets.upgradeBar.getWidth(); // TODO usunąć to potem
-		//power = temp_pos;
+		power = temp_pos;
 		hull = temp_pos * 2;
 		shield = temp_pos * 3;
 		weapon = temp_pos * 4;
 		engine = temp_pos * 5;
 
-		//powerLvl = Player.powerLvl;
+		powerLvl = World.getPlayer().powerLvl;
 		hullLvl = World.getPlayer().hullLvl;
 		shieldLvl = World.getPlayer().shieldLvl;
 		weaponLvl = World.getPlayer().weaponLvl;
@@ -145,28 +145,28 @@ public class UpgradeScreen implements Screen, InputProcessor {
 
 		mousePointer.setPosition(screenX, screenY);
 
-		if (PaxPreferences.getSoundEnabled())
-			Assets.playSound(Assets.clickSfx);
+		Assets.playSound(Assets.clickSfx);
 
 		if (apply.getBoundingRectangle().overlaps(mousePointer)) {
 
-			//Player.powerLvl = powerLvl;
+			World.getPlayer().powerLvl = powerLvl;
 			World.getPlayer().hullLvl = hullLvl;
 			World.getPlayer().engineLvl = engineLvl;
 			World.getPlayer().weaponLvl = weaponLvl;
 			World.getPlayer().shieldLvl = shieldLvl;
 			World.getPlayer().setStats();
 			Stats.scrap = scrap;
-			game.setScreen(GameStateManager.galaxyMap);
+			game.setScreen(GameManager.galaxyMap);
 			dispose();
 		} else if (discard.getBoundingRectangle().overlaps(mousePointer)) {
-			game.setScreen(GameStateManager.galaxyMap);
+			game.setScreen(GameManager.galaxyMap);
 			dispose();
 		} else if (upgrade.getBoundingRectangle().overlaps(mousePointer)) {
 			if (scrap >= cost) {
 				scrap -= cost;
-				//				if (hover == power)
-				//					powerLvl++;
+
+				if (hover == power)
+					powerLvl++;
 				if (hover == hull)
 					hullLvl++;
 				else if (hover == weapon)
@@ -178,9 +178,9 @@ public class UpgradeScreen implements Screen, InputProcessor {
 			}
 		}
 
-		//		if (screenX > power && screenX < power + 200)
-		//			hover = power;
-		if (screenX > hull && screenX < hull + 200)
+		if (screenX > power && screenX < power + 200)
+			hover = power;
+		else if (screenX > hull && screenX < hull + 200)
 			hover = hull;
 		else if (screenX > weapon && screenX < weapon + 200)
 			hover = weapon;

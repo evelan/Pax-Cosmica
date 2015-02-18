@@ -2,10 +2,10 @@ package pl.evelanblog.paxcosmica;
 
 public class Stats {
 
-	public static int score = PaxPreferences.getScore();
-	public static int scrap = PaxPreferences.getScrap();
-	public static float fuel = 100f;
-	public static int kills = PaxPreferences.getKills();
+	public static int score;
+	public static int scrap;
+	public static float fuel;
+	public static int kills;
 	public static int levelKills = 0;
 
 	public static void clear() {
@@ -17,8 +17,15 @@ public class Stats {
 	}
 
 	public static void save() {
-		PaxPreferences.setKills(kills);
-		PaxPreferences.setScore(score);
-		PaxPreferences.setScrap(scrap);
+		PaxPrefs.putInt(PaxPrefs.KILLS, kills);
+		PaxPrefs.putInt(PaxPrefs.SCORE, score);
+		PaxPrefs.putInt(PaxPrefs.SCRAP, scrap);
+	}
+
+	public static void load() {
+		PaxPrefs.getInt(PaxPrefs.KILLS, 0);
+		PaxPrefs.getInt(PaxPrefs.SCORE, 0);
+		PaxPrefs.getInt(PaxPrefs.SCRAP, 0);
+
 	}
 }

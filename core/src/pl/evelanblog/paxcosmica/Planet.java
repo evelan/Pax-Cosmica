@@ -14,83 +14,59 @@ public class Planet extends Actor {
 	private Sprite sprite, background;
 	private float count;
 	private float size;
-	private float speed;
+	float speed;
 	private float rotationSpeed;
 	private boolean clockwise;
 	private boolean hover = false;
 	private boolean store = false;
 	private boolean portal = false;
 	private String name;
-	private boolean discovered = false;
+	boolean discovered = false;
 	private CustomText tekst;
 	private BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 
-	public Planet(float x, float y, float size, float speed, boolean clockwise, String _name, String filename, float _rotationSpeed)
-	{
+	public Planet(float x, float y, float size, float speed, boolean clockwise, String name, String filename, float rotationSpeed, boolean store) {
 		setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
 		sprite.setPosition(x, y);
-        setPosition(x, y);
+		setPosition(x, y);
 		getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		getSprite().setScale(size);
 		getSprite().setOriginCenter();
 		this.size = size;
 		this.speed = speed;
 		this.clockwise = clockwise;
-        this.store = false;
-		this.name = _name;
-		this.rotationSpeed = _rotationSpeed;
-		this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/"+name.toLowerCase()+".jpg")));
-        this.background.setSize(Assets.worldWidth, Assets.worldHeight);
+		this.store = store;
+		this.name = name;
+		this.rotationSpeed = rotationSpeed;
+		if (!store) {
+			this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/" + name.toLowerCase() + ".jpg")));
+			this.background.setSize(Assets.worldWidth, Assets.worldHeight);
+		}
 		tekst = new CustomText(font, portal ? "P:" + name : name, getX(), getY());
-		
-	}
-    //Konstruktor SHOP
-    public Planet(float x, float y, float size, boolean clockwise, String _name, String filename, float _rotationSpeed)
-    {
-        setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
-        sprite.setPosition(x, y);
-        setPosition(x, y);
-        getSprite().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        getSprite().setScale(size);
-        getSprite().setOriginCenter();
-        this.size = size;
-        this.clockwise = clockwise;
-        this.store = true;
-        this.name = _name;
-        this.rotationSpeed = _rotationSpeed;
-        tekst = new CustomText(font, portal ? "P:" + name : name, getX(), getY());
-    }
 
-	public float getX()
-	{
+	}
+
+	public float getX() {
 		return sprite.getX();
 	}
 
-	public float getY()
-	{
+	public float getY() {
 		return sprite.getY();
 	}
 
-	public float getWidth()
-	{
+	public float getWidth() {
 		return sprite.getWidth();
 	}
-	public float getHeight()
-	{
+
+	public float getHeight() {
 		return sprite.getHeight();
 	}
-	public void setAsPorta()
-	{
-		portal = true;
-	}
 
-	public void update()
-	{
+	public void update() {
 
 		if (count < 0.0f)
 			count = 360.0f;
-		else
-		{
+		else {
 			if (clockwise)
 				count -= rotationSpeed;
 			else
@@ -99,46 +75,36 @@ public class Planet extends Actor {
 
 		getSprite().setRotation(count);
 	}
+
 	@Override
-    public void draw(Batch batch, float alpha){
+	public void draw(Batch batch, float alpha) {
 		getSprite().setScale(size);
-		
-		if (hover)
-		{
+
+		if (hover) {
 			getSprite().setScale(size + 0.2f);
-			drawOptions();
 		}
 		getSprite().draw(batch);
 		tekst.draw(batch, alpha);
-    }
+	}
 
-	public boolean isDiscovered()
-	{
+	public boolean isDiscovered() {
 		return discovered;
 	}
 
-	public boolean isStore()
-	{
+	public boolean isStore() {
 		return store;
 	}
 
-	public boolean isHover()
-	{
+	public boolean isHover() {
 		return hover;
 	}
 
-	public void setHover()
-	{
+	public void setHover() {
 		hover = true;
 	}
 
-	public void reset()
-	{
+	public void reset() {
 		hover = false;
-	}
-
-	private void drawOptions()
-	{
 	}
 
 	public Sprite getSprite() {
@@ -151,19 +117,13 @@ public class Planet extends Actor {
 
 	public void setBackground(Sprite bg) {
 		this.background = bg;
-		
 	}
 
 	public Sprite getBackground() {
-		// TODO Auto-generated method stub
 		return background;
 	}
 
 	public float getRotationSpeed() {
 		return rotationSpeed;
-	}
-
-	public void setRotationSpeed(float rotationSpeed) {
-		this.rotationSpeed = rotationSpeed;
 	}
 }

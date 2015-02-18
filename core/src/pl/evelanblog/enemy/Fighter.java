@@ -2,20 +2,19 @@ package pl.evelanblog.enemy;
 
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.Bullet;
+import pl.evelanblog.dynamicobjects.Scrap;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxPreferences;
+import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.world.World;
 
 /**
  * To ma być typowe mięso armatnie wroga, jakieś tam typowe stateczki co latajo
- * 
- * @author Evelan
  *
+ * @author Evelan
  */
 public class Fighter extends Enemy {
 
 	public final static float SPAWN_TIME = 6f;
-
 
 	public Fighter() { // wiem mogłem wszystko dać do super ale nie chciałem zbyt długiego i pokręconego konstruktra
 		// (float speed, hp, shield, bulletSpeed, shootTime, impactDamage, SPAWN_TIME, String texture)
@@ -25,11 +24,16 @@ public class Fighter extends Enemy {
 		radius = MathUtils.random(30, 100);
 		startY = MathUtils.random(0, Assets.worldHeight - radius);
 	}
-	
+
 	public void shoot() {
 		World.getObjects().addActor(new Bullet(getX(), getY() + (getHeight() / 2) - 4, bulletSpeed, false, 1f));
-        if(PaxPreferences.getSoundEnabled())
-		    Assets.playSound(Assets.shootSfx);
+		Assets.playSound(Assets.shootSfx);
 		time = 0;
+	}
+
+	@Override public void kill() {
+		super.kill();
+		Stats.score += 4;
+		World.getObjects().addActor(new Scrap(getX(), getY(), 1));
 	}
 }

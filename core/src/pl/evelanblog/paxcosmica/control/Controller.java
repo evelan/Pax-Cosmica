@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.scenes.GameStateManager;
+import pl.evelanblog.utilities.GameManager;
 
 public class Controller implements InputProcessor {
 
@@ -126,7 +126,7 @@ public class Controller implements InputProcessor {
 		} else if (game.getMouse().overlaps(exitButton))
 		{
 			pauseGame = !pauseGame;
-			game.setScreen(GameStateManager.mainMenu);
+			game.setScreen(GameManager.mainMenu);
 		}
 
 		if (!knobPressed) {

@@ -18,11 +18,11 @@ public class Assets {
 	public static Texture fighter, bomber;
 	public static Texture hullBar;
 	public static Texture shieldBar;
-    public static Texture barBorder;
+	public static Texture barBorder;
 	public static Texture bubbleShield;
 	public static Texture leftArrow;
 	public static Texture rightArrow;
-	
+
 	public static Texture galaxyPlanet;
 	public static Texture firePlanet;
 	public static Texture icePlanet;
@@ -40,19 +40,17 @@ public class Assets {
 	public static Texture venusPlanet;
 	public static Texture rockPlanet;
 	public static Texture snowPlanet;
-	
-	
 
 	public static Texture planet;
 	public static Texture mainmenu;
 	public static Texture paxCosmica;
 	public static Texture down, up;
-	
+
 	public static Texture upgradeBar;
-    public static Texture upgradeBar2;
+	public static Texture upgradeBar2;
 	public static Texture upgradeBtn;
-    //public static Texture upgradesButton;
-    public static Texture moveButton;
+	//public static Texture upgradesButton;
+	public static Texture moveButton;
 
 	public static Texture pauseButton, unpauseButton;
 
@@ -68,15 +66,15 @@ public class Assets {
 	public static Texture applyButton;
 	public static Texture continueButton;
 	public static Texture powerButton;
-    public static Texture bossHp;
-    public static Texture bossHpBorder;
+	public static Texture bossHp;
+	public static Texture bossHpBorder;
 
-    public static Texture volumeBarBorder;
-    public static Texture volumeBarCore;
-    public static Texture volumeBarKnob;
+	public static Texture volumeBarBorder;
+	public static Texture volumeBarCore;
+	public static Texture volumeBarKnob;
 
-    public static Texture checkboxBorder;
-    public static Texture checkboxTick;
+	public static Texture checkboxBorder;
+	public static Texture checkboxTick;
 
 	public static ParticleEffect explosionEffect;
 	public static ParticleEffect hitEffect;
@@ -84,7 +82,7 @@ public class Assets {
 	public static ParticleEffect enemyEngineEffect;
 	public static Texture dim;
 
-    public static float worldWidth = 1920, worldHeight = 1080;
+	public static float worldWidth = 1920, worldHeight = 1080;
 
 	public static Texture loadTexture(String file) {
 		return new Texture(Gdx.files.internal(file));
@@ -121,12 +119,11 @@ public class Assets {
 		hullBar = loadTexture("player/hull.png");
 		shieldBar = loadTexture("player/shield.png");
 		barBorder = loadTexture("player/barBorder.png");
-        spaceship = loadTexture("player/spaceship.png");
+		spaceship = loadTexture("player/spaceship.png");
 		bubbleShield = loadTexture("player/bubble_shield.png");
 		dim = loadTexture("other/dim.png");
 		bossHp = loadTexture("enemy/bossHp.png");
-        bossHpBorder = loadTexture("enemy/bossHpBorder.png");
-
+		bossHpBorder = loadTexture("enemy/bossHpBorder.png");
 
 		firePlanet = loadTexture("planet/fire.png");
 		icePlanet = loadTexture("planet/ice.png");
@@ -135,12 +132,11 @@ public class Assets {
 		purplePlanet = loadTexture("planet/purple.png");
 		galaxyPlanet = loadTexture("planet/galaxy_planet.png");
 		upgradeBar = loadTexture("other/power_bar.png");
-        upgradeBar2 = loadTexture("other/powerBar2.png");
+		upgradeBar2 = loadTexture("other/powerBar2.png");
 		down = loadTexture("buttons/down.png");
 		up = loadTexture("buttons/up.png");
 		upgradeBtn = loadTexture("buttons/upgrade.png");
-        //upgradesButton = loadTexture("buttons/upgradesButton.png");
-        moveButton = loadTexture("buttons/moveButton.png");
+		moveButton = loadTexture("buttons/moveButton.png");
 
 		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("background/mainmenu.png");
@@ -158,7 +154,7 @@ public class Assets {
 		discardButton = loadTexture("buttons/discardButton.png");
 		applyButton = loadTexture("buttons/applyButton.png");
 		powerButton = loadTexture("buttons/powerButton.png");
-		
+
 		hitSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/hit.wav"));
 		shootSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/shoot.wav"));
 		explosionSfx = Gdx.audio.newSound(Gdx.files.internal("sfx/explosion.wav"));
@@ -169,15 +165,22 @@ public class Assets {
 		track1 = Gdx.audio.newMusic(Gdx.files.internal("music/zero_project.mp3"));
 		track2 = Gdx.audio.newMusic(Gdx.files.internal("music/track02.mp3"));
 
-        volumeBarBorder = loadTexture("components/sliderBarBorder.png");
-        volumeBarCore = loadTexture("components/sliderBarCore.png");
-        volumeBarKnob = loadTexture("components/sliderBarKnob.png");
-        checkboxBorder= loadTexture("components/checkboxBorder.png");
-        checkboxTick = loadTexture("components/checkboxTick.png");
+		volumeBarBorder = loadTexture("components/sliderBarBorder.png");
+		volumeBarCore = loadTexture("components/sliderBarCore.png");
+		volumeBarKnob = loadTexture("components/sliderBarKnob.png");
+		checkboxBorder = loadTexture("components/checkboxBorder.png");
+		checkboxTick = loadTexture("components/checkboxTick.png");
 	}
 
 	public static void playSound(Sound sound) {
-		sound.play(PaxPreferences.getSoundVolume());
+		if (PaxPrefs.getBoolean(PaxPrefs.SOUND_ENABLED, true))
+			sound.play(PaxPrefs.getInt(PaxPrefs.SOUND_VOLUME, 100));
 	}
-    public static void play(Music music){music.play(); music.setVolume(PaxPreferences.getMusicVolume());}
+
+	public static void play(Music music) {
+		if (PaxPrefs.getBoolean(PaxPrefs.MUSIC_ENABLED, true)) {
+			music.play();
+			music.setVolume(PaxPrefs.getInt(PaxPrefs.MUSIC_VOLUME, 100));
+		}
+	}
 }

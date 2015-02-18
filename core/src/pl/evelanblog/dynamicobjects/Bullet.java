@@ -1,7 +1,6 @@
 package pl.evelanblog.dynamicobjects;
 
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxPreferences;
 
 public class Bullet extends DynamicObject {
 	private boolean direction; // true - strzały gracza, false - strzały wroga
@@ -26,17 +25,14 @@ public class Bullet extends DynamicObject {
 	/**
 	 * zwraca kierunek w którą stronę leci pocisk, true - strzały gracza, false - strzały wroga
 	 */
-	public boolean getDirection()
-	{
+	public boolean getDirection() {
 		return direction;
 	}
 
 	@Override
-	public void kill()
-	{
+	public void kill() {
 		dispose();
-        if(PaxPreferences.getSoundEnabled())
-		    Assets.playSound(Assets.hitSfx);
+		Assets.playSound(Assets.hitSfx);
 		Assets.hitEffect.setPosition(getX(), getY() + (getHeight() / 2));
 		Assets.hitEffect.start();
 	}

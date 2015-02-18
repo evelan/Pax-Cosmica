@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Created by Evelan on 18-02-2015.
+ */
 public class CustomParticleEffect extends Actor {
 	private ParticleEffect effect;
 

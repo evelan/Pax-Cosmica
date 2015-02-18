@@ -30,14 +30,12 @@ public class Collider {
 				if (obj instanceof Scrap) { //kolizja ze scrapem
 					Scrap scrap = (Scrap) obj;
 					scrap.kill();
-                    if(PaxPreferences.getSoundEnabled())
-					    Assets.playSound(Assets.powerupSfx);
+					Assets.playSound(Assets.powerupSfx);
 					Gdx.app.log("PLAYER", "Gracz wziął SCRAP");
 				} else if (obj instanceof Booster) { // kolizja z boosterem
 					Booster booster = (Booster) obj;
 					booster.kill();
-                    if(PaxPreferences.getSoundEnabled())
-					    Assets.playSound(Assets.powerupSfx);
+					Assets.playSound(Assets.powerupSfx);
 					Gdx.app.log("PLAYER", "Gracz wziął BOOSTERa");
 				} else if (obj instanceof Bullet) { // kolizja ze "szczałom"
 					Bullet bullet = (Bullet) obj;

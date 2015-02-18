@@ -14,6 +14,7 @@ import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.enums.GameState;
 import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.paxcosmica.control.MousePointer;
+import pl.evelanblog.utilities.GameManager;
 import pl.evelanblog.world.World;
 
 public class GameScreen implements Screen, InputProcessor {
@@ -44,10 +45,9 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
 
-
 		gameStage = new Stage(new StretchViewport(1920, 1080));
 		hudStage = new Stage(new StretchViewport(1920, 1080));
-		background = new Background(game.getActivePlanet().getBackground());
+		background = new Background(GameManager.getActivePlanet().getBackground());
 
 		hpBar = new Button(15, 1025, 200, 40, Assets.hullBar);
 		shieldBar = new Button(15, 982, 0, 40, Assets.shieldBar);
@@ -63,7 +63,6 @@ public class GameScreen implements Screen, InputProcessor {
 		continueButton = new Button(640, 540, 640, 192, Assets.continueButton);
 		exitButton = new Button(640, 348, 640, 192, Assets.exitButton);
 
-		//do powerPos managera
 		powerButton = new Button(810, 20, Assets.powerButton);
 
 		mousePointer = game.getMouse();
@@ -90,16 +89,15 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
-			background.update(game.getActivePlanet().getRotationSpeed());
+			background.update(GameManager.getActivePlanet().getRotationSpeed());
 			world.update(delta);
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
 		{
 			Assets.track2.stop();
-			if (PaxPreferences.getMusicEnabled())
-				Assets.play(Assets.track1);
+			Assets.play(Assets.track1);
 			//TODO powinno pokazać jakiś ekran że wygraliśmy i opcję do do wyjścia z gry, lub przejscia do galaktyki
 			Stats.save();
-			game.setScreen(GameStateManager.galaxyMap);
+			game.setScreen(GameManager.galaxyMap);
 		} else if (world.getState() == GameState.defeat) // przegrana i rysujemy przycisk do wypierdalania za bramę
 		{
 			World.getPlayer().setVisible(false); // przestajemy wyświetlać gracza bo już zginął
@@ -143,8 +141,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	//pokazuje powere managera
 	private void setPowerPanager() {
-		//TODO: SpriteBatch.begin must be called before draw.
-		//dimScreen.draw(hudStage.getBatch(), 0.6f); // przyciemnia to co się dzieje w tle
 		pauseButton.setVisible(false);
 		resumeButton.setVisible(true);
 		powerManager.setVisible(true);
@@ -200,8 +196,6 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(continueButton);
 		hudStage.addActor(exitButton);
 
-		//hudStage.addActor(dimScreen);
-
 		hudStage.addActor(score);
 		hudStage.addActor(scrap);
 		hudStage.addActor(hpBar);
@@ -215,7 +209,7 @@ public class GameScreen implements Screen, InputProcessor {
 		powerManager.addActors(hudStage);
 		powerManager.showActors(false);
 
-		background.setBackground(game.getActivePlanet().getBackground());
+		background.setBackground(GameManager.getActivePlanet().getBackground());
 
 		velX = 0;
 		velY = 0;
@@ -223,11 +217,9 @@ public class GameScreen implements Screen, InputProcessor {
 		knobPressed = false;
 		knobPointer = -1;
 		hitPointer = -1;
-		if (PaxPreferences.getMusicEnabled())
-			Assets.play(Assets.track2);
+		Assets.play(Assets.track2);
 		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
 		Gdx.input.setInputProcessor(this);
-
 	}
 
 	@Override
@@ -250,7 +242,7 @@ public class GameScreen implements Screen, InputProcessor {
 		mousePointer.setPosition(screenX * gameStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth(),
 				screenY * gameStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
 
-		if (PaxPreferences.getSoundEnabled() && !knobPressed)
+		if (!knobPressed)
 			Assets.playSound(Assets.clickSfx);
 
 		// A BUTTON
@@ -259,41 +251,33 @@ public class GameScreen implements Screen, InputProcessor {
 			hitPointer = pointer;
 		}
 
-		// pause button
-		if (mousePointer.overlaps(pauseButton)) {
+		//B BUTTON
+		if (!hit && mousePointer.overlaps(buttonB)) {
+			hit = true;
+			hitPointer = pointer;
+		}
+
+		if (mousePointer.overlaps(pauseButton)) { // pause button
 			world.setState(GameState.paused);
-		}
-
-		// resume button
-		else if (mousePointer.overlaps(resumeButton)) {
-
+		} else if (mousePointer.overlaps(resumeButton)) { // resume button
 			world.setState(GameState.ongoing);
-		}
-		// powerManagerButton
-		else if (mousePointer.overlaps(powerButton)) {
-
+		} else if (mousePointer.overlaps(powerButton)) { // powerManagerButton
 			if (world.getState() == GameState.powermanager) {
-				powerManager.save();
 				world.setState(GameState.ongoing);
 			} else {
 				world.setState(GameState.powermanager);
 			}
-
-			// continueButton
-		} else if (mousePointer.overlaps(continueButton)) {
+		} else if (mousePointer.overlaps(continueButton)) { // continueButton
 			pauseButton.setVisible(true);
 			resumeButton.setVisible(false);
 			continueButton.setVisible(false);
 			exitButton.setVisible(false);
-
 			world.setState(GameState.ongoing);
-			// exitButton
-		} else if (mousePointer.overlaps(exitButton)) {
-
+		} else if (mousePointer.overlaps(exitButton)) { // exitButton
 			world.setState(GameState.defeat);
 			Assets.track2.stop();
 			Stats.save();
-			game.setScreen(GameStateManager.mainMenu);
+			game.setScreen(GameManager.mainMenu);
 		}
 
 		// knob

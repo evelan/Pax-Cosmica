@@ -5,11 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import pl.evelanblog.dynamicobjects.DynamicObject;
-import pl.evelanblog.dynamicobjects.Scrap;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxPreferences;
 import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.world.World;
 
 public abstract class Enemy extends DynamicObject {
 
@@ -20,7 +17,7 @@ public abstract class Enemy extends DynamicObject {
 	protected float startY; // "poziom zero" w sinusoidzie, na jakiej wysokości y ma latać
 	protected float radians = 0; // radiany żeby latać po sinusoidzie :)
 	protected float radius = 0; // jak mocno będzie się wychylać statek w pionie, to jest ustawiane w klasach które
-								// dziedziczą po Enemy
+	// dziedziczą po Enemy
 
 	protected Enemy(float speed, float hp, float shield, float bulletSpeed, float shootTime, float impactDamage, String texture) {
 		super(Assets.worldWidth, 0, speed, hp, shield, impactDamage, texture);
@@ -43,8 +40,7 @@ public abstract class Enemy extends DynamicObject {
 	}
 
 	@Override
-	public void draw(Batch batch, float alpha)
-	{
+	public void draw(Batch batch, float alpha) {
 		engine.draw(batch, Gdx.graphics.getDeltaTime()); // najpierw rysujemey silnik
 		super.draw(batch, alpha); // a potem zasłąniamy jego część texturą statku
 	}
@@ -55,15 +51,11 @@ public abstract class Enemy extends DynamicObject {
 	public abstract void shoot();
 
 	@Override
-	public void kill()
-	{
+	public void kill() {
 		dispose();
-        Stats.score += 10;
-        Stats.levelKills++;
+		Stats.levelKills++;
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
-        if(PaxPreferences.getSoundEnabled())
-		    Assets.playSound(Assets.explosionSfx);
+		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.start();
-		World.getObjects().addActor(new Scrap(getX(),getY()));
 	}
 }

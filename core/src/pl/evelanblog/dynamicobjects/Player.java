@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import pl.evelanblog.paxcosmica.Assets;
-import pl.evelanblog.paxcosmica.PaxPreferences;
+import pl.evelanblog.paxcosmica.PaxPrefs;
 import pl.evelanblog.scenes.GameScreen;
 
 public class Player extends DynamicObject {
@@ -17,28 +17,21 @@ public class Player extends DynamicObject {
 	float shootFrequency = 0.2f;
 	float temp_x, temp_y;
 
-	//public static float powerGenerator = PaxPreferences.getPowerGenerator();
-	public float powerLvl = PaxPreferences.getPowerLvl();
-	public float shieldLvl = PaxPreferences.getShieldLvl();
-	public float hullLvl = PaxPreferences.getHullLvl();
-	public float weaponLvl = PaxPreferences.getWeaponLvl();
-	public float engineLvl = PaxPreferences.getEngineLvl();
-	public int hullPwr = PaxPreferences.getHullPwr();
-	public int shieldPwr = PaxPreferences.getShieldPwr();
-	public int weaponPwr = PaxPreferences.getWeaponPwr();
-	public int enginePwr = PaxPreferences.getEnginePwr();
+	public int powerLvl, shieldLvl, hullLvl, weaponLvl, engineLvl;
+	public int powerPwr, hullPwr, shieldPwr, weaponPwr, enginePwr;
 
 	float temp = 0;
 
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
-		super(100, 300, 180f, 3 * PaxPreferences.getHullPwr(), 0f, 100f, "player/spaceship.png");
+		super(100, 300, 180f, 3 * PaxPrefs.getInt(PaxPrefs.HULL_PWR, 1), 0f, 100f, "player/spaceship.png");
 		shieldSprite = new Sprite(Assets.bubbleShield);
 		shieldSprite.setOriginCenter();
+		getStats();
 	}
 
 	public void update(float deltaTime) {
-		//powerGenerator = powerLvl - shieldPwr - hullPwr - weaponPwr - enginePwr;
+		powerPwr = powerLvl - shieldPwr - hullPwr - weaponPwr - enginePwr;
 
 		if (enginePwr < 1)
 			speed = 0;
@@ -93,8 +86,8 @@ public class Player extends DynamicObject {
 	 * @return zwraca obiekt Pocisku
 	 */
 	public Bullet shoot() {
-		if (PaxPreferences.getSoundEnabled())
-			Assets.playSound(Assets.shootSfx);
+		//if (PaxPrefs.getSoundEnabled()) TODO
+		Assets.playSound(Assets.shootSfx);
 		return new Bullet(getX() + getWidth() - 10, getY() + (getHeight() / 2) - 4, bulletSpeed, true, 1f);
 	}
 
@@ -146,16 +139,34 @@ public class Player extends DynamicObject {
 	}
 
 	public void setStats() {
-		//PaxPreferences.setPowerLvl(powerLvl);
-		//PaxPreferences.setPowerGenerator(powerGenerator);
-		PaxPreferences.setEngineLvl(engineLvl);
-		PaxPreferences.setEnginePwr(enginePwr);
-		PaxPreferences.setHullLvl(hullLvl);
-		PaxPreferences.setHullPwr(hullPwr);
-		PaxPreferences.setShieldLvl(shieldLvl);
-		PaxPreferences.setShieldPwr(shieldPwr);
-		PaxPreferences.setWeaponLvl(weaponLvl);
-		PaxPreferences.setWeaponPwr(weaponPwr);
+		PaxPrefs.putInt(PaxPrefs.POWER_LVL, powerLvl);
+		PaxPrefs.putInt(PaxPrefs.POWER_PWR, powerPwr);
+
+		PaxPrefs.putInt(PaxPrefs.ENGINE_LVL, engineLvl);
+		PaxPrefs.putInt(PaxPrefs.ENGINE_PWR, enginePwr);
+
+		PaxPrefs.putInt(PaxPrefs.HULL_LVL, hullLvl);
+		PaxPrefs.putInt(PaxPrefs.HULL_PWR, hullPwr);
+
+		PaxPrefs.putInt(PaxPrefs.SHIELD_LVL, shieldLvl);
+		PaxPrefs.putInt(PaxPrefs.SHIELD_PWR, shieldPwr);
+
+		PaxPrefs.putInt(PaxPrefs.WEAPON_LVL, weaponLvl);
+		PaxPrefs.putInt(PaxPrefs.WEAPON_PWR, weaponPwr);
+	}
+
+	private void getStats() {
+		powerLvl = PaxPrefs.getInt(PaxPrefs.POWER_LVL, 1);
+		powerPwr = PaxPrefs.getInt(PaxPrefs.POWER_PWR, 1);
+		engineLvl = PaxPrefs.getInt(PaxPrefs.ENGINE_LVL, 1);
+		enginePwr = PaxPrefs.getInt(PaxPrefs.ENGINE_LVL, 1);
+		hullLvl = PaxPrefs.getInt(PaxPrefs.HULL_LVL, 1);
+		hullPwr = PaxPrefs.getInt(PaxPrefs.HULL_PWR, 1);
+		shieldLvl = PaxPrefs.getInt(PaxPrefs.SHIELD_LVL, 1);
+		shieldPwr = PaxPrefs.getInt(PaxPrefs.SHIELD_PWR, 1);
+		weaponLvl = PaxPrefs.getInt(PaxPrefs.WEAPON_LVL, 1);
+		weaponPwr = PaxPrefs.getInt(PaxPrefs.WEAPON_PWR, 1);
+
 	}
 
 	public void setHp(float hp) {

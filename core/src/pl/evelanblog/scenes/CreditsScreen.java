@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.GUI.Button;
+import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxCosmica;
-import pl.evelanblog.paxcosmica.PaxPreferences;
+import pl.evelanblog.utilities.GameManager;
 
 public class CreditsScreen implements Screen, InputProcessor {
 
@@ -18,44 +18,43 @@ public class CreditsScreen implements Screen, InputProcessor {
 	private PaxCosmica game;
 	private Button exit;
 	private float scroll = 0;
-	private float speed = 50;
-    private Stage creditsStage;
+	private Stage creditsStage;
+	float speed = 50;
 
-    public CreditsScreen(final PaxCosmica game)
-    {
-        this.game = game;
-        creditsStage = new Stage(new StretchViewport(1920, 1080));
-        exit = new Button(1500, 20, 400, 96, Assets.exitButton);
-        font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-        creditsStage.addActor(exit);
-    }
+	public CreditsScreen(final PaxCosmica game) {
+		this.game = game;
+		creditsStage = new Stage(new StretchViewport(1920, 1080));
+		exit = new Button(1500, 20, 400, 96, Assets.exitButton);
+		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
+		creditsStage.addActor(exit);
+	}
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0, 1f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if (Gdx.input.isTouched())
 			speed = 300;
 		else
 			speed = 50;
 
-        scroll += speed * delta;
+		scroll += speed * delta;
 
-        creditsStage.draw();
-        creditsStage.getBatch().begin();
-        font.draw(creditsStage.getBatch(), "Pax Cosmica", 200, scroll + 80);
-        font.draw(creditsStage.getBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
-        font.draw(creditsStage.getBatch(), "Code destroyer: Dave", 200, scroll + 20);
-        exit.draw(creditsStage.getBatch(), 1);
-        creditsStage.getBatch().end();
-    }
+		creditsStage.draw();
+		creditsStage.getBatch().begin();
+		font.draw(creditsStage.getBatch(), "Pax Cosmica", 200, scroll + 80);
+		font.draw(creditsStage.getBatch(), "Code creator: Jakub Pomykala", 200, scroll + 50);
+		font.draw(creditsStage.getBatch(), "Code destroyer: Dave", 200, scroll + 20);
+		exit.draw(creditsStage.getBatch(), 1);
+		creditsStage.getBatch().end();
+	}
 
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
 	@Override
 	public void show() {
@@ -65,9 +64,9 @@ public class CreditsScreen implements Screen, InputProcessor {
 		Gdx.input.setInputProcessor(this);
 	}
 
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -109,14 +108,12 @@ public class CreditsScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(PaxPreferences.getSoundEnabled())
-		    Assets.playSound(Assets.clickSfx);
+		Assets.playSound(Assets.clickSfx);
 		screenY = Gdx.graphics.getHeight() - screenY;
-        screenX = (int) (screenX*creditsStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth());
-        screenY = (int) (screenY*creditsStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
-		if (game.getMouse().overlaps(screenX, screenY, exit))
-		{
-			game.setScreen(GameStateManager.mainMenu);
+		screenX = (int) (screenX * creditsStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
+		screenY = (int) (screenY * creditsStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
+		if (game.getMouse().overlaps(screenX, screenY, exit)) {
+			game.setScreen(GameManager.mainMenu);
 			dispose();
 		}
 		return true;

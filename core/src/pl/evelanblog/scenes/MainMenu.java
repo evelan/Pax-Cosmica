@@ -9,8 +9,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
-import pl.evelanblog.paxcosmica.*;
+import pl.evelanblog.paxcosmica.Assets;
+import pl.evelanblog.paxcosmica.PaxCosmica;
+import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.paxcosmica.control.MousePointer;
+import pl.evelanblog.utilities.GameManager;
 
 public class MainMenu implements Screen, InputProcessor {
 
@@ -24,14 +27,13 @@ public class MainMenu implements Screen, InputProcessor {
 
 	public MainMenu(final PaxCosmica game) {
 		this.game = game;
-		menuStage = new Stage(new StretchViewport(1920,1080));
+		menuStage = new Stage(new StretchViewport(1920, 1080));
 		dim = new Sprite(Assets.dim);
 		mousePointer = new MousePointer();
 	}
 
 	@Override
-	public void render(float delta)
-	{
+	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -68,29 +70,28 @@ public class MainMenu implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX*menuStage.getViewport().getWorldWidth()/Gdx.graphics.getWidth(),
-                screenY*menuStage.getViewport().getWorldHeight()/Gdx.graphics.getHeight());
+		mousePointer.setPosition(screenX * menuStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth(),
+				screenY * menuStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
 
-        if(PaxPreferences.getSoundEnabled())
-            Assets.playSound(Assets.clickSfx);
+		Assets.playSound(Assets.clickSfx);
 
 		// PLAY BUTTON
 		if (mousePointer.overlaps(play)) {
-            Stats.clear();
-			game.setScreen(GameStateManager.galaxyMap);
+			Stats.clear();
+			game.setScreen(GameManager.galaxyMap);
 			dispose();
 		}
 
 		// OPTIONS BUTTON
 		else if (mousePointer.overlaps(options)) {
 			//Assets.track1.stop();
-            game.setScreen(GameStateManager.options);
+			game.setScreen(GameManager.options);
 			dispose();
 		}
 
 		// CREDITS BUTTON
 		else if (mousePointer.overlaps(credits)) {
-			game.setScreen(GameStateManager.credits);
+			game.setScreen(GameManager.credits);
 		}
 
 		// EXIT BUTTON
@@ -127,8 +128,7 @@ public class MainMenu implements Screen, InputProcessor {
 		exit = new Button(1440, 170, 480, 144, Assets.exitButton);
 
 		Gdx.input.setInputProcessor(this);
-        if(PaxPreferences.getMusicEnabled())
-            Assets.play(Assets.track1);
+		Assets.play(Assets.track1);
 	}
 
 	@Override
