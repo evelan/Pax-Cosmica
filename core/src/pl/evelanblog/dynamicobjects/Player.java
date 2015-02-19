@@ -20,8 +20,6 @@ public class Player extends DynamicObject {
 	public int powerLvl, shieldLvl, hullLvl, weaponLvl, engineLvl;
 	public int powerPwr, hullPwr, shieldPwr, weaponPwr, enginePwr;
 
-	float temp = 0;
-
 	public Player() {
 		// pos x, pos y, speed , hp, shield, impactDamage, texture
 		super(100, 300, 180f, 3 * PaxPrefs.getInt(PaxPrefs.HULL_PWR, 1), 0f, 100f, "player/spaceship.png");
@@ -81,12 +79,25 @@ public class Player extends DynamicObject {
 	}
 
 	/**
+	 * Czyści do wartości domyślnych, stosować przy załadowaniu kolejnego poziomu
+	 */
+	public void clear() {
+
+	}
+
+	/**
+	 * resetuje wszystkie ustawienia i ulepszenia gracza
+	 */
+	public void reset() {
+
+	}
+
+	/**
 	 * Odtwarza dzwiek strzalu z Assets
 	 *
 	 * @return zwraca obiekt Pocisku
 	 */
 	public Bullet shoot() {
-		//if (PaxPrefs.getSoundEnabled()) TODO
 		Assets.playSound(Assets.shootSfx);
 		return new Bullet(getX() + getWidth() - 10, getY() + (getHeight() / 2) - 4, bulletSpeed, true, 1f);
 	}
@@ -106,10 +117,10 @@ public class Player extends DynamicObject {
 
 	@Override
 	public void hurt(float damage) {
+
 		if (shield > 0) {
-			temp = damage - shield;
 			shield -= damage;
-			System.out.println(shield);
+
 			if (shield > 0)
 				GameScreen.getShieldBar().setSize(200 * shield / shieldPwr, GameScreen.getShieldBar().getHeight());
 			else {
@@ -121,7 +132,6 @@ public class Player extends DynamicObject {
 			hp -= damage;
 			GameScreen.getHpBar().setSize(200 * hp / (hullPwr * 3), GameScreen.getHpBar().getHeight());
 		}
-		System.out.println(hp);
 		if (hp <= 0)
 			kill();
 	}

@@ -8,7 +8,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.enums.GameState;
@@ -26,7 +25,8 @@ public class GameScreen implements Screen, InputProcessor {
 	private World world; // świat
 
 	private static Background background; // tło
-	private static Button hpBar, shieldBar, hpBorder, shieldBorder;
+	private static Button shieldBar, hpBorder, shieldBorder;
+	private static Bar hpBar;
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, resumeButton;
 
 	private MousePointer mousePointer; // przycsik myszki
@@ -39,17 +39,21 @@ public class GameScreen implements Screen, InputProcessor {
 	private static boolean knobPressed; // czy wciskamy gałkę
 	private int knobPointer = -1; // pointer gałki, potrzebne do multitoucha
 	private int hitPointer = -1; // pointer przycisku A, potrzebne do multitoucha
-	private Vector2 defKnobPos = new Vector2(96, 96); //domyślna pozycja z gałką
-	CustomParticleEffect explodeEffect, hitEffect;
+	private Vector2 defKnobPos; //domyślna pozycja z gałką
+	SimpleParticleEffect explodeEffect, hitEffect;
 
 	public GameScreen(final PaxCosmica game) {
 		this.game = game;
+		mousePointer = game.getMouse();
+		world = new World();
 
-		gameStage = new Stage(new StretchViewport(1920, 1080));
-		hudStage = new Stage(new StretchViewport(1920, 1080));
+		defKnobPos = new Vector2(96, 96);
+
+		gameStage = new Stage(game.getGameViewport());
+		hudStage = new Stage(game.getHudViewport());
 		background = new Background(GameManager.getActivePlanet().getBackground());
 
-		hpBar = new Button(15, 1025, 200, 40, Assets.hullBar);
+		hpBar = new Bar(15, 1025, 200, 40, 0, Assets.hullBar);
 		shieldBar = new Button(15, 982, 0, 40, Assets.shieldBar);
 		hpBorder = new Button(15, 1025, 200, 40, Assets.barBorder);
 		shieldBorder = new Button(15, 982, 0, 40, Assets.barBorder);
@@ -65,16 +69,13 @@ public class GameScreen implements Screen, InputProcessor {
 
 		powerButton = new Button(810, 20, Assets.powerButton);
 
-		mousePointer = game.getMouse();
 		score = new CustomText("Score: " + Stats.score, 965, 1060);
 		scrap = new CustomText("Scrap: " + Stats.scrap, 1200, 1060);
 
-		hitEffect = new CustomParticleEffect(Assets.hitEffect);
-		explodeEffect = new CustomParticleEffect(Assets.explosionEffect);
-	}
+		hitEffect = new SimpleParticleEffect(Assets.hitEffect);
+		explodeEffect = new SimpleParticleEffect(Assets.explosionEffect);
 
-	public static Button getHpBorder() {
-		return hpBorder;
+		powerManager = new PowerManager();
 	}
 
 	@Override
@@ -89,6 +90,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
 		if (world.getState() == GameState.ongoing) {
+			setResume();
 			background.update(GameManager.getActivePlanet().getRotationSpeed());
 			world.update(delta);
 		} else if (world.getState() == GameState.win) // wygrana i przechodzimy do mapy galaktyki
@@ -104,20 +106,14 @@ public class GameScreen implements Screen, InputProcessor {
 			exitButton.setVisible(true);
 			World.getPlayer().setVisible(false);
 		} else if (world.getState() == GameState.powermanager) {
-			//TODO IF STEJTMENT
+			setPowerPanager();
+		} else if (world.getState() == GameState.paused) {
+			setPause();
 		}
 
 		//rysownie tekstu na ekranie
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
-
-		//jeśli gracz wejdzie w powermanagera
-		if (world.getState() == GameState.powermanager)
-			setPowerPanager();
-		else if (world.getState() == GameState.paused) // wciśniety przycisk pauzy
-			setPause();
-		else if (world.getState() == GameState.ongoing) // normalny stan, czyli gramy w grę po prostu
-			setResume(); //TODO tutaj można by coś pomyśleć aby się ten kod ciągle nie wykonywał bo to bez sensu, tylko wykrywać kiedy nastąpi zmiana stanu gry
 	}
 
 	//pauzuje grę
@@ -137,19 +133,23 @@ public class GameScreen implements Screen, InputProcessor {
 		powerButton.setVisible(true);
 	}
 
-	//pokazuje powere managera
+	//pokazuje power managera
 	private void setPowerPanager() {
 		pauseButton.setVisible(false);
 		resumeButton.setVisible(true);
-		powerManager.draw();
-	}
-
-	public static Button getHpBar() {
-		return hpBar;
+		powerManager.draw(mousePointer);
 	}
 
 	public static Button getShieldBar() {
 		return shieldBar;
+	}
+
+	public static Button getHpBorder() {
+		return hpBorder;
+	}
+
+	public static Bar getHpBar() {
+		return hpBar;
 	}
 
 	@Override
@@ -158,21 +158,17 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void resize(int width, int height) {
-
 	}
 
 	@Override
 	public void show() {
-		gameStage.getActors().clear();
-		world = new World();
-		powerManager = new PowerManager();
+		world.clear();
 
 		Stats.levelKills = 0;
 
 		// ADD SCENE ACTORS
 		gameStage.addActor(background);
 		Stats.levelKills = 0;
-		getHpBar().setSize(200, 40);
 		getHpBorder().setSize(200, 40);
 
 		// ADD SCENE ACTORS
@@ -188,6 +184,7 @@ public class GameScreen implements Screen, InputProcessor {
 			hudStage.addActor(buttonA);
 			hudStage.addActor(buttonB);
 		}
+
 		hudStage.addActor(powerButton);
 		hudStage.addActor(pauseButton);
 		hudStage.addActor(resumeButton);
@@ -201,8 +198,6 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(hpBorder);
 		hudStage.addActor(shieldBorder);
 
-		background.setBackground(GameManager.getActivePlanet().getBackground());
-
 		velX = 0;
 		velY = 0;
 		hit = false;
@@ -211,7 +206,6 @@ public class GameScreen implements Screen, InputProcessor {
 		hitPointer = -1;
 		Assets.play(Assets.track2);
 		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
-		setResume();
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -227,6 +221,7 @@ public class GameScreen implements Screen, InputProcessor {
 	public void dispose() {
 		hudStage.dispose();
 		gameStage.dispose();
+
 	}
 
 	@Override
@@ -264,10 +259,6 @@ public class GameScreen implements Screen, InputProcessor {
 				world.setState(GameState.powermanager);
 			}
 		} else if (mousePointer.overlaps(continueButton)) { // continueButton
-			pauseButton.setVisible(true);
-			resumeButton.setVisible(false);
-			continueButton.setVisible(false);
-			exitButton.setVisible(false);
 			world.setState(GameState.ongoing);
 		} else if (mousePointer.overlaps(exitButton)) { // exitButton
 			world.setState(GameState.defeat);
@@ -290,10 +281,6 @@ public class GameScreen implements Screen, InputProcessor {
 			}
 		}
 
-		// powerManager
-		if (world.getState() == GameState.powermanager) {
-			powerManager.touchDown(mousePointer);
-		}
 		return true;
 	}
 
@@ -339,14 +326,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-
-		if (Gdx.input.isKeyPressed(Keys.HOME)) {
-			hit = true;
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.BACK)) {
-			hit = true;
-		}
 
 		if (keycode == Keys.ENTER)
 			hit = true;

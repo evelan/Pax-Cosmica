@@ -31,14 +31,19 @@ public class World {
 		player = new Player();
 		collider = new Collider(player);
 
-		for (int i = 0; i < 6; i++) //zerujemy tablicę z czasami
-			sleepTime[i] = 0;
-
 		enemyBoss = new EnemyBoss();
+		clear();
 	}
 
-	public void update(float delta) {
-		//jeśli gracz zabije podczas gry więcej niż 10 przeciwników I nie ma bossa na ekranie, to go dodaje
+	public void clear() {
+		objects.clear();
+		player.clear();
+		for (int i = 0; i < sleepTime.length; i++) //zerujemy tablicę z czasami
+			sleepTime[i] = 0;
+
+	}
+
+	public void bossFight() {
 		if (Stats.levelKills > GameManager.levelKills && !enemyBossExists) {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
@@ -56,11 +61,14 @@ public class World {
 			Stats.kills += Stats.levelKills;
 			Gdx.app.log("STATE", "EnemyBoss nie żyje " + state);
 		}
+	}
 
-		// adding delta time to array
+	public void update(float delta) {
+
 		for (int i = 0; i < sleepTime.length; i++)
 			sleepTime[i] += delta;
 
+		bossFight();
 		spawnObjects(); // spawning objects like asteroids
 		updateObjects(delta); // update all objects
 

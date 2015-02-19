@@ -8,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 /**
  * Created by Evelan on 18-02-2015.
  */
-public class CustomParticleEffect extends Actor {
+public class SimpleParticleEffect extends Actor {
 	private ParticleEffect effect;
 
-	public CustomParticleEffect(ParticleEffect effect) {
+	public SimpleParticleEffect(ParticleEffect effect) {
 		this.effect = effect;
 	}
 

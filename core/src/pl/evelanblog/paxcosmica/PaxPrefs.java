@@ -10,10 +10,12 @@ public class PaxPrefs {
 
 	// constants
 	public static final String PREFS_NAME = "Pax Cosmica";
+
 	public static final String MUSIC_VOLUME = "music.volume";
 	public static final String SOUND_VOLUME = "sound.volume";
 	public static final String MUSIC_ENABLED = "music.enabled";
 	public static final String SOUND_ENABLED = "sound.enabled";
+
 	public static final String KILLS = "kills";
 	public static final String SCORE = "score";
 	public static final String SCRAP = "scrap";
@@ -23,6 +25,7 @@ public class PaxPrefs {
 
 	public static final String SHIELD_LVL = "shield.lvl";
 	public static final String SHIELD_PWR = "shield.pwr";
+
 	public static final String POWER_LVL = "power.lvl";
 	public static final String POWER_PWR = "power.pwr";
 

@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CheckBox;
 import pl.evelanblog.GUI.CustomText;
-import pl.evelanblog.GUI.Slider;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.PaxPrefs;
@@ -22,7 +21,6 @@ public class OptionsScreen implements Screen, InputProcessor {
 	private Stage optionsStage;
 	private Button exit;
 	private CheckBox musicCheckbox, soundCheckbox;
-	private Slider musicVolume, soundVolume;
 	CustomText music, sfx;
 
 	public OptionsScreen(final PaxCosmica game) {
@@ -36,18 +34,12 @@ public class OptionsScreen implements Screen, InputProcessor {
 
 		musicCheckbox = new CheckBox(590, 575, 1.25f);
 		soundCheckbox = new CheckBox(590, 375, 1.25f);
-		musicVolume = new Slider(800, 620, 2, PaxPrefs.getInt(PaxPrefs.MUSIC_VOLUME, 100));
-		soundVolume = new Slider(800, 420, 2, PaxPrefs.getInt(PaxPrefs.SOUND_VOLUME, 100));
-		musicVolume.setIsEnabled(PaxPrefs.getBoolean(PaxPrefs.MUSIC_ENABLED, true));
-		soundVolume.setIsEnabled(PaxPrefs.getBoolean(PaxPrefs.SOUND_ENABLED, true));
 
 		optionsStage.addActor(music);
 		optionsStage.addActor(musicCheckbox);
 		optionsStage.addActor(soundCheckbox);
 		optionsStage.addActor(sfx);
 		optionsStage.addActor(exit);
-		optionsStage.addActor(musicVolume);
-		optionsStage.addActor(soundVolume);
 	}
 
 	@Override
@@ -79,9 +71,7 @@ public class OptionsScreen implements Screen, InputProcessor {
 			PaxPrefs.putBoolean(PaxPrefs.MUSIC_ENABLED, musicCheckbox.getIsChecked());
 			if (!musicCheckbox.getIsChecked()) {
 				Assets.track1.stop();
-				musicVolume.setIsEnabled(false);
 			} else {
-				musicVolume.setIsEnabled(true);
 				Assets.play(Assets.track1);
 			}
 		}
@@ -89,19 +79,8 @@ public class OptionsScreen implements Screen, InputProcessor {
 		if (game.getMouse().overlaps(soundCheckbox)) {
 			soundCheckbox.not();
 			PaxPrefs.putBoolean(PaxPrefs.SOUND_ENABLED, soundCheckbox.getIsChecked());
-			if (soundCheckbox.getIsChecked())
-				soundVolume.setIsEnabled(true);
-			else
-				soundVolume.setIsEnabled(false);
 		}
 
-		// knob
-		if (!musicVolume.isPressed() && musicVolume.isEnabled()) {
-			musicVolume.setIsPressed(mousePointer.overlaps(musicVolume.getKnob()));
-		}
-		if (!soundVolume.isPressed() && soundVolume.isEnabled()) {
-			soundVolume.setIsPressed(mousePointer.overlaps(soundVolume.getKnob()));
-		}
 		// EXIT BUTTON
 		if (game.getMouse().overlaps(exit)) {
 			game.setScreen(GameManager.mainMenu);
@@ -113,34 +92,11 @@ public class OptionsScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if (musicVolume.isPressed()) {
-			musicVolume.setIsPressed(false);
-		}
-		if (soundVolume.isPressed()) {
-			soundVolume.setIsPressed(false);
-		}
 		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		screenX = (int) (screenX * optionsStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
-
-		if (musicVolume.isPressed()) {
-
-			if (screenX - musicVolume.getX() >= 0 && screenX - musicVolume.getX() <= musicVolume.getWidth()) {
-				musicVolume.setValue((int) (screenX - musicVolume.getX()));
-				// PaxPreferences.setMusicVolume(musicVolume.getVolume());
-				Assets.track1.setVolume(PaxPrefs.getInt(PaxPrefs.MUSIC_VOLUME, 100));
-				Assets.track2.setVolume(PaxPrefs.getInt(PaxPrefs.MUSIC_VOLUME, 100));
-			}
-		}
-		if (soundVolume.isPressed()) {
-			if (screenX - soundVolume.getX() >= 0 && screenX - soundVolume.getX() <= soundVolume.getWidth()) {
-				soundVolume.setValue((int) (screenX - soundVolume.getX()));
-				//PaxPreferences.setSoundVolume(soundVolume.getVolume());
-			}
-		}
 		return true;
 	}
 

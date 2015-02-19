@@ -41,8 +41,13 @@ public class PowerManager extends Stage {
 		addActor(engineLabel);
 	}
 
-	@Override
-	public void draw() {
+	public void draw(MousePointer mousePointer) {
+
+		mousePointer.setX((mousePointer.getX() * this.getViewport().getWorldWidth() / Gdx.graphics.getWidth()));
+		mousePointer.setY((mousePointer.getY() * this.getViewport().getWorldHeight() / Gdx.graphics.getHeight()));
+
+		touchDown(mousePointer);
+
 		createBar(hullPos, World.getPlayer().hullPwr);
 		createBar(powerPos, World.getPlayer().powerPwr);
 		createBar(shieldPos, World.getPlayer().shieldPwr);
@@ -66,8 +71,6 @@ public class PowerManager extends Stage {
 	}
 
 	public void touchDown(MousePointer mousePointer) {
-		Gdx.app.log("POS", "x: " + mousePointer.getX() + " y: " + mousePointer.getY());
-		Gdx.app.log("POS", "up x: " + upPwr.getX() + " up y: " + upPwr.getY());
 		if (mousePointer.overlaps(upPwr)) {
 			if (Stats.scrap >= 5 && World.getPlayer().powerLvl > 0) {
 				if (hover == hullPos && World.getPlayer().hullLvl > World.getPlayer().hullPwr) {
@@ -113,9 +116,6 @@ public class PowerManager extends Stage {
 			}
 		}
 
-		//		Gdx.app.log("POS", "mP: " + mousePointer.getX());
-		//		Gdx.app.log("POS", "hullPs: " + hullPos);
-		//		Gdx.app.log("POS", "hullPs+Assets: " + (hullPos + Assets.upgradeBar.getWidth()));
 		if (mousePointer.getX() > hullPos && mousePointer.getX() < hullPos + Assets.upgradeBar.getWidth())
 			hover = hullPos;
 		else if (mousePointer.getX() > weaponPos && mousePointer.getX() < weaponPos + Assets.upgradeBar.getWidth())
