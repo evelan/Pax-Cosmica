@@ -98,7 +98,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		engineLvl = World.getPlayer().engineLvl;
 		scrap = Stats.scrap;
 
-		mousePointer = new Rectangle();
+		mousePointer = game.getMouse();
 		mousePointer.setSize(1);
 
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
@@ -167,7 +167,7 @@ public class UpgradeScreen implements Screen, InputProcessor {
 
 				if (hover == power)
 					powerLvl++;
-				if (hover == hull)
+				else if (hover == hull)
 					hullLvl++;
 				else if (hover == weapon)
 					weaponLvl++;

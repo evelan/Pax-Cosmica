@@ -17,8 +17,10 @@ public class GameManager {
 	public static OptionsScreen options;
 	public static CreditsScreen credits;
 	private static Planet activePlanet;
+	public static int levelKills = 20;
 
 	public GameManager(final PaxCosmica game) {
+
 		mainMenu = new MainMenu(game);
 		galaxyMap = new GalaxyMap(game);
 		gameScreen = new GameScreen(game);

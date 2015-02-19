@@ -14,6 +14,7 @@ import pl.evelanblog.enums.GameState;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.scenes.GameScreen;
+import pl.evelanblog.utilities.GameManager;
 
 public class World {
 
@@ -37,9 +38,8 @@ public class World {
 	}
 
 	public void update(float delta) {
-
 		//jeśli gracz zabije podczas gry więcej niż 10 przeciwników I nie ma bossa na ekranie, to go dodaje
-		if (Stats.levelKills > 14 && !enemyBossExists) {
+		if (Stats.levelKills > GameManager.levelKills && !enemyBossExists) {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
 			enemyBossExists = true;

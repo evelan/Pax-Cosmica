@@ -139,6 +139,8 @@ public class Player extends DynamicObject {
 	}
 
 	public void setStats() {
+		Gdx.app.log("PREFS", "engine lvl: " + engineLvl);
+
 		PaxPrefs.putInt(PaxPrefs.POWER_LVL, powerLvl);
 		PaxPrefs.putInt(PaxPrefs.POWER_PWR, powerPwr);
 

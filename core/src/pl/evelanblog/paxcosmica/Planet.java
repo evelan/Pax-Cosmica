@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import pl.evelanblog.GUI.CustomText;
@@ -12,18 +11,16 @@ import pl.evelanblog.GUI.CustomText;
 public class Planet extends Actor {
 
 	private Sprite sprite, background;
+	private CustomText tekst;
 	private float count;
 	private float size;
-	float speed;
 	private float rotationSpeed;
 	private boolean clockwise;
 	private boolean hover = false;
 	private boolean store = false;
-	private boolean portal = false;
-	private String name;
 	boolean discovered = false;
-	private CustomText tekst;
-	private BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
+	String name;
+	float speed;
 
 	public Planet(float x, float y, float size, float speed, boolean clockwise, String name, String filename, float rotationSpeed, boolean store) {
 		setSprite(new Sprite(new Texture(Gdx.files.internal(filename))));
@@ -42,7 +39,7 @@ public class Planet extends Actor {
 			this.background = new Sprite(new Texture(Gdx.files.internal("planetbg/" + name.toLowerCase() + ".jpg")));
 			this.background.setSize(Assets.worldWidth, Assets.worldHeight);
 		}
-		tekst = new CustomText(font, portal ? "P:" + name : name, getX(), getY());
+		tekst = new CustomText(name, getX(), getY());
 
 	}
 

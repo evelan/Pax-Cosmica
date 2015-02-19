@@ -1,7 +1,6 @@
 package pl.evelanblog.scenes;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
@@ -13,69 +12,63 @@ import pl.evelanblog.world.World;
 /**
  * Created by Dave on 2015-02-08.
  */
-public class PowerManager extends Actor {
+public class PowerManager extends Stage {
 
 	private float hover = -1; // mówi o tym co wcisnęliśmy aby pokazać przycisk upgrade
-	private float powerPos, hullPos, shieldPos, weaponPos, enginePos;
+	private float powerPos = 200, hullPos = 400, shieldPos = 600, weaponPos = 800, enginePos = 1000;
+	private float yPos = 200;
 	private Button upPwr, downPwr;
 	private CustomText powerLabel, hullLabel, shieldLabel, weaponLabel, engineLabel;
 
 	public PowerManager() {
 
-		powerPos = 200;
-		hullPos = 410;
-		shieldPos = 620;
-		weaponPos = 830;
-		enginePos = 1040;
+		upPwr = new Button(0, 100, 200, 60, Assets.up);
+		downPwr = new Button(0, 0, 200, 60, Assets.down);
 
-		upPwr = new Button(hullPos, 100, 200, 60, Assets.up);
-		downPwr = new Button(hullPos, 0, 200, 60, Assets.down);
+		hullLabel = new CustomText(hullPos, yPos);
+		powerLabel = new CustomText(powerPos, yPos);
+		shieldLabel = new CustomText(shieldPos, yPos);
+		weaponLabel = new CustomText(weaponPos, yPos);
+		engineLabel = new CustomText(enginePos, yPos);
 
-		GameScreen.getHudStage().addActor(upPwr);
-		GameScreen.getHudStage().addActor(downPwr);
+		addActor(upPwr);
+		addActor(downPwr);
 
-		powerLabel = new CustomText();
-		hullLabel = new CustomText();
-		shieldLabel = new CustomText();
-		weaponLabel = new CustomText();
-		engineLabel = new CustomText();
+		addActor(powerLabel);
+		addActor(hullLabel);
+		addActor(shieldLabel);
+		addActor(weaponLabel);
+		addActor(engineLabel);
 	}
 
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		showActors(true);
-
-		createBar(powerPos, World.getPlayer().powerPwr, batch);
-		createBar(hullPos, World.getPlayer().hullPwr, batch);
-		createBar(shieldPos, World.getPlayer().shieldPwr, batch);
-		createBar(weaponPos, World.getPlayer().weaponPwr, batch);
-		createBar(enginePos, World.getPlayer().enginePwr, batch);
-
-		powerLabel.setText("Power " + World.getPlayer().powerPwr + " L" + World.getPlayer().powerLvl);
-		powerLabel.setPosition(powerPos + 10, 190);
+	public void draw() {
+		createBar(hullPos, World.getPlayer().hullPwr);
+		createBar(powerPos, World.getPlayer().powerPwr);
+		createBar(shieldPos, World.getPlayer().shieldPwr);
+		createBar(weaponPos, World.getPlayer().weaponPwr);
+		createBar(enginePos, World.getPlayer().enginePwr);
 
 		hullLabel.setText("Hull " + World.getPlayer().hullPwr + " L" + World.getPlayer().hullLvl);
-		hullLabel.setPosition(hullPos + 10, 190);
+		powerLabel.setText("Power " + World.getPlayer().powerPwr + " L" + World.getPlayer().powerLvl);
+		shieldLabel.setText("Shield " + World.getPlayer().shieldPwr + " L" + World.getPlayer().shieldLvl);
+		weaponLabel.setText("Weapon " + World.getPlayer().weaponPwr + " L" + World.getPlayer().weaponLvl);
+		engineLabel.setText("Engine " + World.getPlayer().enginePwr + " L" + World.getPlayer().engineLvl);
 
-		shieldLabel.setText("Shield " + World.getPlayer().shieldPwr + "  L" + World.getPlayer().shieldLvl);
-		shieldLabel.setPosition(shieldPos + 10, 190);
-
-		weaponLabel.setText("Weapon " + World.getPlayer().weaponPwr + "  L" + World.getPlayer().weaponLvl);
-		weaponLabel.setPosition(weaponPos + 10, 190);
-
-		engineLabel.setText("Engine " + World.getPlayer().enginePwr + "  L" + World.getPlayer().engineLvl);
-		engineLabel.setPosition(enginePos + 10, 190);
+		super.draw();
 	}
 
-	public void createBar(float x, float level, Batch batch) {
+	public void createBar(float x, float level) {
+		getBatch().begin();
 		for (int i = 0; i < level; i++)
-			batch.draw(Assets.upgradeBar, x, 200 + i * 30);
+			getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
+		getBatch().end();
 	}
 
 	public void touchDown(MousePointer mousePointer) {
-
+		Gdx.app.log("POS", "x: " + mousePointer.getX() + " y: " + mousePointer.getY());
+		Gdx.app.log("POS", "up x: " + upPwr.getX() + " up y: " + upPwr.getY());
 		if (mousePointer.overlaps(upPwr)) {
-
 			if (Stats.scrap >= 5 && World.getPlayer().powerLvl > 0) {
 				if (hover == hullPos && World.getPlayer().hullLvl > World.getPlayer().hullPwr) {
 					World.getPlayer().hullPwr++;
@@ -120,18 +113,17 @@ public class PowerManager extends Actor {
 			}
 		}
 
-		if (mousePointer.x > hullPos && mousePointer.getX() < hullPos + 200)
+		//		Gdx.app.log("POS", "mP: " + mousePointer.getX());
+		//		Gdx.app.log("POS", "hullPs: " + hullPos);
+		//		Gdx.app.log("POS", "hullPs+Assets: " + (hullPos + Assets.upgradeBar.getWidth()));
+		if (mousePointer.getX() > hullPos && mousePointer.getX() < hullPos + Assets.upgradeBar.getWidth())
 			hover = hullPos;
-
-		else if (mousePointer.getX() > weaponPos && mousePointer.getX() < weaponPos + 200)
+		else if (mousePointer.getX() > weaponPos && mousePointer.getX() < weaponPos + Assets.upgradeBar.getWidth())
 			hover = weaponPos;
-
-		else if (mousePointer.getX() > shieldPos && mousePointer.getX() < shieldPos + 200)
+		else if (mousePointer.getX() > shieldPos && mousePointer.getX() < shieldPos + Assets.upgradeBar.getWidth())
 			hover = shieldPos;
-
-		else if (mousePointer.getX() > enginePos && mousePointer.getX() < enginePos + 200)
+		else if (mousePointer.getX() > enginePos && mousePointer.getX() < enginePos + Assets.upgradeBar.getWidth())
 			hover = enginePos;
-
 		else
 			hover = -1;
 
@@ -140,32 +132,4 @@ public class PowerManager extends Actor {
 			upPwr.setPosition(hover, 500);
 		}
 	}
-
-	public void addActors(Stage stage) {
-		stage.addActor(hullLabel);
-		stage.addActor(shieldLabel);
-		stage.addActor(weaponLabel);
-		stage.addActor(engineLabel);
-		stage.addActor(upPwr);
-		stage.addActor(downPwr);
-	}
-
-	public void showActors(boolean show) {
-		if (show) {
-			hullLabel.setVisible(true);
-			shieldLabel.setVisible(true);
-			weaponLabel.setVisible(true);
-			engineLabel.setVisible(true);
-			upPwr.setVisible(true);
-			downPwr.setVisible(true);
-		} else {
-			hullLabel.setVisible(false);
-			shieldLabel.setVisible(false);
-			weaponLabel.setVisible(false);
-			engineLabel.setVisible(false);
-			upPwr.setVisible(false);
-			downPwr.setVisible(false);
-		}
-	}
-
 }

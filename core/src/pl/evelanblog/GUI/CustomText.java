@@ -10,21 +10,15 @@ public class CustomText extends Actor {
 	CharSequence text;
 	float x, y;
 
-	public CustomText() {
-		super();
+	public CustomText(CharSequence text, float x, float y) {
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-	}
-
-	public CustomText(BitmapFont font, CharSequence text, float x, float y) {
-		this.font = font;
 		this.text = text;
 		this.x = x;
 		this.y = y;
 	}
 
-	public CustomText(CharSequence text, float x, float y) {
+	public CustomText(float x, float y) {
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
-		this.text = text;
 		this.x = x;
 		this.y = y;
 	}

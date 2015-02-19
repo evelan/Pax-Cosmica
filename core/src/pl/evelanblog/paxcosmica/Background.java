@@ -13,13 +13,13 @@ public class Background extends Actor {
 	public Sprite stars4;
 	private float speed;
 
-	public Background(Sprite bg)
+	public Background(Sprite background)
 	{
 		stars1 = new Sprite(Assets.stars);
 		stars2 = new Sprite(Assets.stars);
 		stars3 = new Sprite(Assets.stars);
 		stars4 = new Sprite(Assets.stars);
-		background = bg;
+		this.background = background;
 
 		stars1.setBounds(0, 150, Assets.stars.getWidth(), Assets.stars.getHeight());
 		stars2.setBounds(Assets.stars.getWidth(), 150, Assets.stars.getWidth(), Assets.stars.getHeight());

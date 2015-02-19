@@ -36,18 +36,16 @@ public class PaxPrefs {
 		return Gdx.app.getPreferences(PREFS_NAME);
 	}
 
-	public static void putInt(final String PREFS, int value) {
-		getPrefs().putInteger(PREFS, value);
-		getPrefs().flush();
+	public static void putInt(String PREFS, int value) {
+		getPrefs().putInteger(PREFS, value).flush();
 	}
 
-	public static int getInt(final String PREFS, int defValue) {
+	public static int getInt(String PREFS, int defValue) {
 		return getPrefs().getInteger(PREFS, defValue);
 	}
 
-	public static void putBoolean(final String PREFS, boolean value) {
-		getPrefs().putBoolean(PREFS, value);
-		getPrefs().flush();
+	public static void putBoolean(String PREFS, boolean value) {
+		getPrefs().putBoolean(PREFS, value).flush();
 	}
 
 	public static boolean getBoolean(final String PREFS, boolean defValue) {

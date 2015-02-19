@@ -135,15 +135,13 @@ public class GameScreen implements Screen, InputProcessor {
 		exitButton.setVisible(false);
 		continueButton.setVisible(false);
 		powerButton.setVisible(true);
-		powerManager.setVisible(false);
-		powerManager.showActors(false);
 	}
 
 	//pokazuje powere managera
 	private void setPowerPanager() {
 		pauseButton.setVisible(false);
 		resumeButton.setVisible(true);
-		powerManager.setVisible(true);
+		powerManager.draw();
 	}
 
 	public static Button getHpBar() {
@@ -202,12 +200,6 @@ public class GameScreen implements Screen, InputProcessor {
 		hudStage.addActor(shieldBar);
 		hudStage.addActor(hpBorder);
 		hudStage.addActor(shieldBorder);
-		hudStage.addActor(powerManager);
-
-		//Power Manager
-		powerManager.setVisible(false);
-		powerManager.addActors(hudStage);
-		powerManager.showActors(false);
 
 		background.setBackground(GameManager.getActivePlanet().getBackground());
 
@@ -219,6 +211,7 @@ public class GameScreen implements Screen, InputProcessor {
 		hitPointer = -1;
 		Assets.play(Assets.track2);
 		world.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
+		setResume();
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -239,8 +232,11 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
-		mousePointer.setPosition(screenX * gameStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth(),
-				screenY * gameStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
+
+		screenX = (int) (screenX * gameStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
+		screenY = (int) (screenY * gameStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
+
+		mousePointer.setPosition(screenX, screenY);
 
 		if (!knobPressed)
 			Assets.playSound(Assets.clickSfx);
@@ -283,8 +279,8 @@ public class GameScreen implements Screen, InputProcessor {
 		// knob
 		if (!knobPressed) {
 			if (mousePointer.overlaps(knob)) {
-				knob.setPosition(screenX - (knob.getImageWidth() / 2), screenY -
-						(knob.getImageHeight() / 2));
+				knob.setPosition(screenX - (knob.getImageWidth() / 2),
+						screenY - (knob.getImageHeight() / 2));
 				knobPressed = true;
 				knobPointer = pointer;
 				velX = (((screenX - (knob.getImageWidth() / 2)) - defKnobPos.x)) / 64;
