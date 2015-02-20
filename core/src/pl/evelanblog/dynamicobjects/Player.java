@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxPrefs;
 import pl.evelanblog.scenes.GameScreen;
+import pl.evelanblog.scenes.HUD;
 
 public class Player extends DynamicObject {
-	/* OGŁASZA SIĘ CO NASTĘPUJE */
-	/*Tu nie może być żadnych statycznych zmiennych, bo potem bedzie drugi obiekt gracza i te zmienne będą współdzielone co byłoby bez sensu :) */
-
 	private float bulletSpeed = 1000f;
 	private float shieldReloadLvl = 0;
 	private Sprite shieldSprite;
@@ -41,21 +39,21 @@ public class Player extends DynamicObject {
 			if (shieldReloadLvl > 10f) {
 				shieldReloadLvl = 0;
 				shield++;
-				GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() + (200 / shieldLvl), GameScreen.getShieldBar().getHeight());
-				GameScreen.getShieldBorder().setSize(200, GameScreen.getShieldBorder().getHeight());
+				//				GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() + (200 / shieldLvl), GameScreen.getShieldBar().getHeight());
+				//				GameScreen.getShieldBorder().setSize(200, GameScreen.getShieldBorder().getHeight());
 			}
 		}
 
 		bulletSpeed = 600f + (weaponPwr * 80); // standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomem
 		// weaponPwr bedzie on przyspieszac razy 80
 
-		temp_y = GameScreen.getGameStage().getCamera().position.y + (GameScreen.getVelY() * deltaTime * speed);
+		temp_y = GameScreen.getGameStage().getCamera().position.y + (HUD.getVelY() * deltaTime * speed);
 		if (temp_y > 0 && temp_y < Assets.worldHeight - getHeight()) {
 			GameScreen.getGameStage().getCamera().position.y = temp_y;
 			setY(GameScreen.getGameStage().getCamera().position.y);
 		}
 
-		temp_x = getX() + (GameScreen.getVelX() * deltaTime * speed);
+		temp_x = getX() + (HUD.getVelX() * deltaTime * speed);
 		if (temp_x > 0 && temp_x < Assets.worldWidth - getWidth())
 			setX(temp_x);
 
@@ -121,16 +119,16 @@ public class Player extends DynamicObject {
 		if (shield > 0) {
 			shield -= damage;
 
-			if (shield > 0)
-				GameScreen.getShieldBar().setSize(200 * shield / shieldPwr, GameScreen.getShieldBar().getHeight());
-			else {
-				shield = 0;
-				GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
-				GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
-			}
+			//			if (shield > 0)
+			//				GameScreen.getShieldBar().setSize(200 * shield / shieldPwr, GameScreen.getShieldBar().getHeight());
+			//			else {
+			//				shield = 0;
+			//				GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
+			//				GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
+			//			}
 		} else {
 			hp -= damage;
-			GameScreen.getHpBar().setSize(200 * hp / (hullPwr * 3), GameScreen.getHpBar().getHeight());
+			//			GameScreen.getHpBar().setSize(200 * hp / (hullPwr * 3), GameScreen.getHpBar().getHeight());
 		}
 		if (hp <= 0)
 			kill();
@@ -142,10 +140,10 @@ public class Player extends DynamicObject {
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
 		Assets.explosionEffect.start();
-		GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
-		GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
-		GameScreen.getHpBar().setSize(0, GameScreen.getShieldBar().getHeight());
-		GameScreen.getHpBorder().setSize(0, GameScreen.getShieldBar().getHeight());
+		//		GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
+		//		GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
+		//		GameScreen.getHpBar().setSize(0, GameScreen.getShieldBar().getHeight());
+		//		GameScreen.getHpBorder().setSize(0, GameScreen.getShieldBar().getHeight());
 	}
 
 	public void setStats() {

@@ -2,6 +2,7 @@ package pl.evelanblog.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.paxcosmica.Assets;
@@ -20,8 +21,8 @@ public class PowerManager extends Stage {
 	private Button upPwr, downPwr;
 	private CustomText powerLabel, hullLabel, shieldLabel, weaponLabel, engineLabel;
 
-	public PowerManager() {
-
+	public PowerManager(Viewport viewport) {
+		super(viewport);
 		upPwr = new Button(0, 100, 200, 60, Assets.up);
 		downPwr = new Button(0, 0, 200, 60, Assets.down);
 

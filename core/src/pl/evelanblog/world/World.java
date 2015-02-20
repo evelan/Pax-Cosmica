@@ -13,7 +13,7 @@ import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.enums.GameState;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.scenes.GameScreen;
+import pl.evelanblog.scenes.HUD;
 import pl.evelanblog.utilities.GameManager;
 
 public class World {
@@ -22,7 +22,7 @@ public class World {
 	private static Player player; // gracz 1
 	private Collider collider; // zderzacz hadronów
 	private EnemyBoss enemyBoss; // boss
-	private GameState state; // stany gry
+	private static GameState state; // stany gry
 	private float[] sleepTime = new float[10]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się asteroidy etc.
 	private boolean enemyBossExists = false;
 
@@ -48,8 +48,8 @@ public class World {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
 			enemyBossExists = true;
-			GameScreen.getHudStage().addActor(enemyBoss.getBossHp());
-			GameScreen.getHudStage().addActor(enemyBoss.getBossHpBorder());
+			//			GameScreen.getHudStage().addActor(enemyBoss.getBossHp());
+			//			GameScreen.getHudStage().addActor(enemyBoss.getBossHpBorder());
 			Gdx.app.log("STATE", "Dodano do sceny EnemyBoss!");
 			enemyBoss.getBossHp().setVisible(true);
 			enemyBoss.getBossHpBorder().setVisible(true);
@@ -97,7 +97,7 @@ public class World {
 
 	private void spawnObjects() { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update!!!!!!!!!!
 		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
-		if (sleepTime[0] > player.getShootFrequency() && player.ableToShoot() && GameScreen.getHit()) {
+		if (sleepTime[0] > player.getShootFrequency() && player.ableToShoot() && HUD.getHit()) {
 			objects.addActor(player.shoot());
 			sleepTime[0] = 0;
 		}
@@ -131,11 +131,11 @@ public class World {
 		return objects;
 	}
 
-	public GameState getState() {
+	public static GameState getState() {
 		return state;
 	}
 
-	public void setState(GameState state) {
-		this.state = state;
+	public static void setState(GameState state) {
+		World.state = state;
 	}
 }
