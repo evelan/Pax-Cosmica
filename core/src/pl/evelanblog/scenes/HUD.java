@@ -29,7 +29,6 @@ public class HUD extends Stage implements InputProcessor {
 	private static Bar hpBar, shieldBar;
 	private CustomText scrap, score; // tekst  o ilośc złomu oraz punktów
 
-	/* DO STEROWANIA */
 	private static float velX; // wychylenie gałki w osi X
 	private static float velY; // wychylenie gałki w osi Y
 	private static boolean hit; // czy wciskamy przycisk A od strzelania
@@ -47,27 +46,20 @@ public class HUD extends Stage implements InputProcessor {
 
 		mousePointer = game.getMouse();
 		defKnobPos = new Vector2(96, 96);
-
 		powerManager = new PowerManager(new StretchViewport(1920, 1080));
-
 		hpBar = new Bar(15, 1025, 200, 40, Assets.hullBar);
 		shieldBar = new Bar(15, 982, 0, 40, Assets.shieldBar);
-
 		knob = new Button(defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
 		buttonA = new Button(1600, 256, 256, 256, Assets.buttonA);
 		buttonB = new Button(1472, 0, 256, 256, Assets.buttonB);
-
 		pauseButton = new Button(1750, 920, Assets.pauseButton);
 		resumeButton = new Button(1750, 920, Assets.unpauseButton);
 		continueButton = new Button(640, 540, 640, 192, Assets.continueButton);
 		exitButton = new Button(640, 348, 640, 192, Assets.exitButton);
-
 		powerButton = new Button(810, 20, Assets.powerButton);
-
 		score = new CustomText("Score: " + Stats.score, 965, 1060);
 		scrap = new CustomText("Scrap: " + Stats.scrap, 1200, 1060);
 
-		// ADD HUD ACTORS
 		if (Gdx.app.getType() == Application.ApplicationType.Android) { // jeśli odpalimy na PC to nie pokażą się knob i przyciski
 			addActor(knob);
 			addActor(buttonA);
@@ -79,7 +71,6 @@ public class HUD extends Stage implements InputProcessor {
 		addActor(resumeButton);
 		addActor(continueButton);
 		addActor(exitButton);
-
 		addActor(score);
 		addActor(scrap);
 		addActor(hpBar);
@@ -88,7 +79,6 @@ public class HUD extends Stage implements InputProcessor {
 	}
 
 	public void draw() {
-		//rysownie tekstu na ekranie
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
 
@@ -111,10 +101,21 @@ public class HUD extends Stage implements InputProcessor {
 		resumeButton.setVisible(true);
 		continueButton.setVisible(true);
 		exitButton.setVisible(true);
+		knob.setVisible(false);
+		buttonA.setVisible(false);
+		buttonB.setVisible(false);
+		powerButton.setVisible(false);
 	}
 
+	//gdy przegramy wyświetlamy tylko przycisk EXIT
 	public void defeatScreen() {
 		exitButton.setVisible(true);
+		powerButton.setVisible(false);
+		pauseButton.setVisible(false);
+		resumeButton.setVisible(false);
+		knob.setVisible(false);
+		buttonA.setVisible(false);
+		buttonB.setVisible(false);
 	}
 
 	//przywraca grę
@@ -124,6 +125,9 @@ public class HUD extends Stage implements InputProcessor {
 		exitButton.setVisible(false);
 		continueButton.setVisible(false);
 		powerButton.setVisible(true);
+		knob.setVisible(true);
+		buttonA.setVisible(true);
+		buttonB.setVisible(true);
 	}
 
 	//pokazuje power managera
@@ -131,6 +135,9 @@ public class HUD extends Stage implements InputProcessor {
 		pauseButton.setVisible(false);
 		resumeButton.setVisible(true);
 		powerManager.draw(mousePointer);
+		knob.setVisible(false);
+		buttonA.setVisible(false);
+		buttonB.setVisible(false);
 	}
 
 	public static float getVelX() {

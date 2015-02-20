@@ -13,16 +13,15 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: pl.evelanblog.paxcosmica.android" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3580def-39c0-42ce-afda-540216aa7b90" name="Default" comment="Usunięte duzo śmieciowego kodu vol3&#10;Bar zamiast Button, usunięte slidery bo są bez sensu">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/test/pl/evelanblog/dynamicobjects/DynamicObjectTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java" />
-      <change type="DELETED" beforePath="C:\Users\Evelan\Moje Programowanie\Eclipse\Pax-Cosmica\core\src\pl\evelanblog\paxcosmica\control\Controller.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Bar.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Bar.java" />
+    <list default="true" id="f3580def-39c0-42ce-afda-540216aa7b90" name="Default" comment="Usunięte duzo śmieciowego kodu vol3&#10;Rozdzielenie HUD i GameScreen">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Controller.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GameScreen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/PowerManager.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/PowerManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pl/evelanblog/world/World.java" afterPath="$PROJECT_DIR$/core/src/pl/evelanblog/world/World.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/core.iml" afterPath="$PROJECT_DIR$/core/core.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Pax-Cosmica.iws" />
@@ -81,60 +80,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GameScreen.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameScreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GameScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.74285716" vertical-offset="0" max-vertical-offset="2484">
-              <caret line="34" column="41" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="1980">
+              <caret line="90" column="25" selection-start-line="90" selection-start-column="25" selection-end-line="90" selection-end-column="25" />
               <folding>
-                <element signature="e#3845#3846#0" expanded="true" />
-                <element signature="e#3868#3869#0" expanded="true" />
-                <marker date="1424400386820" expanded="true" signature="3304:3359" placeholder="..." />
+                <element signature="e#3164#3165#0" expanded="true" />
+                <element signature="e#3187#3188#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HUD.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="HUD.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1458" max-vertical-offset="5706">
-              <caret line="76" column="66" selection-start-line="76" selection-start-column="66" selection-end-line="76" selection-end-column="66" />
+            <state vertical-scroll-proportion="0.4857143" vertical-offset="234" max-vertical-offset="5562">
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3652#3653#0" expanded="true" />
-                <element signature="e#3686#3687#0" expanded="true" />
-                <element signature="e#7860#7861#0" expanded="true" />
-                <element signature="e#7879#7880#0" expanded="true" />
-                <element signature="e#7946#7947#0" expanded="true" />
-                <element signature="e#7965#7966#0" expanded="true" />
-                <element signature="e#8016#8017#0" expanded="true" />
-                <element signature="e#8035#8036#0" expanded="true" />
+                <element signature="e#8282#8283#0" expanded="true" />
+                <element signature="e#8301#8302#0" expanded="true" />
+                <element signature="e#8368#8369#0" expanded="true" />
+                <element signature="e#8387#8388#0" expanded="true" />
+                <element signature="e#8438#8439#0" expanded="true" />
+                <element signature="e#8457#8458#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Button.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/GUI/Button.java">
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="414">
-              <caret line="5" column="33" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="33" />
-              <folding>
-                <element signature="method#Button#0;class#Button#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Bar.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Bar.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="702">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
+              <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -142,8 +124,8 @@
       <file leaf-file-name="PaxCosmica.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="666">
-              <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -152,11 +134,11 @@
       <file leaf-file-name="World.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/world/World.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1058" max-vertical-offset="2286">
-              <caret line="88" column="47" selection-start-line="88" selection-start-column="47" selection-end-line="88" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2304">
+              <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
               <folding>
-                <element signature="e#4046#4047#0" expanded="true" />
-                <element signature="e#4072#4073#0" expanded="true" />
+                <element signature="e#4076#4077#0" expanded="true" />
+                <element signature="e#4102#4103#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,18 +147,8 @@
       <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="302" max-vertical-offset="3204">
-              <caret line="59" column="58" selection-start-line="59" selection-start-column="58" selection-end-line="59" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DynamicObject.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/DynamicObject.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1800">
-              <caret line="25" column="27" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1134" max-vertical-offset="3204">
+              <caret line="37" column="41" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -185,8 +157,18 @@
       <file leaf-file-name="UpgradeScreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="3492">
-              <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3474">
+              <caret line="142" column="35" selection-start-line="142" selection-start-column="35" selection-end-line="142" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GalaxyMap.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3312">
+              <caret line="51" column="67" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -2222,24 +2204,24 @@
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/CustomSprite.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/ParticleEffect.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/CustomParticleEffect.java" />
-        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/utilities/GameManager.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Background.java" />
-        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/GUI/CustomText.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Planet.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxPrefs.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/OptionsScreen.java" />
-        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Assets.java" />
         <option value="$PROJECT_DIR$/core/test/pl/evelanblog/dynamicobjects/DynamicObjectTest.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/DynamicObject.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Bar.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/PowerManager.java" />
-        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java" />
-        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/world/World.java" />
+        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java" />
         <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GameScreen.java" />
+        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java" />
+        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java" />
+        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java" />
+        <option value="$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java" />
       </list>
     </option>
   </component>
@@ -2965,7 +2947,7 @@
       <workItem from="1424254141097" duration="733000" />
       <workItem from="1424272737422" duration="25390000" />
       <workItem from="1424352710275" duration="9913000" />
-      <workItem from="1424397045822" duration="3517000" />
+      <workItem from="1424397045822" duration="5344000" />
     </task>
     <task id="LOCAL-00001" summary="intelij">
       <created>1422915347289</created>
@@ -3015,11 +2997,17 @@
       <option name="project" value="LOCAL" />
       <updated>1424376149697</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Usunięte duzo śmieciowego kodu vol3&#10;Rozdzielenie HUD i GameScreen">
+      <created>1424400604050</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1424400604051</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="160829000" />
+    <option name="totallyTimeSpent" value="162656000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -3046,7 +3034,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946146" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20274551" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30517423" sideWeight="0.57135415" order="11" side_tool="false" content_ui="tabs" x="-144" y="436" width="1924" height="566" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30517423" sideWeight="0.57135415" order="11" side_tool="false" content_ui="tabs" x="-144" y="436" width="1924" height="566" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.171875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
@@ -3091,7 +3079,8 @@
     <MESSAGE value="Usunięte duzo śmieciowego kodu" />
     <MESSAGE value="Usunięte duzo śmieciowego kodu vol2 &#10;PowerManager zaczyna działać jak powinien od początku..." />
     <MESSAGE value="Usunięte duzo śmieciowego kodu vol3&#10;Bar zamiast Button, usunięte slidery bo są bez sensu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Usunięte duzo śmieciowego kodu vol3&#10;Bar zamiast Button, usunięte slidery bo są bez sensu" />
+    <MESSAGE value="Usunięte duzo śmieciowego kodu vol3&#10;Rozdzielenie HUD i GameScreen" />
+    <option name="LAST_COMMIT_MESSAGE" value="Usunięte duzo śmieciowego kodu vol3&#10;Rozdzielenie HUD i GameScreen" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -3302,24 +3291,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1451" max-vertical-offset="2556">
           <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Background.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1152">
-          <caret line="23" column="10" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3672">
-          <caret line="68" column="67" selection-start-line="68" selection-start-column="67" selection-end-line="68" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3425,62 +3397,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/DynamicObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1800">
-          <caret line="25" column="27" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3492">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Bar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="702">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/GUI/Button.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="414">
-          <caret line="5" column="33" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="33" />
-          <folding>
-            <element signature="method#Button#0;class#Button#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="702">
-          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/PowerManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22978723" vertical-offset="432" max-vertical-offset="2412">
           <caret line="44" column="20" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="302" max-vertical-offset="3204">
-          <caret line="59" column="58" selection-start-line="59" selection-start-column="58" selection-end-line="59" selection-end-column="58" />
           <folding />
         </state>
       </provider>
@@ -3493,43 +3413,116 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/world/World.java">
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/GUI/Button.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1058" max-vertical-offset="2286">
-          <caret line="88" column="47" selection-start-line="88" selection-start-column="47" selection-end-line="88" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.08571429" vertical-offset="0" max-vertical-offset="630">
+          <caret line="5" column="33" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="33" />
           <folding>
-            <element signature="e#4046#4047#0" expanded="true" />
-            <element signature="e#4072#4073#0" expanded="true" />
+            <element signature="method#Button#0;class#Button#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java">
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Bar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1458" max-vertical-offset="5706">
-          <caret line="76" column="66" selection-start-line="76" selection-start-column="66" selection-end-line="76" selection-end-column="66" />
+        <state vertical-scroll-proportion="0.51428574" vertical-offset="0" max-vertical-offset="702">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3652#3653#0" expanded="true" />
-            <element signature="e#3686#3687#0" expanded="true" />
-            <element signature="e#7860#7861#0" expanded="true" />
-            <element signature="e#7879#7880#0" expanded="true" />
-            <element signature="e#7946#7947#0" expanded="true" />
-            <element signature="e#7965#7966#0" expanded="true" />
-            <element signature="e#8016#8017#0" expanded="true" />
-            <element signature="e#8035#8036#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/PaxCosmica.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/UpgradeScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3474">
+          <caret line="142" column="35" selection-start-line="142" selection-start-column="35" selection-end-line="142" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GalaxyMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3312">
+          <caret line="51" column="67" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/DynamicObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.51428574" vertical-offset="0" max-vertical-offset="1800">
+          <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/dynamicobjects/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="3204">
+          <caret line="37" column="41" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/world/World.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="212" max-vertical-offset="2304">
+          <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
+          <folding>
+            <element signature="e#4076#4077#0" expanded="true" />
+            <element signature="e#4102#4103#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Background.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22857143" vertical-offset="522" max-vertical-offset="1152">
+          <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/GameScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74285716" vertical-offset="0" max-vertical-offset="2484">
-          <caret line="34" column="41" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="1980">
+          <caret line="90" column="25" selection-start-line="90" selection-start-column="25" selection-end-line="90" selection-end-column="25" />
           <folding>
-            <element signature="e#3845#3846#0" expanded="true" />
-            <element signature="e#3868#3869#0" expanded="true" />
-            <marker date="1424400386820" expanded="true" signature="3304:3359" placeholder="..." />
+            <element signature="e#3164#3165#0" expanded="true" />
+            <element signature="e#3187#3188#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/paxcosmica/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
+          <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pl/evelanblog/scenes/HUD.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4857143" vertical-offset="234" max-vertical-offset="5562">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8282#8283#0" expanded="true" />
+            <element signature="e#8301#8302#0" expanded="true" />
+            <element signature="e#8368#8369#0" expanded="true" />
+            <element signature="e#8387#8388#0" expanded="true" />
+            <element signature="e#8438#8439#0" expanded="true" />
+            <element signature="e#8457#8458#0" expanded="true" />
           </folding>
         </state>
       </provider>

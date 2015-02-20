@@ -16,13 +16,12 @@ import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.utilities.GameManager;
 import pl.evelanblog.world.World;
 
-public class UpgradeScreen implements Screen, InputProcessor {
+public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	private BitmapFont font;
 	private Button apply, discard, upgrade;
 	private Rectangle mousePointer;
-	private Stage upgradeScreen;
 
 	private float power, hull, shield, weapon, engine;
 	private int powerLvl, hullLvl, shieldLvl, weaponLvl, engineLvl;
@@ -31,15 +30,15 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	private int scrap;
 
 	public UpgradeScreen(final PaxCosmica game) {
+		super(new StretchViewport(1920, 1080));
 		this.game = game;
-		upgradeScreen = new Stage(new StretchViewport(1920, 1080));
 
 		upgrade = new Button(1470, 60, 200, 50, Assets.upgradeBtn);
 		apply = new Button(1520, 116, 320, 96, Assets.applyButton);
 		discard = new Button(1520, 20, 320, 96, Assets.discardButton);
 
-		upgradeScreen.addActor(apply);
-		upgradeScreen.addActor(discard);
+		addActor(apply);
+		addActor(discard);
 	}
 
 	@Override
@@ -47,8 +46,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		upgradeScreen.getBatch().begin();
-		upgradeScreen.getBatch().draw(new Texture(Gdx.files.internal("background/upgrade.png")), 0, 0);
+		getBatch().begin();
+		getBatch().draw(new Texture(Gdx.files.internal("background/upgrade.png")), 0, 0);
 
 		createBar(power, powerLvl, "Power: " + powerLvl);
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
@@ -56,24 +55,24 @@ public class UpgradeScreen implements Screen, InputProcessor {
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
 		createBar(engine, engineLvl, "Engine: " + engineLvl);
 
-		font.draw(upgradeScreen.getBatch(), "Scrap: " + scrap, 10, Gdx.graphics.getHeight() - font.getLineHeight());
-		upgradeScreen.getBatch().end();
-		upgradeScreen.draw();
+		font.draw(getBatch(), "Scrap: " + scrap, 10, Gdx.graphics.getHeight() - font.getLineHeight());
+		getBatch().end();
+		draw();
 
 	}
 
 	public void createBar(float x, float level, String name) {
 		for (int i = 0; i < level; i++)
-			upgradeScreen.getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
+			getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
 
-		font.draw(upgradeScreen.getBatch(), "Cost: " + cost, x, level * 30 + 250);
+		font.draw(getBatch(), "Cost: " + cost, x, level * 30 + 250);
 
 		if (hover != -1) {
 			upgrade.setPosition(hover, 100);
-			upgrade.draw(upgradeScreen.getBatch(), 1);
+			upgrade.draw(getBatch(), 1);
 		}
 
-		font.draw(upgradeScreen.getBatch(), name, x + 10, 190);
+		font.draw(getBatch(), name, x + 10, 190);
 	}
 
 	@Override
@@ -140,8 +139,8 @@ public class UpgradeScreen implements Screen, InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenY = Gdx.graphics.getHeight() - screenY;
 
-		screenX = (int) (screenX * upgradeScreen.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
-		screenY = (int) (screenY * upgradeScreen.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
+		screenX = (int) (screenX * getViewport().getWorldWidth() / Gdx.graphics.getWidth());
+		screenY = (int) (screenY * getViewport().getWorldHeight() / Gdx.graphics.getHeight());
 
 		mousePointer.setPosition(screenX, screenY);
 

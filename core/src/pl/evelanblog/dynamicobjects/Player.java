@@ -47,10 +47,10 @@ public class Player extends DynamicObject {
 		bulletSpeed = 600f + (weaponPwr * 80); // standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomem
 		// weaponPwr bedzie on przyspieszac razy 80
 
-		temp_y = GameScreen.getGameStage().getCamera().position.y + (HUD.getVelY() * deltaTime * speed);
+		temp_y = GameScreen.getCameraPos().y + (HUD.getVelY() * deltaTime * speed);
 		if (temp_y > 0 && temp_y < Assets.worldHeight - getHeight()) {
-			GameScreen.getGameStage().getCamera().position.y = temp_y;
-			setY(GameScreen.getGameStage().getCamera().position.y);
+			GameScreen.getCameraPos().y = temp_y;
+			setY(GameScreen.getCameraPos().y);
 		}
 
 		temp_x = getX() + (HUD.getVelX() * deltaTime * speed);

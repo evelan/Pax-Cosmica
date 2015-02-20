@@ -36,6 +36,7 @@ public class World {
 	}
 
 	public void clear() {
+		Stats.levelKills = 0;
 		objects.clear();
 		player.clear();
 		for (int i = 0; i < sleepTime.length; i++) //zerujemy tablicę z czasami

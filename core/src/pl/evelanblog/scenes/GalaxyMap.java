@@ -16,7 +16,7 @@ import pl.evelanblog.utilities.GameManager;
 
 import java.util.ArrayList;
 
-public class GalaxyMap implements Screen, InputProcessor {
+public class GalaxyMap extends Stage implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	Rectangle mousePointer;
@@ -25,17 +25,15 @@ public class GalaxyMap implements Screen, InputProcessor {
 	private CustomText score, scrap, fuel, galaxyNumber;
 	private float moveValue;
 	private ArrayList<Planet> planets;
-	private Stage mapStage, mapHud;
 
 	public GalaxyMap(final PaxCosmica game) {
+		super(new StretchViewport(1920, 1080));
 		this.game = game;
 		moveValue = 0;
 		planets = new ArrayList<Planet>();
-		mapStage = new Stage(new StretchViewport(1920, 1080));
-		mapHud = new Stage(new StretchViewport(1920, 1080));
 
 		background = new Background(new Sprite(Assets.mainmenu));
-		mapHud.addActor(background);
+		addActor(background);
 
 		attack = new Button(Assets.attackButton);
 		move = new Button(Assets.moveButton);
@@ -43,23 +41,23 @@ public class GalaxyMap implements Screen, InputProcessor {
 		left = new Button(0, 540, 128, 128, Assets.leftArrow);
 		right = new Button(1792, 540, 128, 128, Assets.rightArrow);
 
-		mapHud.addActor(left);
-		mapHud.addActor(right);
-		mapHud.addActor(exit);
+		addActor(left);
+		addActor(right);
+		addActor(exit);
 
 		mousePointer = new MousePointer();
 		mousePointer.setSize(1);
 
-		fuel = new CustomText("Fuel: " + Stats.fuel, 410, mapHud.getViewport().getWorldHeight() - 10);
-		galaxyNumber = new CustomText("Galaxy: " + moveValue, 610, mapHud.getViewport().getWorldHeight() - 10);
+		fuel = new CustomText("Fuel: " + Stats.fuel, 410, getViewport().getWorldHeight() - 10);
+		galaxyNumber = new CustomText("Galaxy: " + moveValue, 610, getViewport().getWorldHeight() - 10);
 
 		score = new CustomText("Score: " + Stats.score, 10, 1070);
 		scrap = new CustomText("Scrap: " + Stats.scrap, 210, 1070);
 
-		mapHud.addActor(score);
-		mapHud.addActor(scrap);
-		mapHud.addActor(fuel);
-		mapHud.addActor(galaxyNumber);
+		addActor(score);
+		addActor(scrap);
+		addActor(fuel);
+		addActor(galaxyNumber);
 
 		// tworzenie planet
 		planets.add(new Planet(200, 200, 1, 0.10f, true, "Ice", "planet/ice.png", 0.05f, false));
@@ -69,12 +67,12 @@ public class GalaxyMap implements Screen, InputProcessor {
 		planets.add(new Planet(1320, 580, 1, 0.10f, true, "Sklep", "planet/shop.png", 0.005f, true));
 
 		for (Planet obj : planets)
-			mapStage.addActor(obj);
+			addActor(obj);
 
 		GameManager.setActivePlanet(planets.get(0));
 
-		mapStage.addActor(attack);
-		mapStage.addActor(move);
+		addActor(attack);
+		addActor(move);
 	}
 
 	@Override
@@ -85,11 +83,7 @@ public class GalaxyMap implements Screen, InputProcessor {
 		for (Planet obj : planets)
 			obj.update();
 
-		mapHud.draw();
-		mapStage.draw();
-		mapStage.getBatch().begin();
-		mapStage.getBatch().end();
-
+		draw();
 	}
 
 	@Override
@@ -143,8 +137,8 @@ public class GalaxyMap implements Screen, InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Assets.playSound(Assets.clickSfx);
 		screenY = Gdx.graphics.getHeight() - screenY;
-		screenX = (int) (screenX * mapStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
-		screenY = (int) (screenY * mapStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
+		screenX = (int) (screenX * getViewport().getWorldWidth() / Gdx.graphics.getWidth());
+		screenY = (int) (screenY * getViewport().getWorldHeight() / Gdx.graphics.getHeight());
 		game.getMouse().setPosition(screenX, screenY);
 
 		if (game.getMouse().overlaps(attack, moveValue, screenX, screenY)) {
@@ -155,11 +149,11 @@ public class GalaxyMap implements Screen, InputProcessor {
 			game.setScreen(GameManager.upgradeScreen);
 			dispose();
 		} else if (game.getMouse().overlaps(left)) {
-			mapStage.getCamera().position.x -= Assets.worldWidth;
+			getCamera().position.x -= Assets.worldWidth;
 			moveValue--;
 			galaxyNumber.setText("Galaxy: " + moveValue);
 		} else if (game.getMouse().overlaps(right)) {
-			mapStage.getCamera().position.x += Assets.worldWidth;
+			getCamera().position.x += Assets.worldWidth;
 			moveValue++;
 			galaxyNumber.setText("Galaxy: " + moveValue);
 		} else if (game.getMouse().overlaps(exit)) {

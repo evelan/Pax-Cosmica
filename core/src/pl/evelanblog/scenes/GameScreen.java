@@ -3,6 +3,7 @@ package pl.evelanblog.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.enums.GameState;
@@ -10,35 +11,24 @@ import pl.evelanblog.paxcosmica.*;
 import pl.evelanblog.utilities.GameManager;
 import pl.evelanblog.world.World;
 
-public class GameScreen implements Screen {
+public class GameScreen extends Stage implements Screen {
 
 	private final PaxCosmica game;
-	private static Stage gameStage; // scena na której znajdują się statki, asteroidy, pociski oraz pociski
 	private static HUD hud; // przyciski, knob, tekst oraz informacja o stanie shieldPos i hp
-	private World world; // świat
-
 	private static Background background; // tło
-
+	private World world; // świat
 	SimpleParticleEffect explodeEffect, hitEffect;
+	private static Vector2 cameraPos;
 
 	public GameScreen(final PaxCosmica game) {
+		super(new StretchViewport(1920, 1080));
 		this.game = game;
 		world = new World();
-
-		gameStage = new Stage(game.getGameViewport());
-		//hudStage = new Stage(game.getHudViewport());
-
 		hud = new HUD(game, new StretchViewport(1920, 1080));
-
-		background = new Background(GameManager.getActivePlanet().getBackground());
-
-		//		hpBorder = new Button(15, 1025, 200, 40, Assets.barBorder);
-		//		shieldBorder = new Button(15, 982, 0, 40, Assets.barBorder);
-
 		hitEffect = new SimpleParticleEffect(Assets.hitEffect);
 		explodeEffect = new SimpleParticleEffect(Assets.explosionEffect);
-
-
+		cameraPos = new Vector2(getCamera().position.x, getCamera().position.y);
+		background = new Background(GameManager.getActivePlanet().getBackground());
 	}
 
 	@Override
@@ -46,9 +36,11 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		cameraPos.set(getCamera().position.x, getCamera().position.y);
+
 		// ustawienie backgroundu zawsze na środku
-		background.getBackground().setY(gameStage.getCamera().position.y - gameStage.getHeight() / 2);
-		gameStage.draw(); //rysowanie stage z graczem, przeciwnikami i strzałami
+		background.getBackground().setY(getCamera().position.y - getHeight() / 2);
+		draw(); //rysowanie stage z graczem, przeciwnikami i strzałami
 		hud.draw(); // HUD, czyli wszystkie przycsiki i inne duperele
 
 		// jeśli stan gry jest na ONGOING to update tła i reszty obiektów, jeśli nie to będziemy mieć efekt pauzy
@@ -77,37 +69,32 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
 	public void show() {
 		world.clear();
-
-		Stats.levelKills = 0;
-
-		// ADD SCENE ACTORS
-		gameStage.addActor(background);
-		Stats.levelKills = 0;
-		//getHpBorder().setSize(200, 40);
-
-		// ADD SCENE ACTORS
-		gameStage.addActor(background);
-		gameStage.addActor(hitEffect);
-		gameStage.addActor(explodeEffect);
-		gameStage.addActor(World.getObjects());
-		gameStage.addActor(World.getPlayer());
-
-		//		hud.addActor(hpBorder);
-		//		hud.addActor(shieldBorder);
-
+		addActor(background);
+		addActor(background);
+		addActor(hitEffect);
+		addActor(explodeEffect);
+		addActor(World.getObjects());
+		addActor(World.getPlayer());
 		hud.show();
+
 		Assets.play(Assets.track2);
 		World.setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
+	}
+
+	public static Background getBackground() {
+		return background;
+	}
+
+	public static Vector2 getCameraPos() {
+		return cameraPos;
+	}
+
+	@Override
+	public void dispose() {
+		hud.dispose();
+		dispose();
 	}
 
 	@Override
@@ -119,25 +106,11 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void dispose() {
-		hud.dispose();
-		gameStage.dispose();
-
+	public void pause() {
 	}
 
-	public static Background getBackground() {
-		return background;
+	@Override
+	public void resize(int width, int height) {
 	}
 
-	//	public static Button getShieldBorder() {
-	//		return shieldBorder;
-	//	}
-
-	public static Stage getGameStage() {
-		return gameStage;
-	}
-
-	//	public static Stage getHudStage() {
-	//		return hudStage;
-	//	}
 }
