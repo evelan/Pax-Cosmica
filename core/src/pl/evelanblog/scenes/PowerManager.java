@@ -11,13 +11,13 @@ import pl.evelanblog.paxcosmica.control.MousePointer;
 import pl.evelanblog.world.World;
 
 /**
- * Created by Dave on 2015-02-08.
+ * Created by Dave on 2015-02-08 - 21:25
  */
 public class PowerManager extends Stage {
 
 	private float hover = -1; // mówi o tym co wcisnęliśmy aby pokazać przycisk upgrade
 	private float powerPos = 200, hullPos = 400, shieldPos = 600, weaponPos = 800, enginePos = 1000;
-	private float yPos = 200;
+	float yPos = 200;
 	private Button upPwr, downPwr;
 	private CustomText powerLabel, hullLabel, shieldLabel, weaponLabel, engineLabel;
 

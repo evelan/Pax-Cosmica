@@ -1,4 +1,4 @@
-package pl.evelanblog.scenes;
+package pl.evelanblog.utilities;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -16,39 +16,38 @@ import pl.evelanblog.paxcosmica.Bar;
 import pl.evelanblog.paxcosmica.PaxCosmica;
 import pl.evelanblog.paxcosmica.Stats;
 import pl.evelanblog.paxcosmica.control.MousePointer;
-import pl.evelanblog.utilities.GameManager;
+import pl.evelanblog.scenes.PowerManager;
 import pl.evelanblog.world.World;
 
 /**
  * Created by Evelan on 20-02-2015 - 03:18
  */
-public class HUD extends Stage implements InputProcessor {
+public class HUDController extends Stage implements InputProcessor {
 
 	PaxCosmica game;
 	private Button knob, buttonA, buttonB, pauseButton, powerButton, continueButton, exitButton, resumeButton;
-	private static Bar hpBar, shieldBar;
 	private CustomText scrap, score; // tekst  o ilośc złomu oraz punktów
+	private Bar hpBar, shieldBar, bossHp, shieldReload;
 
-	private static float velX; // wychylenie gałki w osi X
-	private static float velY; // wychylenie gałki w osi Y
-	private static boolean hit; // czy wciskamy przycisk A od strzelania
-	private static boolean knobPressed; // czy wciskamy gałkę
-	private int knobPointer = -1; // pointer gałki, potrzebne do multitoucha
-	private int hitPointer = -1; // pointer przycisku A, potrzebne do multitoucha
+	private static float velX, velY; // wychylenie gałki w osi X i Y
+	private static boolean hit, knobPressed; // czy wciskamy gałkę
+	private int knobPointer = -1, hitPointer = -1; // potrzebne do multitoucha
 	private Vector2 defKnobPos; //domyślna pozycja z gałką
 	private PowerManager powerManager; // powermanager, rozszerzony o Stage
-
 	private MousePointer mousePointer; // przycsik myszki
 
-	public HUD(PaxCosmica game, Viewport viewport) {
+	public HUDController(PaxCosmica game, Viewport viewport) {
 		super(viewport);
 		this.game = game;
 
-		mousePointer = game.getMouse();
+		mousePointer = GameManager.getMouse();
 		defKnobPos = new Vector2(96, 96);
 		powerManager = new PowerManager(new StretchViewport(1920, 1080));
 		hpBar = new Bar(15, 1025, 200, 40, Assets.hullBar);
-		shieldBar = new Bar(15, 982, 0, 40, Assets.shieldBar);
+		shieldBar = new Bar(15, 980, 200, 40, Assets.shieldBar);
+		shieldReload = new Bar(15, 930, 400, 10, Assets.shieldBar);
+		bossHp = new Bar(390, 1025, 400, 40, Assets.bossHp);
+
 		knob = new Button(defKnobPos.x, defKnobPos.y, 256, 256, Assets.knob);
 		buttonA = new Button(1600, 256, 256, 256, Assets.buttonA);
 		buttonB = new Button(1472, 0, 256, 256, Assets.buttonB);
@@ -75,10 +74,21 @@ public class HUD extends Stage implements InputProcessor {
 		addActor(scrap);
 		addActor(hpBar);
 		addActor(shieldBar);
-
+		addActor(shieldReload);
+		addActor(bossHp);
 	}
 
 	public void draw() {
+
+		if (World.isBossFight()) {
+			bossHp.setVisible(true);
+			bossHp.setValue(World.getBoss().getHealth());
+		}
+
+		hpBar.setValue(World.getPlayer().getHealth());
+		shieldBar.setValue(World.getPlayer().getShield());
+		shieldReload.setValue(World.getPlayer().getReload());
+
 		score.setText("Score: " + Stats.score);
 		scrap.setText("Scrap: " + Stats.scrap);
 
@@ -90,6 +100,13 @@ public class HUD extends Stage implements InputProcessor {
 		velY = 0;
 		hit = false;
 		knobPressed = false;
+
+		bossHp.setVisible(false);
+		hpBar.setValue(World.getPlayer().getHealth(), World.getPlayer().getMaxHealth());
+		shieldBar.setValue(World.getPlayer().getShield(), World.getPlayer().getMaxShield());
+		shieldReload.setValue(World.getPlayer().getReload(), World.getPlayer().getMaxReload());
+		bossHp.setValue(World.getBoss().getHealth(), World.getBoss().getMaxHealth());
+
 		knobPointer = -1;
 		hitPointer = -1;
 		Gdx.input.setInputProcessor(this);
@@ -108,7 +125,7 @@ public class HUD extends Stage implements InputProcessor {
 	}
 
 	//gdy przegramy wyświetlamy tylko przycisk EXIT
-	public void defeatScreen() {
+	public void exitScreen() {
 		exitButton.setVisible(true);
 		powerButton.setVisible(false);
 		pauseButton.setVisible(false);

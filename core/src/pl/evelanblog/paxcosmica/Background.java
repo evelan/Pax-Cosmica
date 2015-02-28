@@ -11,7 +11,7 @@ public class Background extends Actor {
 	public Sprite stars2;
 	public Sprite stars3;
 	public Sprite stars4;
-	private float speed;
+	float speed;
 
 	public Background(Sprite background)
 	{

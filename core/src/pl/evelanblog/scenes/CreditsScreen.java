@@ -112,7 +112,7 @@ public class CreditsScreen implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 		screenX = (int) (screenX * creditsStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
 		screenY = (int) (screenY * creditsStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
-		if (game.getMouse().overlaps(screenX, screenY, exit)) {
+		if (GameManager.getMouse().overlaps(screenX, screenY, exit)) {
 			game.setScreen(GameManager.mainMenu);
 			dispose();
 		}

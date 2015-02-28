@@ -11,10 +11,12 @@ import pl.evelanblog.world.World;
 public abstract class DynamicObject extends Actor {
 
 	protected float hp;
+	protected float maxHp;
+	protected float shield;
+	protected float maxShield;
 	protected boolean live;
 	protected float speed;
 	protected float impactDamage; // im wyższa tym większe obrażenia będą zadawane przy uderzeniu
-	protected float shield;
 	protected Sprite sprite; // brzmi legitymacjnie że actor nie ma sprite już w sobie
 
 	public DynamicObject(float x, float y, float speed, float hp, float shield, float impactDamage, String file) {
@@ -25,8 +27,10 @@ public abstract class DynamicObject extends Actor {
 		live = true;
 		this.speed = speed;
 		this.impactDamage = impactDamage;
-		this.shield = shield;
 		this.hp = hp;
+		this.maxHp = hp;
+		this.shield = shield;
+		this.maxShield = shield;
 	}
 
 	public void setTexture(String file) {
@@ -56,18 +60,38 @@ public abstract class DynamicObject extends Actor {
 		return shield;
 	}
 
+	public float getMaxHealth() {
+		return maxHp;
+	}
+
+	public float getMaxShield() {
+		return maxShield;
+	}
+
 	/**
 	 * Uszkadza obiekt, jak HP spadnie poniżej 0 to umiera
 	 *
 	 * @param damage ilość zadawanych obrażeń
 	 */
 	public void hurt(float damage) {
-		hp -= damage;
-		if (hp <= 0)
+		if (shield > 0) {
+			shield -= damage;
+		} else {
+			shield = 0;
+			hp -= damage;
+		}
+		if (hp <= 0) {
+			hp = 0;
 			kill();
+		}
 	}
 
 	public void update(float delta) {
+
+		//jeśli osłona została zniszczona prawdopodobnie ma ujemną wartość dlatego ustawiamy ją na zero wtakim przypadku
+		if (shield < 0)
+			shield = 0;
+
 		if (getX() + getWidth() < 0)
 			dispose();
 	}

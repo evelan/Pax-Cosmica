@@ -9,27 +9,41 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class Bar extends Image {
 
-	private int value;
+	private float maxValue;
+	private float maxWidth;
+	//private Bar border;
 
 	public Bar(float x, float y, float w, float h, Texture texture) {
 		super(texture);
 		setBounds(x, y, w, h);
-		value = 0;
+		//border = new Bar(x, y, w, h, Assets.bossHpBorder);
+		maxWidth = w;
 	}
 
 	public void draw(Batch batch) {
-		batch.begin();
-		draw(batch, 1);
-		batch.end();
+		if (getWidth() >= 0) {
+			batch.begin();
+			//border.draw(batch, 1);
+			draw(batch, 1);
+			batch.end();
+		}
 	}
 
-	public void setValue(int value, int maxValue) {
-		setHeight(value / maxValue);
-		this.value = value;
+	/**
+	 * domyślna funkcja, wyskaluje od razu pasek
+	 *
+	 * @param value ustawia maksymalną wartośc i obecną za jednym razem
+	 */
+	public void setValue(float value) {
+		setWidth(maxWidth * (value / maxValue));
 	}
 
-	public int getValue() {
-		return value;
+	/**
+	 * @param value    obecna wartość
+	 * @param maxValue maksymalna wartość paska
+	 */
+	public void setValue(float value, float maxValue) {
+		this.maxValue = maxValue;
+		setWidth(value / maxValue);
 	}
-
 }

@@ -97,7 +97,7 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 		engineLvl = World.getPlayer().engineLvl;
 		scrap = Stats.scrap;
 
-		mousePointer = game.getMouse();
+		mousePointer = GameManager.getMouse();
 		mousePointer.setSize(1);
 
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);

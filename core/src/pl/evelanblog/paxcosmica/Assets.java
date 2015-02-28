@@ -28,18 +28,7 @@ public class Assets {
 	public static Texture icePlanet;
 	public static Texture goldPlanet;
 	public static Texture purplePlanet;
-	public static Texture marsPlanet;
-	public static Texture mars2Planet;
-	public static Texture mars3Planet;
-	public static Texture fire2Planet;
-	public static Texture fire3Planet;
 	public static Texture coldPlanet;
-	public static Texture cold2Planet;
-	public static Texture neptunePlanet;
-	public static Texture staturnPlanet;
-	public static Texture venusPlanet;
-	public static Texture rockPlanet;
-	public static Texture snowPlanet;
 
 	public static Texture planet;
 	public static Texture mainmenu;
@@ -171,13 +160,11 @@ public class Assets {
 
 	public static void playSound(Sound sound) {
 		if (PaxPrefs.getBoolean(PaxPrefs.SOUND_ENABLED, true))
-			sound.play(PaxPrefs.getInt(PaxPrefs.SOUND_VOLUME, 100));
+			sound.play();
 	}
 
 	public static void play(Music music) {
-		if (PaxPrefs.getBoolean(PaxPrefs.MUSIC_ENABLED, true)) {
+		if (PaxPrefs.getBoolean(PaxPrefs.MUSIC_ENABLED, true))
 			music.play();
-			music.setVolume(PaxPrefs.getInt(PaxPrefs.MUSIC_VOLUME, 100));
-		}
 	}
 }

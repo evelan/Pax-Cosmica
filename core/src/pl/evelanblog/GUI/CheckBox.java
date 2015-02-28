@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import pl.evelanblog.paxcosmica.Assets;
 
 /**
- * Created by Dave on 2015-02-06.
+ * Created by Dave on 2015-02-06 - 21:31
  */
 public class CheckBox extends Actor {
 

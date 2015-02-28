@@ -1,7 +1,7 @@
 package pl.evelanblog.enums;
 
 /**
- * Created by Evelan on 09-02-2015.
+ * Created by Evelan on 09-02-2015 - 21:31
  */
 public enum GameState {
 	ongoing, // gra się toczy i jest elegancko, szczelanie etc

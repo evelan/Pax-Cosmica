@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 /**
- * Created by Dave on 2015-02-06.
+ * Created by Dave on 2015-02-06
  */
 public class PaxPrefs {
 
 	// constants
 	public static final String PREFS_NAME = "Pax Cosmica";
 
-	public static final String MUSIC_VOLUME = "music.volume";
-	public static final String SOUND_VOLUME = "sound.volume";
 	public static final String MUSIC_ENABLED = "music.enabled";
 	public static final String SOUND_ENABLED = "sound.enabled";
 

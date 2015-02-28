@@ -6,14 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import pl.evelanblog.paxcosmica.Assets;
 import pl.evelanblog.paxcosmica.PaxPrefs;
 import pl.evelanblog.scenes.GameScreen;
-import pl.evelanblog.scenes.HUD;
+import pl.evelanblog.utilities.HUDController;
 
 public class Player extends DynamicObject {
-	private float bulletSpeed = 1000f;
-	private float shieldReloadLvl = 0;
 	private Sprite shieldSprite;
-	float shootFrequency = 0.2f;
-	float temp_x, temp_y;
+	float bulletSpeed = 1000f, shootFrequency = 0.2f, shieldReload = 0, maxShieldReload = 10f, x, y;
 
 	public int powerLvl, shieldLvl, hullLvl, weaponLvl, engineLvl;
 	public int powerPwr, hullPwr, shieldPwr, weaponPwr, enginePwr;
@@ -26,37 +23,30 @@ public class Player extends DynamicObject {
 		getStats();
 	}
 
+	@Override
 	public void update(float deltaTime) {
+		super.update(deltaTime);
 		powerPwr = powerLvl - shieldPwr - hullPwr - weaponPwr - enginePwr;
 
+		//jeśli w PwrMgr silnik nie ma żadnego paska to wyłączamy silniki
 		if (enginePwr < 1)
 			speed = 0;
 		else
 			speed = 180f + (enginePwr * 10);
 
+		//jeśli osłona ma mniejszą wartość niż poziom naładowania w PwrMgr to ładujemy osłony
 		if (shield < shieldPwr) {
-			shieldReloadLvl += deltaTime;
-			if (shieldReloadLvl > 10f) {
-				shieldReloadLvl = 0;
+			shieldReload += deltaTime;
+			if (shieldReload > maxShieldReload) {
+				shieldReload = 0;
 				shield++;
-				//				GameScreen.getShieldBar().setSize(GameScreen.getShieldBar().getWidth() + (200 / shieldLvl), GameScreen.getShieldBar().getHeight());
-				//				GameScreen.getShieldBorder().setSize(200, GameScreen.getShieldBorder().getHeight());
 			}
 		}
 
-		bulletSpeed = 600f + (weaponPwr * 80); // standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomem
-		// weaponPwr bedzie on przyspieszac razy 80
+		// standardowo pocisk ma predkosc 600f, z kazdym kolejnym poziomemw eaponPwr bedzie on przyspieszac razy 80
+		bulletSpeed = 600f + (weaponPwr * 80);
 
-		temp_y = GameScreen.getCameraPos().y + (HUD.getVelY() * deltaTime * speed);
-		if (temp_y > 0 && temp_y < Assets.worldHeight - getHeight()) {
-			GameScreen.getCameraPos().y = temp_y;
-			setY(GameScreen.getCameraPos().y);
-		}
-
-		temp_x = getX() + (HUD.getVelX() * deltaTime * speed);
-		if (temp_x > 0 && temp_x < Assets.worldWidth - getWidth())
-			setX(temp_x);
-
+		checkBounds(deltaTime);
 		Assets.playerEngineEffect.setPosition(getX() + 10, getY() + (getHeight() / 2));
 		shieldSprite.setPosition(getX() - 30, getY() - ((shieldSprite.getHeight() - getHeight()) / 2));
 	}
@@ -77,17 +67,25 @@ public class Player extends DynamicObject {
 	}
 
 	/**
-	 * Czyści do wartości domyślnych, stosować przy załadowaniu kolejnego poziomu
+	 * Sprawdzamy czy gracz nie próbuje wylecieć poza ekran
 	 */
-	public void clear() {
+	private void checkBounds(float deltaTime) {
+		y = GameScreen.getCameraY() + (HUDController.getVelY() * deltaTime * speed);
+		if (y > 0 && y < Assets.worldHeight - getHeight()) {
+			GameScreen.setCameraY(y);
+			setY(GameScreen.getCameraY());
+		}
 
+		x = getX() + (HUDController.getVelX() * deltaTime * speed);
+		if (x > 0 && x < Assets.worldWidth - getWidth())
+			setX(x);
 	}
 
 	/**
-	 * resetuje wszystkie ustawienia i ulepszenia gracza
+	 * Czyści do wartości domyślnych, stosować przy załadowaniu kolejnego poziomu
 	 */
-	public void reset() {
-
+	public void clear() {
+		live = true;
 	}
 
 	/**
@@ -114,36 +112,11 @@ public class Player extends DynamicObject {
 	}
 
 	@Override
-	public void hurt(float damage) {
-
-		if (shield > 0) {
-			shield -= damage;
-
-			//			if (shield > 0)
-			//				GameScreen.getShieldBar().setSize(200 * shield / shieldPwr, GameScreen.getShieldBar().getHeight());
-			//			else {
-			//				shield = 0;
-			//				GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
-			//				GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
-			//			}
-		} else {
-			hp -= damage;
-			//			GameScreen.getHpBar().setSize(200 * hp / (hullPwr * 3), GameScreen.getHpBar().getHeight());
-		}
-		if (hp <= 0)
-			kill();
-	}
-
-	@Override
 	public void kill() {
 		live = false;
 		Assets.playSound(Assets.explosionSfx);
 		Assets.explosionEffect.setPosition(getX() + (getWidth() / 2), getY() + (getHeight() / 2));
 		Assets.explosionEffect.start();
-		//		GameScreen.getShieldBorder().setSize(0, GameScreen.getShieldBar().getHeight());
-		//		GameScreen.getShieldBar().setSize(0, GameScreen.getShieldBar().getHeight());
-		//		GameScreen.getHpBar().setSize(0, GameScreen.getShieldBar().getHeight());
-		//		GameScreen.getHpBorder().setSize(0, GameScreen.getShieldBar().getHeight());
 	}
 
 	public void setStats() {
@@ -176,10 +149,18 @@ public class Player extends DynamicObject {
 		shieldPwr = PaxPrefs.getInt(PaxPrefs.SHIELD_PWR, 1);
 		weaponLvl = PaxPrefs.getInt(PaxPrefs.WEAPON_LVL, 1);
 		weaponPwr = PaxPrefs.getInt(PaxPrefs.WEAPON_PWR, 1);
-
+		maxShield = shieldPwr;
 	}
 
 	public void setHp(float hp) {
 		this.hp = hp;
+	}
+
+	public float getReload() {
+		return shieldReload;
+	}
+
+	public float getMaxReload() {
+		return maxShieldReload;
 	}
 }

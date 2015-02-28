@@ -17,15 +17,15 @@ import pl.evelanblog.utilities.GameManager;
 
 public class OptionsScreen implements Screen, InputProcessor {
 	private PaxCosmica game;
-	private MousePointer mousePointer;
 	private Stage optionsStage;
 	private Button exit;
 	private CheckBox musicCheckbox, soundCheckbox;
 	CustomText music, sfx;
+	MousePointer mousePointer;
 
 	public OptionsScreen(final PaxCosmica game) {
 		this.game = game;
-		mousePointer = game.getMouse();
+		mousePointer = GameManager.getMouse();
 		optionsStage = new Stage(new StretchViewport(Assets.worldWidth, Assets.worldHeight));
 		exit = new Button(1500, 20, 400, 96, Assets.exitButton);
 
@@ -63,9 +63,9 @@ public class OptionsScreen implements Screen, InputProcessor {
 		screenY = Gdx.graphics.getHeight() - screenY;
 		screenX = (int) (screenX * optionsStage.getViewport().getWorldWidth() / Gdx.graphics.getWidth());
 		screenY = (int) (screenY * optionsStage.getViewport().getWorldHeight() / Gdx.graphics.getHeight());
-		game.getMouse().setPosition(screenX, screenY);
+		GameManager.getMouse().setPosition(screenX, screenY);
 
-		if (game.getMouse().overlaps(musicCheckbox)) {
+		if (GameManager.getMouse().overlaps(musicCheckbox)) {
 			musicCheckbox.not();
 
 			PaxPrefs.putBoolean(PaxPrefs.MUSIC_ENABLED, musicCheckbox.getIsChecked());
@@ -76,13 +76,13 @@ public class OptionsScreen implements Screen, InputProcessor {
 			}
 		}
 
-		if (game.getMouse().overlaps(soundCheckbox)) {
+		if (GameManager.getMouse().overlaps(soundCheckbox)) {
 			soundCheckbox.not();
 			PaxPrefs.putBoolean(PaxPrefs.SOUND_ENABLED, soundCheckbox.getIsChecked());
 		}
 
 		// EXIT BUTTON
-		if (game.getMouse().overlaps(exit)) {
+		if (GameManager.getMouse().overlaps(exit)) {
 			game.setScreen(GameManager.mainMenu);
 			dispose();
 		}

@@ -13,35 +13,34 @@ import pl.evelanblog.enemy.Fighter;
 import pl.evelanblog.enums.GameState;
 import pl.evelanblog.paxcosmica.Collider;
 import pl.evelanblog.paxcosmica.Stats;
-import pl.evelanblog.scenes.HUD;
 import pl.evelanblog.utilities.GameManager;
+import pl.evelanblog.utilities.HUDController;
 
 public class World {
 
-	private static Group objects; //wszystkie obiekty na scenie (bez gracza)
+	private static Group objects; // wszystkie obiekty na scenie (bez gracza)
 	private static Player player; // gracz 1
-	private Collider collider; // zderzacz hadronów
-	private EnemyBoss enemyBoss; // boss
+	private static EnemyBoss enemyBoss; // boss
 	private static GameState state; // stany gry
 	private float[] sleepTime = new float[10]; // tablica gdzie trzymam czasy poszczególnych rzeczy kiedy mają się asteroidy etc.
-	private boolean enemyBossExists = false;
+	private static boolean enemyBossExists;
+	private Collider collider; // zderzacz hadronów
 
 	public World() {
 		objects = new Group();
-		player = new Player();
-		collider = new Collider(player);
-
-		enemyBoss = new EnemyBoss();
 		clear();
 	}
 
 	public void clear() {
-		Stats.levelKills = 0;
+		player = new Player();
+		enemyBoss = new EnemyBoss();
+		collider = new Collider(player);
 		objects.clear();
-		player.clear();
+		Stats.levelKills = 0;
 		for (int i = 0; i < sleepTime.length; i++) //zerujemy tablicę z czasami
 			sleepTime[i] = 0;
-
+		setState(GameState.ongoing); // już wszystko zostało ustawione wiec możemy startować z grą
+		enemyBossExists = false;
 	}
 
 	public void bossFight() {
@@ -49,11 +48,7 @@ public class World {
 			//TODO zmiana muzyki na jakąś poważniejszą
 			objects.addActor(enemyBoss);
 			enemyBossExists = true;
-			//			GameScreen.getHudStage().addActor(enemyBoss.getBossHp());
-			//			GameScreen.getHudStage().addActor(enemyBoss.getBossHpBorder());
 			Gdx.app.log("STATE", "Dodano do sceny EnemyBoss!");
-			enemyBoss.getBossHp().setVisible(true);
-			enemyBoss.getBossHpBorder().setVisible(true);
 		}
 
 		//jeśli zabijemy bossa wygrywamy można jeszcze dodać jakieś 3 sekund odstępu zanim pokaże się ekran że wygraliśmy
@@ -76,14 +71,14 @@ public class World {
 		if (player.isAlive()) {
 			collider.checkPlayerCollision(objects);
 			collider.checkBulletCollision(objects);
-		} else if (!player.isAlive()) {
+		} else {
 			Stats.kills += Stats.levelKills;
 			state = GameState.defeat;
 			Gdx.app.log("STATE", "Gracz zginął, " + state);
 		}
 	}
 
-	// w tej funkcji także spawnują się strzały wrogów!!!!!!!!!
+	// w tej funkcji także spawnują się strzały wrogów!
 	private void updateObjects(float delta) { // aktualizacja wszystkich obiektów, pozycji itd
 		player.update(delta); // update position
 
@@ -98,7 +93,7 @@ public class World {
 
 	private void spawnObjects() { // spownoawnie obiektów, oprócz pocisków wrogów, to się dzieje w update!!!!!!!!!!
 		// TODO tutaj trzeba te ify jakoś skrócić za dużo podobnego kodu
-		if (sleepTime[0] > player.getShootFrequency() && player.ableToShoot() && HUD.getHit()) {
+		if (sleepTime[0] > player.getShootFrequency() && player.ableToShoot() && HUDController.getHit()) {
 			objects.addActor(player.shoot());
 			sleepTime[0] = 0;
 		}
@@ -122,6 +117,14 @@ public class World {
 			objects.addActor(new Battleship());
 			sleepTime[4] = 0;
 		}
+	}
+
+	public static EnemyBoss getBoss() {
+		return enemyBoss;
+	}
+
+	public static boolean isBossFight() {
+		return enemyBossExists;
 	}
 
 	public static Player getPlayer() {
