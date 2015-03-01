@@ -1,8 +1,7 @@
 package pl.evelanblog.scenes;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.paxcosmica.Assets;
@@ -21,8 +20,8 @@ public class PowerManager extends Stage {
 	private Button upPwr, downPwr;
 	private CustomText powerLabel, hullLabel, shieldLabel, weaponLabel, engineLabel;
 
-	public PowerManager(Viewport viewport) {
-		super(viewport);
+	public PowerManager() {
+		super(new StretchViewport(1920, 1080));
 		upPwr = new Button(0, 100, 200, 60, Assets.up);
 		downPwr = new Button(0, 0, 200, 60, Assets.down);
 
@@ -42,13 +41,7 @@ public class PowerManager extends Stage {
 		addActor(engineLabel);
 	}
 
-	public void draw(MousePointer mousePointer) {
-
-		mousePointer.setX((mousePointer.getX() * this.getViewport().getWorldWidth() / Gdx.graphics.getWidth()));
-		mousePointer.setY((mousePointer.getY() * this.getViewport().getWorldHeight() / Gdx.graphics.getHeight()));
-
-		touchDown(mousePointer);
-
+	public void draw() {
 		createBar(hullPos, World.getPlayer().hullPwr);
 		createBar(powerPos, World.getPlayer().powerPwr);
 		createBar(shieldPos, World.getPlayer().shieldPwr);
@@ -72,13 +65,13 @@ public class PowerManager extends Stage {
 	}
 
 	public void touchDown(MousePointer mousePointer) {
+
 		if (mousePointer.overlaps(upPwr)) {
 			if (Stats.scrap >= 5 && World.getPlayer().powerLvl > 0) {
 				if (hover == hullPos && World.getPlayer().hullLvl > World.getPlayer().hullPwr) {
 					World.getPlayer().hullPwr++;
 					World.getPlayer().powerPwr--;
 					Stats.scrap -= 5;
-					World.getPlayer().setHp(World.getPlayer().hullLvl * 3);
 				} else if (hover == weaponPos && World.getPlayer().weaponLvl > World.getPlayer().weaponPwr) {
 					World.getPlayer().weaponPwr++;
 					World.getPlayer().powerPwr--;

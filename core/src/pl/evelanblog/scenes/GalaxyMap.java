@@ -29,7 +29,7 @@ public class GalaxyMap extends Stage implements Screen, InputProcessor {
 		super(new StretchViewport(1920, 1080));
 		this.game = game;
 		moveValue = 0;
-		planets = new ArrayList<>();
+		planets = new ArrayList<Planet>();
 
 		background = new Background(new Sprite(Assets.mainmenu));
 		addActor(background);

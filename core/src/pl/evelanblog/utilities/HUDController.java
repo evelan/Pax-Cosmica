@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
@@ -42,7 +41,7 @@ public class HUDController extends Stage implements InputProcessor {
 
 		mousePointer = GameManager.getMouse();
 		defKnobPos = new Vector2(96, 96);
-		powerManager = new PowerManager(new StretchViewport(1920, 1080));
+		powerManager = new PowerManager();
 		hpBar = new Bar(15, 1025, 200, 40, Assets.hullBar);
 		shieldBar = new Bar(15, 980, 200, 40, Assets.shieldBar);
 		shieldReload = new Bar(15, 930, 400, 10, Assets.shieldBar);
@@ -151,7 +150,8 @@ public class HUDController extends Stage implements InputProcessor {
 	public void setPowerPanager() {
 		pauseButton.setVisible(false);
 		resumeButton.setVisible(true);
-		powerManager.draw(mousePointer);
+
+		powerManager.draw();
 		knob.setVisible(false);
 		buttonA.setVisible(false);
 		buttonB.setVisible(false);
@@ -177,6 +177,10 @@ public class HUDController extends Stage implements InputProcessor {
 		screenY = (int) (screenY * getViewport().getWorldHeight() / Gdx.graphics.getHeight());
 
 		mousePointer.setPosition(screenX, screenY);
+
+		if (World.getState() == GameState.powermanager)
+			powerManager.touchDown(mousePointer);
+
 
 		if (!knobPressed)
 			Assets.playSound(Assets.clickSfx);

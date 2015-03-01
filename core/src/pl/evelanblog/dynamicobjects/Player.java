@@ -139,6 +139,7 @@ public class Player extends DynamicObject {
 	}
 
 	private void getStats() {
+
 		powerLvl = PaxPrefs.getInt(PaxPrefs.POWER_LVL, 1);
 		powerPwr = PaxPrefs.getInt(PaxPrefs.POWER_PWR, 1);
 		engineLvl = PaxPrefs.getInt(PaxPrefs.ENGINE_LVL, 1);
@@ -150,10 +151,6 @@ public class Player extends DynamicObject {
 		weaponLvl = PaxPrefs.getInt(PaxPrefs.WEAPON_LVL, 1);
 		weaponPwr = PaxPrefs.getInt(PaxPrefs.WEAPON_PWR, 1);
 		maxShield = shieldPwr;
-	}
-
-	public void setHp(float hp) {
-		this.hp = hp;
 	}
 
 	public float getReload() {
