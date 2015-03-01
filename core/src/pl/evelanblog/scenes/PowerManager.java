@@ -1,7 +1,7 @@
 package pl.evelanblog.scenes;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import pl.evelanblog.GUI.Button;
 import pl.evelanblog.GUI.CustomText;
 import pl.evelanblog.paxcosmica.Assets;
@@ -15,15 +15,21 @@ import pl.evelanblog.world.World;
 public class PowerManager extends Stage {
 
 	private float hover = -1; // mówi o tym co wcisnęliśmy aby pokazać przycisk upgrade
-	private float powerPos = 200, hullPos = 400, shieldPos = 600, weaponPos = 800, enginePos = 1000;
-	float yPos = 200;
+	private float powerPos = 400, hullPos = 600, shieldPos = 800, weaponPos = 1000, enginePos = 1200;
+	float yPos;
+	float powerUpPos;
 	private Button upPwr, downPwr;
 	private CustomText powerLabel, hullLabel, shieldLabel, weaponLabel, engineLabel;
 
-	public PowerManager() {
-		super(new StretchViewport(1920, 1080));
+	public PowerManager(Viewport viewport) {
+		super(viewport);
 		upPwr = new Button(0, 100, 200, 60, Assets.up);
 		downPwr = new Button(0, 0, 200, 60, Assets.down);
+
+		upPwr.setVisible(false);
+		downPwr.setVisible(false);
+
+		yPos = 350;
 
 		hullLabel = new CustomText(hullPos, yPos);
 		powerLabel = new CustomText(powerPos, yPos);
@@ -58,9 +64,10 @@ public class PowerManager extends Stage {
 	}
 
 	public void createBar(float x, float level) {
+		powerUpPos = yPos + (level + 1) * 30;
 		getBatch().begin();
 		for (int i = 0; i < level; i++)
-			getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
+			getBatch().draw(Assets.upgradeBar, x, yPos + i * 30);
 		getBatch().end();
 	}
 
@@ -122,8 +129,13 @@ public class PowerManager extends Stage {
 			hover = -1;
 
 		if (hover != -1) {
-			downPwr.setPosition(hover, 100);
-			upPwr.setPosition(hover, 500);
+			upPwr.setVisible(true);
+			downPwr.setVisible(true);
+			downPwr.setPosition(hover, yPos - (2 * Assets.down.getHeight()));
+		} else {
+			upPwr.setVisible(false);
+			downPwr.setVisible(false);
 		}
+		upPwr.setPosition(hover, powerUpPos);
 	}
 }

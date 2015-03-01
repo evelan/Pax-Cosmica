@@ -120,8 +120,6 @@ public class Player extends DynamicObject {
 	}
 
 	public void setStats() {
-		Gdx.app.log("PREFS", "engine lvl: " + engineLvl);
-
 		PaxPrefs.putInt(PaxPrefs.POWER_LVL, powerLvl);
 		PaxPrefs.putInt(PaxPrefs.POWER_PWR, powerPwr);
 
@@ -139,8 +137,7 @@ public class Player extends DynamicObject {
 	}
 
 	private void getStats() {
-
-		powerLvl = PaxPrefs.getInt(PaxPrefs.POWER_LVL, 1);
+		powerLvl = PaxPrefs.getInt(PaxPrefs.POWER_LVL, 4);
 		powerPwr = PaxPrefs.getInt(PaxPrefs.POWER_PWR, 1);
 		engineLvl = PaxPrefs.getInt(PaxPrefs.ENGINE_LVL, 1);
 		enginePwr = PaxPrefs.getInt(PaxPrefs.ENGINE_LVL, 1);

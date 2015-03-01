@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -20,6 +20,7 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 
 	private final PaxCosmica game;
 	private BitmapFont font;
+	private Sprite background;
 	private Button apply, discard, upgrade;
 	private Rectangle mousePointer;
 
@@ -33,12 +34,13 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 		super(new StretchViewport(1920, 1080));
 		this.game = game;
 
-		upgrade = new Button(1470, 60, 200, 50, Assets.upgradeBtn);
+		background = new Sprite(Assets.upgradeBackground);
+		upgrade = new Button(Assets.upgradeBtn, 200, 50);
 		apply = new Button(1520, 116, 320, 96, Assets.applyButton);
 		discard = new Button(1520, 20, 320, 96, Assets.discardButton);
-
 		addActor(apply);
 		addActor(discard);
+		addActor(upgrade);
 	}
 
 	@Override
@@ -47,14 +49,12 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		getBatch().begin();
-		getBatch().draw(new Texture(Gdx.files.internal("background/upgrade.png")), 0, 0);
-
+		background.draw(getBatch());
 		createBar(power, powerLvl, "Power: " + powerLvl);
 		createBar(hull, hullLvl, "Hull: " + hullLvl);
 		createBar(shield, shieldLvl, "Shield: " + shieldLvl);
 		createBar(weapon, weaponLvl, "Weapon: " + weaponLvl);
 		createBar(engine, engineLvl, "Engine: " + engineLvl);
-
 		font.draw(getBatch(), "Scrap: " + scrap, 10, Gdx.graphics.getHeight() - font.getLineHeight());
 		getBatch().end();
 		draw();
@@ -66,12 +66,6 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 			getBatch().draw(Assets.upgradeBar, x, 200 + i * 30);
 
 		font.draw(getBatch(), "Cost: " + cost, x, level * 30 + 250);
-
-		if (hover != -1) {
-			upgrade.setPosition(hover, 100);
-			upgrade.draw(getBatch(), 1);
-		}
-
 		font.draw(getBatch(), name, x + 10, 190);
 	}
 
@@ -98,7 +92,6 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 		scrap = Stats.scrap;
 
 		mousePointer = GameManager.getMouse();
-		mousePointer.setSize(1);
 
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
 		Gdx.input.setInputProcessor(this);
@@ -190,6 +183,8 @@ public class UpgradeScreen extends Stage implements Screen, InputProcessor {
 		else
 			hover = -1;
 
+		if (hover != -1)
+			upgrade.setPosition(hover, 100);
 		return true;
 	}
 

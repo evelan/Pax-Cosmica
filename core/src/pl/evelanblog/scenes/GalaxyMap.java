@@ -30,39 +30,34 @@ public class GalaxyMap extends Stage implements Screen, InputProcessor {
 		this.game = game;
 		moveValue = 0;
 		planets = new ArrayList<Planet>();
-
 		background = new Background(new Sprite(Assets.mainmenu));
-		addActor(background);
-
 		attack = new Button(Assets.attackButton);
 		move = new Button(Assets.moveButton);
 		exit = new Button(1520, 20, 400, 96, Assets.exitButton);
 		left = new Button(0, 540, 128, 128, Assets.leftArrow);
 		right = new Button(1792, 540, 128, 128, Assets.rightArrow);
-
-		addActor(left);
-		addActor(right);
-		addActor(exit);
-
 		mousePointer = GameManager.getMouse();
-
 		fuel = new CustomText("Fuel: " + Stats.fuel, 410, getViewport().getWorldHeight() - 10);
 		galaxyNumber = new CustomText("Galaxy: " + moveValue, 610, getViewport().getWorldHeight() - 10);
-
 		score = new CustomText("Score: " + Stats.score, 10, 1070);
 		scrap = new CustomText("Scrap: " + Stats.scrap, 210, 1070);
 
-		addActor(score);
-		addActor(scrap);
-		addActor(fuel);
-		addActor(galaxyNumber);
 
 		// tworzenie planet
 		planets.add(new Planet(200, 200, 1, 0.10f, true, "Ice", "planet/ice.png", 0.05f, false));
 		planets.add(new Planet(600, 540, 1, 0.01f, false, "Fire", "planet/fire.png", 0.01f, false));
 		planets.add(new Planet(-600, 540, 1, 0.02f, false, "Gold", "planet/gold.png", 0.01f, false));
 		planets.add(new Planet(2200, 540, 1, 0.05f, true, "Purple", "planet/purple.png", 0.01f, false));
-		planets.add(new Planet(1320, 580, 1, 0.10f, true, "Sklep", "planet/shop.png", 0.005f, true));
+		planets.add(new Planet(1320, 580, 1, 0.10f, true, "Sklep", "planet/shop.png", 0.05f, true));
+
+		addActor(background);
+		addActor(left);
+		addActor(right);
+		addActor(exit);
+		addActor(score);
+		addActor(scrap);
+		addActor(fuel);
+		addActor(galaxyNumber);
 
 		for (Planet obj : planets)
 			addActor(obj);

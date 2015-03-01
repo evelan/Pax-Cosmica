@@ -41,7 +41,7 @@ public class HUDController extends Stage implements InputProcessor {
 
 		mousePointer = GameManager.getMouse();
 		defKnobPos = new Vector2(96, 96);
-		powerManager = new PowerManager();
+		powerManager = new PowerManager(viewport);
 		hpBar = new Bar(15, 1025, 200, 40, Assets.hullBar);
 		shieldBar = new Bar(15, 980, 200, 40, Assets.shieldBar);
 		shieldReload = new Bar(15, 930, 400, 10, Assets.shieldBar);

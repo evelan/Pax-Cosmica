@@ -32,6 +32,7 @@ public class Assets {
 
 	public static Texture planet;
 	public static Texture mainmenu;
+	public static Texture upgradeBackground;
 	public static Texture paxCosmica;
 	public static Texture down, up;
 
@@ -126,6 +127,7 @@ public class Assets {
 
 		planet = loadTexture("planet/planet_1.png");
 		mainmenu = loadTexture("background/mainmenu.png");
+		upgradeBackground = loadTexture("background/upgradebg.png");
 		paxCosmica = loadTexture("other/pax_cosmica.png");
 
 		pauseButton = loadTexture("buttons/pauseButton.png");
