@@ -26,7 +26,7 @@
           <element id="library" level="project" name="validation-api-1.0.0.GA-sources" />
           <element id="library" level="project" name="json-20090211" />
           <element id="library" level="project" name="gwt-servlet-2.6.0" />
-          <element id="file-copy" path="$PROJECT_DIR$/../../SDK/lombok.jar" />
+          <element id="file-copy" path="D:/../SDK/lombok.jar" />
         </element>
       </element>
       <element id="directory" name="META-INF">
